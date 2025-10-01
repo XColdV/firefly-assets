@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+  <Data>
+	<Sprite name="wing_Sprite" fileName="game/V1_wings.rttex" textureSize="64" frame="0,0"/>
+	<Sprite name="wing_Sprite_glowing_sprite" fileName="game/V1_wings.rttex" textureSize="64" frame="1,0"/>
+    
+	<Animations>
+        <SpriteCurveAnimation name="glow_anm" isLoop="true" playOnAction="Idle|SpiritGuide|Jump|Fall|Move|DoubleJump" sprite="wing_Sprite_glowing_sprite" animTime="5000">
+			<Curve name="alpha">
+				<KeyFrame>0.f, 0.f</KeyFrame>
+				<KeyFrame>0.2f, 0.f </KeyFrame>
+				<KeyFrame>0.4f, 1.f</KeyFrame>
+				<KeyFrame>0.8f, 1.f</KeyFrame>
+				<KeyFrame>1.f, 0.f</KeyFrame>
+			</Curve>
+		</SpriteCurveAnimation>
+        <!-- <SpriteSinPulseAnimation name="wing_flt" sprite="wing_Sprite" autoPlay="true">
+			<Parameter name="pos.y">
+				<Set name="period">2000</Set>
+				<Set name="scale">2</Set>
+			</Parameter>
+	    </SpriteSinPulseAnimation> -->
+    </Animations>
+  </Data>
+
+  <RenderRules>
+    <RenderBackpack>
+      <SpriteRender name="wing_Sprite" offset="0,-16" drawShadow="false"/>
+      <SpriteRender name="wing_Sprite_glowing_sprite" offset="0,-16" blend="PREMULTIPLIED_ALPHA" drawShadow="false"/>
+    </RenderBackpack>
+  </RenderRules>
+</ItemRenderer>

@@ -1,0 +1,70 @@
+.window {
+    min-height: 0;
+    max-height: 85vh;
+    max-width: 75vw;
+}
+
+.reward-button {
+    position: relative;
+    width: 75dp;
+    height: 75dp;
+	padding: 0dp;
+    border: 5dp white;
+    border-radius: 10dp;
+    background-color: rgba(0,0,0,128);
+}
+
+	.reward-button:active {
+		filter: brightness(0.85);
+		transform: scale(0.95);
+	}
+
+    .reward-button .image {    
+        display: block;
+        width: 64dp;
+        height: 64dp;
+        padding: 0dp;
+    }
+
+    .reward-button .label {
+        position: absolute;
+        width: 100%;
+        font-size: 24dp;
+        text-align: right;
+    top: 48dp;
+    right: 3dp;
+    }
+
+#window-title {
+    display: flex;
+}
+
+#window-title .title-icon {
+    width: 64dp;
+    height: 64dp;
+}
+
+    #mailmessage-popup .button {
+        padding-top: 3dp;
+        padding-bottom: 3dp;
+    }
+
+    #mailmessage-popup .rewards-panel {
+        display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+        font-size: 28dp;
+        gap: 16dp; 
+    margin-top: 30dp;
+    margin-bottom: 30dp;
+    }
+
+    #mailmessage-popup .buttons-panel {
+        display: flex;
+        align-items: center; 
+        justify-content: center;
+        gap: 16dp; 
+    }

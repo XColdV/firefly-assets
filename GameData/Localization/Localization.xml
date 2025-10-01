@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Resources>
+	<String id="[TEST_TITLE]">`6Growtopia``</String>
+	<String id="[TEST_TEXT]">`3line 1``
+	`5line 2
+	`7line 3````</String>
+	<String id="[TEST_BTN1]">Cancel</String>
+	<String id="[TEST_BTN2]">Ok</String>
+	<String id="[TEST_DESCR]">Descr str</String>
+	<String id="[FEATURE_WELCOME_TITLE]">You've got `2Grow-Mail``!</String>
+	<String id="[FEATURE_WELCOME_DESCR]">Join the fun with your fellow Growtopians!</String>
+	<String id="[FEATURE_WELCOME_BODY]">
+		`oThe `2Mailbox`` has arrived! Sealed with fun, stamped with surprises, and always first-class!
+		&nbsp;
+		&nbsp;
+		Hey there, Growtopian!
+		Introducing the brand-new `2Mailbox``, your all-in-one hub for `wofficial messages`` and `8surprise rewards`` from the `6Growtopia Team``!
+		&nbsp;
+		&nbsp;
+		Whether it's a nifty `5gift``, a `4system update``, or a little something just because - it'll all be delivered straight to your `2Mailbox``! No more missed messages, no more reward rush! Each message or reward comes with an expiry timer, so you can grab them when you feel ready (just make sure you've got some inventory space before claiming, nobody likes a packed pocket!).
+		&nbsp;
+		And don't worry, this box is strictly business (no Growtopian fan mails just yet).
+		&nbsp;
+		So what are you waiting for? Pop open your `2Mailbox`` and see what's inside! Who knows what surprises are envelope-ing you!?
+		&nbsp;
+		Signed, Sealed, Delivered - it's all yours!
+		&nbsp;
+		~ `6The Growtopia Team```
+	</String>
+</Resources>

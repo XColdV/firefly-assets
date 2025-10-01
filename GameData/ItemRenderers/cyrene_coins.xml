@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+  <Data>
+    <Sprite name="s_chest" fileName="game/player_cosmetics3.rttex" textureSize="32" frame="18, 23"/>
+    <Sprite name="s_chip" fileName="game/cyrene_particle.rttex" textureSize="32" frame="1, 1"/>
+    <Sprite name="s_chipTrail" fileName="game/particles9.rttex" textureSize="32"/>
+    <Sprite name="trail_Sprite" fileName="game/particles9.rttex" textureSize="32" frame="5, 6"/>
+		<Sprite name="s_meteor_chips" fileName="game/cyrene_particle.rttex" textureSize="32"/>
+
+    <Animations>
+      <SpriteAnimation name="a_chipTrail" sprite="s_chipTrail" isLoop="true" animTime="300">
+        <Frame>5,6</Frame>
+        <Frame>6,6</Frame>
+        <Frame>7,6</Frame>
+      </SpriteAnimation>
+
+      <CurveAnimationFloat name="chip_angle_rotation" autoPlay="true" isLoop="true" animTime="5000">
+        <Curve name="orb_angle">
+          <KeyFrame>0, -45</KeyFrame>
+          <KeyFrame>0.5, 45</KeyFrame>
+          <KeyFrame>1, -45</KeyFrame>
+        </Curve>
+      </CurveAnimationFloat>
+
+      <SpriteAnimation name="a_projectile" sprite="s_meteor_chips">
+        <Frame>0,2</Frame>
+        <Frame>1,2</Frame>
+        <Frame>2,2</Frame>
+        <Frame>3,2</Frame>
+      </SpriteAnimation>
+    </Animations>
+
+    <VariableMap>
+      <Set name="orb_angle">0</Set>
+    </VariableMap>
+    
+    <ParticleSystems>
+      <ParticleSystem name="orb_chip">
+        <Emitter>
+          <Set name="offset">0, -16</Set>
+          <Set name="emissionInterval">0.04</Set>
+          <Set name="infParticles">true</Set>
+          <Set name="infLifeTime">true</Set>
+          <Set name="particlesPerEmission">1</Set>
+          <OrbitOffset>
+            <Set name="maxScale">0.3f</Set>
+            <Set name="hasOrbit">true</Set>
+            <Set name="hOrbitPeriod">6000</Set>
+            <Set name="hAmplitude">25</Set>
+            <Set name="hTimeOffset">0</Set>
+            <Set name="vAmplitude">6</Set>
+            <Set name="vOrbitPeriod">4000</Set>
+            <Set name="vTimeOffset">0</Set>
+            <Set name="minScale">0.3</Set>
+          </OrbitOffset>
+        </Emitter>
+        <Particle>
+          <Set name="sprite">s_chip</Set>
+          <Set name="relativeToEmitter">true</Set>
+          <Set name="inSpecificOrder">true</Set>
+          <Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
+          <Set name="lifeTime">0.06</Set>
+          <Set name="initialAngle" source="orb_angle"/>
+        </Particle>
+      </ParticleSystem>
+
+      <ParticleSystem name="chipTrail_particle">
+        <Emitter>
+          <Set name="offset">0, -16</Set>
+          <Set name="emissionInterval">0.04</Set>
+          <Set name="infParticles">true</Set>
+          <Set name="infLifeTime">true</Set>
+          <Set name="particlesPerEmission">1</Set>
+          <OrbitOffset>
+            <Set name="maxScale">0.7f</Set>
+            <Set name="hasOrbit">true</Set>
+            <Set name="hOrbitPeriod">6000</Set>
+            <Set name="hAmplitude">25</Set>
+            <Set name="hTimeOffset">0</Set>
+            <Set name="vAmplitude">6</Set>
+            <Set name="vOrbitPeriod">4000</Set>
+            <Set name="vTimeOffset">0</Set>
+            <Set name="minScale">0.4</Set>
+          </OrbitOffset>
+        </Emitter>
+        <Particle>
+          <Set name="sprite">s_chipTrail</Set>
+          <Set name="inSpecificOrder">true</Set>
+          <Set name="blendingMode">ADDITIVE</Set>
+          <Curve name="initialAlpha">
+            <KeyFrame>0, 1</KeyFrame>
+            <KeyFrame>1, 0</KeyFrame>
+          </Curve>
+          <Curve name="initialRotationRate">
+            <KeyFrame>0, 15</KeyFrame>
+            <KeyFrame>1, 5</KeyFrame>
+          </Curve>
+          <Random name="initialAngle" min="0" max="360"/>
+          <Random name="finalAngle" min="0" max="360"/>
+          <Set name="interpolateAngle">true</Set>
+          <Set name="initialScale">1,1</Set>
+          <Random name="finalScale" min="0.3" max="0.6"/>
+          <Set name="interpolateScale">true</Set>
+          <Random name="offset" min="-2,-3" max="2,3"/>
+          <Set name="lifeTime">1</Set>
+        </Particle>
+      </ParticleSystem>
+
+			<ParticleSystem name="meteor_chip_particles" secondary="trail_particle">
+				<Emitter>
+          <Random name="offset" min="-30, -48" max="30, -48"/>
+					<Set name="lifeTime">0.4</Set>
+					<Set name="particlesPerEmission">5</Set>
+				</Emitter>
+				<Particle particleIndexSpriteFrame="true">
+					<Set name="sprite">s_meteor_chips</Set>
+					<Select name="offset" input="punchCount">
+						<Item>-40, -32</Item>
+						<Item>40, -32</Item>
+						<Item>0, -42</Item>
+					</Select>
+          <Set name="interpolateScale">true</Set>
+          <Set name="initialScale">0, 0</Set>
+					<Set name="finalScale">0.8, 0.8</Set>
+					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
+					<Set name="rotateWithVelocity">true</Set>
+					<Set name="lifeTime">0.4</Set>
+					<VectorTo name="initialVelocity" source="targetPos" duration="lifeTime" x="1" angle="0"/>
+					<VectorTo name="finalVelocity" source="targetPos" duration="lifeTime" x="1" angle="0"/>
+				</Particle>
+			</ParticleSystem>
+
+      <ParticleSystem name="trail_particle">
+				<Emitter>
+					<Set name="lifeTime">1</Set>
+          <Set name="infParticles">true</Set>
+					<Set name="particlesPerEmission">1</Set>
+					<Set name="particlesToEmit">80</Set>
+					<Set name="emissionInterval">0.2</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">trail_Sprite</Set>
+					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
+					<Set name="lifeTime">0.4</Set>
+					<Set name="initialRotationRate">150</Set>
+					<Curve name="initialScale">
+						<KeyFrame>0, 0, 0</KeyFrame>
+						<KeyFrame>0.4, 1, 1</KeyFrame>
+						<KeyFrame>0.8, 0.3, 0.3</KeyFrame>
+						<KeyFrame>1, 0</KeyFrame>
+					</Curve>
+					<Curve name="initialAlpha">
+						<KeyFrame>0, 0.5</KeyFrame>
+						<KeyFrame>0.8, 0</KeyFrame>
+						<KeyFrame>1, 0</KeyFrame>
+					</Curve>
+					<Set name="initialVelocity">0,0</Set>
+				</Particle>
+			</ParticleSystem>
+
+      <ParticleSystem name="hitSpark_particle" secondary="trail_particle">
+				<Emitter>
+					<Set name="particlesPerEmission">8</Set>
+					<Set name="lifeTime">0.4</Set>
+				</Emitter>
+				<Particle randomSpriteFrame="true">
+					<Set name="sprite">s_meteor_chips</Set>
+					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
+					<Set name="useGravity">true</Set>
+					<Set name="interpolateScale">true</Set>
+          <Set name="lifeTime">0.4</Set>
+					<Set name="initialScale">0, 0</Set>
+					<Random name="finalScale" min="0.1, 0.1" max="0.5, 0.5"/>
+					<Set name="lifeTime">1</Set>
+					<RandomRadial name="initialVelocity" angleRange="30,330" radiusRange="80,200"/>
+					<Set name="gravityVector">0, 100</Set>
+					<Random name="initialRotationRate" min="-300" max="300"/>
+					<Random name="posOffset" min="0.1, 0" max="16.1, 16.3"/>
+				</Particle>
+			</ParticleSystem>
+    </ParticleSystems>
+  </Data>
+
+  <RenderOptions>
+    <Default>
+      <Set name="IgnoreDefaultDestroyedTileEffect">true</Set>
+    </Default>
+  </RenderOptions>
+
+  <RenderRules>
+    <OnPunchUpdate>
+      <AvatarTransform class="Face">
+        <Set name="face">MAD</Set>
+      </AvatarTransform>
+      <AvatarTransform class="ArmAngle">
+        <Set name="armName">arm1Angle</Set>
+        <Set name="pointTowardsPunchTarget">true</Set>
+      </AvatarTransform>
+      <AvatarTransform class="ArmAngle">
+        <Set name="armName">arm2Angle</Set>
+        <Set name="armAngle">0</Set>
+      </AvatarTransform>
+    </OnPunchUpdate>
+
+    <OnPunchStart>
+			<ParticleSystemUpdate name="meteor_chip_particles"/>
+		</OnPunchStart>
+
+    <RenderInFront>
+      <StopIf>
+        <IsRenderMod>RENDER_MOD_MINI_YOU</IsRenderMod>
+      </StopIf>
+      <ParticleSystemRender name="orb_chip"/>
+      <ParticleSystemRender name="chipTrail_particle"/>
+    </RenderInFront>
+
+    <AddClothingParticles>
+      <StopIf>
+        <IsRenderMod>RENDER_MOD_MINI_YOU</IsRenderMod>
+      </StopIf>
+      <ParticleSystemUpdate name="chipTrail_particle"/>
+      <ParticleSystemUpdate name="orb_chip"/>
+    </AddClothingParticles>
+
+    <RenderChestItem>
+      <SpriteRender name="s_chest" blend="PREMULTIPLIED_ALPHA" alignment="DOWN_CENTER"/>
+    </RenderChestItem>
+
+    <OnDestroyedTile>
+      <ParticleSystemUpdate name="hitSpark_particle"/>
+    </OnDestroyedTile>
+  </RenderRules>
+</ItemRenderer>

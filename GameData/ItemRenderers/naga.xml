@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+	<Data>
+		<Sprite name="naga" fileName="game/pets/pet_drg.rttex" textureSize="128,64"/>
+
+		<Animations>
+			<SpriteAnimation name="naga_mad" playOnAction="PUNCH" sprite="naga" isLoop="true" animTime="500">
+				<Frame>1,0</Frame>
+				<Frame>1,1</Frame>
+				<Frame>1,2</Frame>
+			</SpriteAnimation>
+			<SpriteAnimation name="naga_idle" playOnAction="IDLE|JUMP|FALL|WALK" sprite="naga" isLoop="true" autoPlay="true" animTime="500">
+				<Frame>0,0</Frame>
+				<Frame>0,1</Frame>
+				<Frame>0,2</Frame>
+			</SpriteAnimation>
+		</Animations>
+	</Data>
+	<RenderRules>
+		<RenderBackpack>
+			<SpriteRender name="naga" offset="0,-42"/>
+		</RenderBackpack>
+	</RenderRules>
+</ItemRenderer>

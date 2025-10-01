@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+    <Data>
+        <Sprite name="item_Sprite" fileName="game/firefly_particles_large.rttex" textureSize="64" frame="2,2"/>
+      <RenderOptions>
+        <Default>
+         <Set name="UserNameOffset">4</Set>
+        </Default>
+		</RenderOptions>
+    </Data>
+
+    <RenderRules>
+        <OnDrawCustomOutline>
+          <AvatarTransform class="Scale">
+            <Set name="targetScale">getCurrent</Set>
+          </AvatarTransform>
+          <AvatarTransform class="RenderData">
+            <Set name="saturation">3</Set>
+            <Set name="brightness">1</Set>
+            <Set name="contrast">0.1</Set>
+          </AvatarTransform>
+          <AvatarOutline duration="1500" startScale="1,1" endScale="1.1, 1.1">
+            <Colours>
+              <Colour>72,186,236,255</Colour>
+            </Colours>
+          </AvatarOutline>
+          <AvatarTransform class="RenderData">
+            <Set name="saturation">1</Set>
+            <Set name="brightness">1</Set>
+            <Set name="contrast">0.1</Set>
+          </AvatarTransform>
+          <AvatarTransform class="Scale">
+            <Set name="targetScale">reset</Set>
+          </AvatarTransform>
+        </OnDrawCustomOutline>
+        <RenderHair>
+            <SpriteRender name="item_Sprite" offset="0, 0.6" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA"/>
+        </RenderHair>
+    </RenderRules>
+</ItemRenderer>
