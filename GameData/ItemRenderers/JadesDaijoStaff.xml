@@ -121,7 +121,7 @@
 					<Set name="interpolateAlpha">true</Set>
 					<Set name="interpolateScale">true</Set>
 					<Set name="initialScale">1,1</Set>
-					<Random name="finalScale" min="0.2, 0.2" max="0.5, 0.5"/>
+					<Random name="finalScale" min="0.2" max="0.5"/>
 					<Set name="interpolateAngle">true</Set>
 					<Random name="initialAngle" min="-360" max="360"/>
 					<Random name="finalAngle" min="-360" max="360"/>

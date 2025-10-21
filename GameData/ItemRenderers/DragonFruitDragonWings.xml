@@ -108,7 +108,7 @@ w
 					<Set name="rotateWithVelocity">true</Set>
 					<Set name="interpolateAlpha">true</Set>
 					<Set name="lifeTime">0.75</Set>
-					<Random name="initialScale" min="0.5, 0.5" max="1, 1"/>
+					<Random name="initialScale" min="0.5" max="1"/>
 					<RandomRadial name="initialVelocity" angleRange="0,360" radiusRange="200,250"/>
 				</Particle>
 			</ParticleSystem>

@@ -17,7 +17,7 @@ end
 	<body>
 		<div id="right_menu_panel">
 			<div>
-				<div id="photoButton" class="menu-button photo-button enabled" onclick="onPhotoModeClick(element, event, document); OnEvent(event, 'on-screenshot');" />
+				<div id="photoButton" class="menu-button photo-button enabled" onclick="onPhotoModeClick(element, event, document); OnEvent(event, 'on-screenshot'); closeActiveAuctionPanel(document);" />
 			</div>
 			<div id="main_buttons">
 				<div id="MENU" class="menu-button menuopen-button" onclick="OnEvent(event, 'on-menu')"/>

@@ -29,12 +29,12 @@
 				<Transitions>
 					<Transition to="Off" from="On">
 						<Condition type="or">
-							<CheckNpcHealth onlyBoss="true" operatorType="LessOrEqual">99</CheckNpcHealth>
+							<CheckNpcHealth onlyBoss="true" operatorType="LessOrEqual">50</CheckNpcHealth>
 						</Condition>
 					</Transition>
 					<Transition to="On" from="Off">
 						<Condition type="or">
-							<CheckNpcHealth onlyBoss="true" operatorType="Greater">99</CheckNpcHealth>
+							<CheckNpcHealth onlyBoss="true" operatorType="Greater">50</CheckNpcHealth>
 						</Condition>
 					</Transition>
 				</Transitions>

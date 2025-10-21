@@ -384,6 +384,7 @@ body.dungeon_world_ui {
     height: 70dp;
     decorator: image(dungeon_backpack_icon);
     margin-top: 10dp;
+	sound-on-click: true;
 }
 
 #dungeonBackpack:active {

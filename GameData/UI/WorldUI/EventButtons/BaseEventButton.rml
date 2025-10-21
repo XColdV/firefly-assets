@@ -31,7 +31,7 @@
                         <div class="label" data-visible="buttonData.counter < buttonData.counterMax">{{buttonData.counter}}/{{buttonData.counterMax}}</div>
                         <div class="notification_circle" data-visible="buttonData.notification > 0">
 							<div class="notification_text" data-visible="buttonData.notification > 1">{{buttonData.notification}}</div>
-                    </div>
+						</div>
 						<div class="notification_exclamation" data-visible="buttonData.notification < 0"></div>
                     </div>
                 </div>
@@ -66,6 +66,19 @@
 					<div class="notification_exclamation" data-visible="buttonData.notification > 0"></div>
                 </div>
             </div>
+        </div>
+
+        <div data-if="buttonData.buttonTemplate == 'ActiveAuctionEventButton'">
+          <div>
+            <div class="event_button_body" onclick="onToggleAuctionPanel(document)">
+              <div data-attr-class="buttonData.buttonClass">
+                <div class="itemIdIcon" data-style-decorator="buttonData.itemIdIcon" />
+                <div class="arrow" data-attr-class="'arrow ' + 'state' + buttonData.buttonState"/>
+                <div class="label color_yellow" data-rml="ToRMLText(buttonData.buttonText)"/>
+                <div class="notification_exclamation" data-visible="buttonData.notification > 0"></div>
+              </div>
+            </div>
+          </div>
         </div>
     </body>
 </template>

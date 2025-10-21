@@ -6,18 +6,62 @@
 		<Sprite name="destructoSprite" fileName="game/npc2.rttex" textureSize="64" frame="0,2"/>
 		<Sprite name="s_HitEffect" fileName="game/particles.rttex" textureSize="32" frame="10,9" />
 		<StateMachines>
-			<StateMachine name="NPC"> 
-				<States>
-					<State name="FlyPatrol"/>
-					<State name="SlamAttack"/>
-					<State name="SlamAttackParticle"/>
-					<State name="AttackProjectile"/>
-					<State name="SlashWave"/>
-					<State name="AttackLaserBeam"/>
-					<State name="AnticipationSlam"/>
-					<State name="AnticipationSlashWave"/>
-					<State name="AnticipationProjectileAttack"/>
+			<StateMachine name="NPC" ServerOnly="true"> 
+				<States start="FlyPatrol">
+					<NPCSpawn name="ShieldState" IsTemporary="true">
+						<NpcTypeToSpawn>"Shield"</NpcTypeToSpawn>
+						<NpcSpawnQuantity>1</NpcSpawnQuantity>
+					</NPCSpawn>	
+					<NPCFlyingPatrol name="FlyPatrol" ExitTime="5">
+						<PatrolSpeed>80</PatrolSpeed>
+						<PatrolRange>350</PatrolRange>
+						<StayHome>false</StayHome>
+					</NPCFlyingPatrol>
+					<NPCFlyingDash name="SlamAttack" ExitTime="0.32">
+						<DashVelocity>0, 400</DashVelocity>
+					</NPCFlyingDash>
+					<NPCStationary name="SlamAttackParticle" ExitTime="0.64"/>
+					<NPCFlyingAttack name="AttackProjectile" ExitTime="1">
+						<AttackTimeoutInSeconds>0</AttackTimeoutInSeconds>
+						<ProjectileName>"DiamondDestructoProjectile"</ProjectileName>
+					</NPCFlyingAttack>
+					<NPCStationary name="SlashWave" ExitTime="1"/>
+					<NPCAnticipation name="AnticipationSlam" ExitTime="0.64"/>
+					<NPCAnticipation name="AnticipationSlashWave" ExitTime="0.64"/>
+					<NPCAnticipation name="AnticipationProjectileAttack" ExitTime="0.64"/>
 				</States>
+				<Transitions>
+					<Transition to="FlyPatrol" from="ShieldState|SlamAttackParticle|AttackProjectile|SlashWave"/>				
+					<Transition to="AnticipationSlam" from="FlyPatrol">
+						<Condition>
+							<CheckRandomRangeNumber EndNumber="4">0</CheckRandomRangeNumber>
+						</Condition>
+					</Transition>					
+					<Transition to="SlamAttack" from="AnticipationSlam"/>							
+					<Transition to="SlamAttackParticle" from="SlamAttack">
+						<Condition>
+							<IsOnGround>true</IsOnGround>
+						</Condition>
+					</Transition>	
+					<Transition to="AnticipationSlashWave" from="FlyPatrol">
+						<Condition>
+							<CheckRandomRangeNumber EndNumber="4">1</CheckRandomRangeNumber>
+						</Condition>
+					</Transition>
+					<Transition to="SlashWave" from="AnticipationSlashWave"/>					
+					<Transition to="AnticipationProjectileAttack" from="FlyPatrol">
+						<Condition>
+							<CheckRandomRangeNumber EndNumber="4">2</CheckRandomRangeNumber>
+						</Condition>
+					</Transition>
+					<Transition to="AttackProjectile" from="AnticipationProjectileAttack"/>
+					<Transition to="ShieldState" from="FlyPatrol">
+						<Condition type="and">
+							<CheckRandomRangeNumber operatorType="Less" EndNumber="101">30</CheckRandomRangeNumber>
+							<CheckNumberAttachedEntities operatorType="Less">1</CheckNumberAttachedEntities>
+						</Condition>
+					</Transition>
+				</Transitions>
 			</StateMachine>
 		</StateMachines>
 		<Animations>
@@ -26,14 +70,11 @@
 				<Frame>1, 3</Frame>
 				<Frame>2, 3</Frame>
 			</SpriteAnimation>				
-			<SpriteAnimation name="c_sprite_AnticipationSlam" playOnState="NPC.AnticipationSlam" sprite="destructoSprite" isLoop="false" animTime="50">
+			<SpriteAnimation name="c_sprite_AnticipationSlam" playOnState="NPC.AnticipationSlam" sprite="destructoSprite" isLoop="true" animTime="100">
 				<Frame>4, 4</Frame>
 			</SpriteAnimation>					
-			<SpriteAnimation name="e_sprite_AnticipationSlashWave" sprite="destructoSprite" playOnState="NPC.AnticipationSlashWave" isLoop="false" animTime="400">
-				<Frame>0, 1</Frame>
-				<Frame>1, 1</Frame>
-				<Frame>2, 1</Frame>
-				<Frame>3, 1</Frame>
+			<SpriteAnimation name="e_sprite_AnticipationSlashWave" sprite="destructoSprite" playOnState="NPC.AnticipationSlashWave" isLoop="true" animTime="100">
+				<Frame>0, 4</Frame>
 			</SpriteAnimation>
 			<SpriteAnimation name="f_sprite_AnticipationProjectileAttack" playOnState="NPC.AnticipationProjectileAttack" sprite="destructoSprite" isLoop="false" animTime="600">
 				<Frame>0, 2</Frame>
@@ -44,13 +85,13 @@
 				<Frame>5, 2</Frame>
 			</SpriteAnimation>
 			
-			<SpriteAnimation name="h_sprite_slash_attack" playOnState="NPC.AttackProjectile" sprite="destructoSprite" isLoop="false" animTime="50">
+			<SpriteAnimation name="h_sprite_AttackProjectile_attack" playOnState="NPC.AttackProjectile" sprite="destructoSprite" isLoop="false" animTime="50">
 				<Frame>4, 4</Frame>
 			</SpriteAnimation>
-			<SpriteAnimation name="h_sprite_fire_attack" playOnState="NPC.SlashWave" sprite="destructoSprite" isLoop="false" animTime="50">
-				<Frame>0, 4</Frame>
+			<SpriteAnimation name="h_sprite_SlashWave_attack" playOnState="NPC.SlashWave" sprite="destructoSprite" isLoop="true" animTime="50">
+				<Frame>1, 4</Frame>
 			</SpriteAnimation>
-			<SpriteAnimation name="h_sprite_fire_attack" playOnState="NPC.SlamAttack" sprite="destructoSprite" isLoop="false" animTime="50">
+			<SpriteAnimation name="h_sprite_SlamAttack_attack" playOnState="NPC.SlamAttack" sprite="destructoSprite" isLoop="false" animTime="50">
 				<Frame>3, 4</Frame>
 			</SpriteAnimation>
 		</Animations>
@@ -93,12 +134,12 @@
 				</Emitter>
 				<Particle usePlayerFacing="true">
 					<Select name="offset" input="particleIndex">
-						<Item>5,64</Item>
-						<Item>15,64</Item>
-						<Item>45,64</Item>
-						<Item>75,64</Item>
-						<Item>90,64</Item>
-						<Item>105,64</Item>
+						<Item>5,48</Item>
+						<Item>15,48</Item>
+						<Item>45,48</Item>
+						<Item>75,48</Item>
+						<Item>90,48</Item>
+						<Item>105,48</Item>
 					</Select>
 					<Set name="sprite">iceSpikesSprite</Set>
 					<Set name="renderAlignment">DOWN_CENTER</Set>
@@ -129,12 +170,12 @@
 				</Emitter>
 				<Particle usePlayerFacing="true">
 					<Select name="offset" input="particleIndex">
-						<Item>-5,64</Item>
-						<Item>-15,64</Item>
-						<Item>-45,64</Item>
-						<Item>-75,64</Item>
-						<Item>-90,64</Item>
-						<Item>-105,64</Item>
+						<Item>-5,48</Item>
+						<Item>-15,48</Item>
+						<Item>-45,48</Item>
+						<Item>-75,48</Item>
+						<Item>-90,48</Item>
+						<Item>-105,48</Item>
 					</Select>
 					<Set name="sprite">iceSpikesSprite</Set>
 					<Set name="renderAlignment">DOWN_CENTER</Set>
@@ -178,16 +219,7 @@
 			<Info/>
 			<MustKillNPC/>
 			<AttachmentSlotsCmp/>
-			<StateMachineTimer>
-				<Set name="NPC.FlyPatrol">5</Set>
-				<Set name="NPC.SlamAttack">0.32</Set>
-				<Set name="NPC.SlamAttackParticle">0.64</Set>
-				<Set name="NPC.AnticipationProjectileAttack">0.64</Set>
-				<Set name="NPC.AnticipationSlam">0.64</Set>
-				<Set name="NPC.AnticipationSlashWave">0.64</Set>
-				<Set name="NPC.AttackProjectile">1</Set>
-				<Set name="NPC.SlashWave">1</Set>
-			</StateMachineTimer>
+			<TintOverrideCmp/>
 			<Enemy>
 				<Set name="SoulsReward">0</Set>
 				<Set name="destroyTileId">440</Set>
@@ -200,17 +232,7 @@
 				<Set name="displayName">"Diamond Destructor"</Set>
 			</IsBossNPC>
 			<NPCRenderActionCmp/>
-			<StateMachine>
-				<Set name="type">"DiamondDestructoBoss"</Set>
-				<Set name="SpawnShieldRandomPercentage">30</Set>
-				<Set name="NpcTypeToSpawn">"Shield"</Set>
-				<Set name="NpcSpawnQuantity">1</Set>
-				<Set name="patrolRange">350</Set>
-				<Set name="patrolSpeed">80</Set>
-				<Set name="attackTimeoutInSeconds">0</Set>
-				<Set name="dashVelocity">0, 400</Set>
-				<Set name="projectileName">"DiamondDestructoProjectile"</Set>
-			</StateMachine>
+			<StateMachine/>
 			<Physics>
 				<Set name="acceleration">0, 0</Set>
 				<Set name="mass">20</Set>
@@ -230,12 +252,14 @@
 	</Data>
 	<RenderRules>
 		<Render>
-			<ParticleSystemUpdate name="slash_particle" onState="NPC.SlashWave"/>
-			<ParticleSystemUpdate name="ice_spikes_particle_right" onState="NPC.SlamAttackParticle"/>
-			<ParticleSystemUpdate name="ice_spikes_particle_left" onState="NPC.SlamAttackParticle"/>
 			<SpriteRender name="destructoSprite" scale="2,2" offset="0,-20"/>
 			<Translate>0,-16,0</Translate>
 			<NPCHealthBarRender TexturePath="interface/large/gui_event_npchealth_bar.rttex" TextureSize="17,9" TextureCoordinates="0,0" />
 		</Render>
+		<Update>
+			<ParticleSystemUpdate name="slash_particle" onState="NPC.SlashWave"/>
+			<ParticleSystemUpdate name="ice_spikes_particle_right" onState="NPC.SlamAttackParticle"/>
+			<ParticleSystemUpdate name="ice_spikes_particle_left" onState="NPC.SlamAttackParticle"/>
+		</Update>
 	</RenderRules>
 </ItemRenderer>

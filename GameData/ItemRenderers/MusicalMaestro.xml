@@ -115,14 +115,18 @@
 	</Data>
 	<RenderRules>
 		<Update>
-			<AvatarTransform class="Action" onState="Motion.Sleep|Motion.Idle|Motion.Punch">
+			<MusicSource onState="Motion.Dance|Motion.Punch">
+				<Set name="ItemID">ITEM_ID_MUSICAL_MAESTRO</Set>
+				<Set name="FadeOutTimeMs">500</Set>
+			</MusicSource>
+			<AvatarTransform class="ActionUpdate" onState="Motion.Sleep|Motion.Idle|Motion.Punch">
 				<Set name="action">CLEAR</Set>
 			</AvatarTransform>
 			<StopIf>
 				<IsSleepingOnaBed>true</IsSleepingOnaBed>
 				<IsZombified>true</IsZombified>
 			</StopIf>
-			<AvatarTransform class="Action" onState="Motion.Dance">
+			<AvatarTransform class="ActionUpdate" onState="Motion.Dance">
 				<Set name="action">NOD</Set>
 			</AvatarTransform>
 			<AvatarTransform class="ArmAngle" onState="Motion.Dance|Motion.Punch">
@@ -139,7 +143,7 @@
 			</AvatarTransform>
 		</Update>
 		<SwitchOffClothingParticles>
-			<AvatarTransform class="Action">
+			<AvatarTransform class="ActionUpdate">
 				<Set name="action">CLEAR</Set>
 			</AvatarTransform>
 		</SwitchOffClothingParticles>
@@ -147,10 +151,6 @@
 			<ParticleSystemUpdate name="ps_Dance" onState="Motion.Dance"/>
 		</AddClothingParticles>
 		<RenderInFront value="playerCenter">
-			<MusicSource onState="Motion.Dance|Motion.Punch">
-				<Set name="ItemID">ITEM_ID_MUSICAL_MAESTRO</Set>
-				<Set name="FadeOutTimeMs">500</Set>
-			</MusicSource>
 			<StopIf>
 				<IsSleepingOnaBed>true</IsSleepingOnaBed>
 				<IsZombified>true</IsZombified>

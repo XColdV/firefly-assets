@@ -1,9 +1,7 @@
 
 .window {
-    height: auto;
+    min-height: 80vh;
     min-width: 850dp;
-    min-height: 0vh;
-    max-height: none;
 }
     .window .bg {
         overflow-y: hidden;
@@ -60,11 +58,10 @@
 
 
 .message-table col {
-    }
+}
 
 
-
-.message-table tr{
+.message-table tr {
     height: auto;
 }
 
@@ -84,24 +81,26 @@
 
 /*--------------------------------       Message styles      -------------------------------- */
 
-.message {
+.message-table .message {
     background-color: rgb(80, 157, 188);
+    sound-on-click: true;
 }
 
-    .message:active {
+    .message-table .message:active {
         filter: brightness(0.85);
     }
 
-    .message.hidden {
+    .message-table .message.hidden {
         display: none;
     }
 
-    .message.read {
+    .message-table .message.read {
         filter: brightness(0.8);
         opacity: 0.8;
+        sound-on-click: true;
     }
 
-        .message.read:active {
+        .message-table .message.read:active {
             filter: brightness(0.65);
         }
 
@@ -132,14 +131,14 @@
     height: 64dp;
 }
 
-.icon #notification-icon {
-    position: relative;
-    top: 2dp;
-    left: 2dp;
-    width: 16dp;
-    height: 16dp;
-    decorator: image(interface/large/mailbox_reddot1.rttex);
-}
+    .message .icon #notification-icon {
+        position: relative;
+        top: 2dp;
+        left: 2dp;
+        width: 16dp;
+        height: 16dp;
+        decorator: image(interface/large/mailbox_reddot1.rttex);
+    }
 
 /*--------------------------------       Message Description column         -------------------------------- */
 

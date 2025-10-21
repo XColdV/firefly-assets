@@ -201,6 +201,7 @@
     <Components>
       <Info/>
       <MustKillNPC/>
+		<TintOverrideCmp/>
       <AttachmentSlotsCmp/>
       <Enemy>
         <Set name="SoulsReward">250</Set>

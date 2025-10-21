@@ -113,6 +113,7 @@
 			<Default>
 				<Set name="RenderBackArmInfected">true</Set>
 				<Set name="RenderFrontArmInfected">true</Set>
+				<Set name="IncludeAllActions">true</Set>
 			</Default>
 		</RenderOptions>
 		<VariableMap>
@@ -138,6 +139,9 @@
 			</ContextUpdate>
 		</RenderBackArm>
 		<RenderBackHandItem>
+			<StopIf>
+				<IsAction>BUILD</IsAction>
+			</StopIf>
 			<Translate>-2,-5,0</Translate>
 			<Group onState="Action.Punch">
 				<StopIf>

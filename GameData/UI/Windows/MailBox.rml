@@ -4,35 +4,9 @@
         <link type="text/template" href="Base/BasePopup.rml" />
         <link type="text/rcss" href="Base/WindowTitle.rcss" />
         <link type="text/rcss" href="MailBox.rcss" />
-        <script lang="text/lua">
-            function CalculateListSize(document, element)
-
-            window_el = document: GetElementById('window')
-            wnd_content = window_el: GetElementById('PopupContent')
-            msg_list = wnd_content: GetElementById('messages-list')
-            wnd_height = document.client_height*0.9 - 2*wnd_content.offset_top - msg_list.offset_top
-
-            msg_list.style.height = wnd_height..'px'
-
-            msg_table = wnd_content: GetElementById('message-table')
-            msg_table.style['min-height'] =wnd_height..'px'
-
-            end
-
-            function OnTableScroll(event, document, element, rowNum)
-                if (rowNum == 0) then
-                    return
-                end
-
-                first_raw_el = element:QuerySelector('tr.message')
-                start_load_pos = element.scroll_height - first_raw_el.client_height - element.client_height
-                if (start_load_pos < element.scroll_top) then
-                   OnEvent(event, 'mailbox.OnRequestNextPage')
-                end
-            end
-        </script>
+        <script src="Base/Utils.lua"/>
     </head>
-    <body template="BasePopup" onshow="CalculateListSize(document, element)">
+    <body template="BasePopup" onshow="CalculateListSize(document, element, 'messages-list', 'messages-list', '')">
         <div data-model="MailBoxModel" id="generic-popup" class="font-content">
             <div class="content font-contentnormal">
                 <div class="top-panel">
@@ -55,7 +29,7 @@
                 </div>
 
                 <div id="messages-list" class="message-table show-scrollbar wondow-content-full wondow-content-horizontal" 
-                     data-attr-onscroll="'OnTableScroll(event, document, element,'+ MailBoxModel.Messages.size+ ')'">
+                     data-attr-onscroll="'CheckEndOfTable(event, document, element,\'tr.message\', \'mailbox.OnRequestNextPage\', '+ MailBoxModel.Messages.size+ ')'">
                     <table class="message-table" id="message-table">
                         <colgroup>
                             <col />

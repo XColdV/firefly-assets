@@ -4,13 +4,55 @@
 		<Sprite name="s_snake" fileName="game/npc1.rttex" textureSize="32" frame="23,8"/>
 		<Sprite name="s_HitEffect" fileName="game/npc1.rttex" textureSize="32" frame="22,8" />
 		<StateMachines>
-			<StateMachine name="NPC">
-				<States>
-					<State name="Patrol"/>
-					<State name="Chase"/>
-					<State name="AttackProjectile"/>
-					<State name="Anticipation"/>
+			<StateMachine name="NPC" ServerOnly="true">
+				<States start="Patrol">
+					<NPCPlatformPatrol name="Patrol">
+						<PatrolSpeed>25</PatrolSpeed>
+						<DisableFall>true</DisableFall>
+					</NPCPlatformPatrol>
+					<NPCPlatformChase name="Chase">
+						<ChaseSpeed>70</ChaseSpeed>
+						<DisableFall>false</DisableFall>
+					</NPCPlatformChase>	
+					<NPCPlatformAttack name="AttackProjectile" ExitTime="0.5">
+						<AttackSpeed>80</AttackSpeed>
+						<ProjectileName>"ViperProjectile"</ProjectileName>
+						<MinRangeToAttack>32</MinRangeToAttack>
+					</NPCPlatformAttack>	
+					<NPCAnticipation name="Anticipation" ExitTime="0.5"/>
+					<NPCFall name="Fall" ExitTime="0.33"/>
 				</States>
+				<Transitions>
+					<Transition to="Fall" from="Patrol|Chase">
+						<Condition>
+							<IsOnGround>false</IsOnGround>
+						</Condition>
+					</Transition>
+					<Transition to="Chase" from="Patrol|Fall|AttackProjectile">
+						<Condition type="and">
+							<IsOnGround>true</IsOnGround>
+							<CheckNPCVelocity ComparisonElement="Y" operatorType="Less" abs="true">0.1</CheckNPCVelocity>
+							<IsPlayerDistanceMatching operatorType="Less">150</IsPlayerDistanceMatching>
+							<IsPlayerDistanceMatching operatorType="Greater">100</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>					
+					<Transition to="Patrol" from="Chase|Fall|AttackProjectile|Anticipation">
+						<Condition type="and">
+							<IsOnGround>true</IsOnGround>
+							<IsPlayerDistanceMatching operatorType="Greater">150</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>								
+					<Transition to="Anticipation" from="AttackProjectile|Chase|Fall">
+						<Condition>
+							<IsPlayerDistanceMatching operatorType="LessOrEqual">100</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>				
+					<Transition to="AttackProjectile" from="Anticipation">
+						<Condition>
+							<IsOnGround>true</IsOnGround>
+						</Condition>
+					</Transition>
+				</Transitions>
 			</StateMachine>
 		</StateMachines>
 		<Animations>
@@ -56,11 +98,9 @@
 			</ParticleSystem>
 		</ParticleSystems>
 		<Components>
-			<StateMachineTimer>
-				<Set name="NPC.Anticipation">0.5</Set>
-				<Set name="NPC.AttackProjectile">0.5</Set>
-			</StateMachineTimer>
 			<Info/>
+			<AttachmentSlotsCmp/>
+			<TintOverrideCmp/>
 			<MustKillNPC/>
 			<Enemy>
 				<Set name="SoulsReward">5</Set>
@@ -70,18 +110,8 @@
 			<Damage>
 				<Set name="damage">10</Set>
 			</Damage>
-			<StateMachine>
-				<Set name="type">"Platform"</Set>
-				<Set name="patrolSpeed">25</Set>
-				<Set name="chaseSpeed">70</Set>
-				<Set name="attackSpeed">80</Set>
-				<Set name="chaseRange">150</Set>
-				<Set name="attackRange">100</Set>
-				<Set name="attackTimeoutInSeconds">0</Set>
-				<Set name="projectileName">"ViperProjectile"</Set>
-				<Set name="minRangeToAttack">32</Set>
-				<Set name="disableFall">true</Set>
-			</StateMachine>
+			<StateMachine/>
+			<NPCRenderActionCmp/>
 			<Physics>
 				<Set name="acceleration">0, 10.5</Set>
 				<Set name="mass">20</Set>

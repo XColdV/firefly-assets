@@ -55,24 +55,55 @@
 			</ParticleSystem>
 		</ParticleSystems>
 		<StateMachines>
-			<StateMachine name="NPC">
-				<States>
-					<State name="FlyPatrol"/>
-					<State name="Chase"/>
-					<State name="AttackProjectile"/>
-					<State name="Anticipation"/>
+			<StateMachine name="NPC" ServerOnly="true">
+				<States start="FlyPatrol">
+					<NPCFlyingPatrol name="FlyPatrol">
+						<PatrolSpeed>50</PatrolSpeed>
+						<PatrolRange>160</PatrolRange>
+						<StayHome>false</StayHome>
+					</NPCFlyingPatrol>
+					<NPCFlyingChase name="Chase">
+						<ChaseSpeed>100</ChaseSpeed>
+					</NPCFlyingChase>	
+					<NPCFlyingAttack name="AttackProjectile" ExitTime="0.5">
+						<AttackTimeoutInSeconds>0</AttackTimeoutInSeconds>
+						<ProjectileName>"ShriekgazerProjectile"</ProjectileName>
+					</NPCFlyingAttack>
+					<NPCAnticipation name="Anticipation" ExitTime="0.5"/>
 				</States>
 				<Transitions>
+					<Transition to="Chase" from="FlyPatrol">
+						<Condition type="and">
+							<IsPlayerDistanceMatching operatorType="Less">250</IsPlayerDistanceMatching>
+							<IsPlayerDistanceMatching operatorType="Greater">200</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>	
+					<Transition to="Chase" from="AttackProjectile">
+						<Condition type="or">
+							<IsPlayerDistanceMatching operatorType="Greater">200</IsPlayerDistanceMatching>
+							<IsCollidableBetweenTarget Width="32">true</IsCollidableBetweenTarget>
+						</Condition>
+					</Transition>	
+					<Transition to="FlyPatrol" from="Chase|AttackProjectile|Anticipation">
+						<Condition>
+							<IsPlayerDistanceMatching operatorType="Greater">250</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>								
+					<Transition to="Anticipation" from="AttackProjectile|Chase">
+						<Condition type="and">
+							<IsPlayerDistanceMatching operatorType="LessOrEqual">200</IsPlayerDistanceMatching>
+							<IsCollidableBetweenTarget Width="32">false</IsCollidableBetweenTarget>
+						</Condition>
+					</Transition>				
+					<Transition to="AttackProjectile" from="Anticipation"/>
 				</Transitions>
 			</StateMachine>
 		</StateMachines>
 		<Components>
 			<Info/>
 			<MustKillNPC/>
-			<StateMachineTimer>
-				<Set name="NPC.Anticipation">0.75</Set>
-				<Set name="NPC.AttackProjectile">0.25</Set>
-			</StateMachineTimer>
+			<AttachmentSlotsCmp/>
+			<TintOverrideCmp/>
 			<Enemy>
 				<Set name="SoulsReward">10</Set>
 				<Set name="destroyTileId">3452</Set>
@@ -81,16 +112,8 @@
 			<Damage>
 				<Set name="damage">10</Set>
 			</Damage>
-			<StateMachine>
-				<Set name="type">"Flyer"</Set>
-				<Set name="chaseRange">250</Set>
-				<Set name="patrolSpeed">50</Set>
-				<Set name="chaseSpeed">100</Set>
-				<Set name="attackRange">200</Set>
-				<Set name="attackTimeoutInSeconds">0</Set>
-				<Set name="patrolRange">160</Set>
-				<Set name="projectileName">"ShriekgazerProjectile"</Set>
-			</StateMachine>
+			<StateMachine/>
+			<NPCRenderActionCmp/>
 			<Health>
 				<Set name="healthAmount">250</Set>
 				<Set name="maxHealth">250</Set>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ItemRenderer name="PlayerBladeSlash" index="16" DungeonOnly="true">
 	<Data>
-		<Sprite name="slash_sprite" fileName="game/particles_large10.rttex" textureSize="64" frame="0,4"/>
-		<Sprite name="collision_sprite2" fileName="game/tiles_page2.rttex" textureSize="32" frame="27,16"/>
-		<Sprite name="hit_sprite" fileName="game/particles.rttex" textureSize="32" frame="13,11"/>
+		<Sprite name="s_slash" fileName="game/particles_large10.rttex" textureSize="64" frame="0,4"/>
+		<Sprite name="s_collision" fileName="game/tiles_page2.rttex" textureSize="32" frame="27,16"/>
+		<Sprite name="s_hit" fileName="game/particles.rttex" textureSize="32" frame="13,11"/>
 		<Animations>
-			<SpriteAnimation name="b_teleport_particle_blast" sprite="slash_sprite" animTime="200">
+			<SpriteAnimation name="a_slash" sprite="s_slash" animTime="200">
 				<Frame>2, 4</Frame>
 				<Frame>3, 4</Frame>
 				<Frame>4, 4</Frame>
@@ -13,13 +13,13 @@
 		</Animations>
 		
 		<ParticleSystems>
-			<ParticleSystem name="projectile_particle" updateStage="OnCreate">
+			<ParticleSystem name="ps_slash" updateStage="OnCreate">
 				<Emitter>
 					<Set name="offset">0, 0</Set>
 					<Set name="particlesPerEmission">1</Set>
 				</Emitter>
 				<Particle>
-					<Set name="sprite">slash_sprite</Set>
+					<Set name="sprite">s_slash</Set>
 					<Set name="offset">0, 0</Set>
 					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
 					<Set name="rotateWithVelocity">true</Set>
@@ -35,9 +35,10 @@
 					<Set name="offset">0,0</Set>
 				</Emitter>
 				<Particle>
-					<Set name="sprite">collision_sprite2</Set>
+					<Set name="sprite">s_collision</Set>
 					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
 					<Set name="rotateWithVelocity">true</Set>
+					<Set name="initialAlpha">0</Set>
 					<Set name="initialVelocity">600,0</Set>					
 					<Set name="initialScale">0.25,0.25</Set>
 					<Set name="collisionDamageAmount">1</Set>
@@ -59,7 +60,7 @@
 					<Set name="particlesPerEmission">1</Set>
 				</Emitter>
 				<Particle>
-					<Set name="sprite">hit_sprite</Set>			
+					<Set name="sprite">s_hit</Set>			
 					<Set name="initialScale">1.5,1.5</Set>
 					<Curve name="initialAlpha">
 						<KeyFrame>0, 1</KeyFrame>

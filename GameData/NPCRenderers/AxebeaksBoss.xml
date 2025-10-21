@@ -295,6 +295,8 @@
 		<Components>
 			<Info/>
 			<MustKillNPC/>
+			<AttachmentSlotsCmp/>
+			<TintOverrideCmp/>
 			<IsBossNPC>
 				<Set name="displayName">"Axe Beak Boss"</Set>
 			</IsBossNPC>

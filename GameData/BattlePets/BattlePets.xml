@@ -4981,4 +4981,125 @@
 		<EnableOnServer>true</EnableOnServer>
 	</Pet>
 
+	<Pet itemID="ITEM_ID_GROWMOJIS_LITTLE_PARTNER">
+		<Name>"Growmoji's Little Partner"</Name>
+		<SubName>"little"</SubName>
+		<EndName>"partner"</EndName>
+		<PowerName>"Adorable Eyes... and Claw"</PowerName>
+		<PowerDesc>"Fool your foe with your adorableness scratching them harshly and bringing their partner forward."</PowerDesc>
+		<Element>"EARTH"</Element>
+		<Damage>35</Damage>
+		<Cooldown>40</Cooldown>
+		<PowerType>"ATTACK"</PowerType>
+		<PowerFlags>3</PowerFlags>
+		<PowerStatusGroup>
+			<PowerStatus type="FORCE_SWAP">
+				<Value>0</Value>
+				<Duration>1</Duration>
+			</PowerStatus>
+		</PowerStatusGroup>
+		<AnimType>"DANCE"</AnimType>
+		<PowerParticle>0</PowerParticle>
+		<HitParticle>0</HitParticle>
+		<PowerParticleV2>0</PowerParticleV2>
+		<HitParticleV2>0</HitParticleV2>
+		<PowerSound>"audio/slash.wav"</PowerSound>
+		<PowerHitSound>""</PowerHitSound>
+		<Rarity>100</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+	</Pet>
+
+	<Pet itemID="ITEM_ID_PASSIONATE_PAINTER_PAINTBRUSH_PET">
+		<Name>"Passionate Painter Paintbrush Pet"</Name>
+		<SubName>"paint"</SubName>
+		<EndName>"brush"</EndName>
+		<PowerName>"Hit by Inspiration"</PowerName>
+		<PowerDesc>"For 4 seconds, you take in your surroundings to paint a picture converting any incoming damage to health."</PowerDesc>
+		<Element>"WATER"</Element>
+		<Damage>0</Damage>
+		<Cooldown>25</Cooldown>
+		<PowerType>"SELF_STATUS"</PowerType>
+		<PowerFlags>0</PowerFlags>
+		<PowerStatusGroup>
+			<PowerStatus type="ABSORB">
+				<Value>0</Value>
+				<Duration>4</Duration>
+			</PowerStatus>		<PowerStatus type="STUNNED">
+				<Value>0</Value>
+				<Duration>4</Duration>
+			</PowerStatus>
+
+		</PowerStatusGroup>
+		<AnimType>"HOP_SPLAT"</AnimType>
+		<PowerParticle>108</PowerParticle>
+		<HitParticle>0</HitParticle>
+		<PowerParticleV2>0</PowerParticleV2>
+		<HitParticleV2>0</HitParticleV2>
+		<PowerSound>"audio/squish_undo.wav"</PowerSound>
+		<PowerHitSound>""</PowerHitSound>
+		<Rarity>70</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+	</Pet>
+
+
+
+	<Pet itemID="ITEM_ID_14DEVILS_FRIENDLY_DOGGY_LEASH">
+		<Name>"14DEViL's Friendly Doggy Leash"</Name>
+		<SubName>"friendly"</SubName>
+		<EndName>"doggy"</EndName>
+		<PowerName>"Lockjaw!"</PowerName>
+		<PowerDesc>"Bite its opponent for 5 `2Earth`` Damage holding on. If your opponent retreats, it lashes out for 40 `2Earth`` Damage."</PowerDesc>
+		<Element>"EARTH"</Element>
+		<Damage>5</Damage>
+		<Cooldown>12</Cooldown>
+		<PowerType>"ATTACK_AND_SELF_STATUS"</PowerType>
+		<PowerFlags>16</PowerFlags>
+		<PowerStatusGroup>
+			<PowerStatus type="SURPRISE">
+				<Value>40</Value>
+				<Duration>2</Duration>
+			</PowerStatus>
+		</PowerStatusGroup>
+		<AnimType>"NONE"</AnimType>
+		<PowerParticle>0</PowerParticle>
+		<HitParticle>0</HitParticle>
+		<PowerParticleV2>0</PowerParticleV2>
+		<HitParticleV2>0</HitParticleV2>
+		<PowerSound>""</PowerSound>
+		<PowerHitSound>""</PowerHitSound>
+		<Rarity>80</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+		<CageIcon file="game/pets/p_friendly_dog.rttex" frameSize="32,32" frame="0,0"/>
+	</Pet>
+
+	<Pet itemID="ITEM_ID_CINDER_SPRTIES">
+		<Name>"Cinder Sprites"</Name>
+		<SubName>"placeholder"</SubName>
+		<EndName>"placeholder"</EndName>
+		<PowerName>"placeholder!"</PowerName>
+		<PowerDesc>"placeholder."</PowerDesc>
+		<Element>"EARTH"</Element>
+		<Damage>5</Damage>
+		<Cooldown>12</Cooldown>
+		<PowerType>"ATTACK_AND_SELF_STATUS"</PowerType>
+		<PowerFlags>16</PowerFlags>
+		<PowerStatusGroup>
+			<PowerStatus type="SURPRISE">
+				<Value>40</Value>
+				<Duration>2</Duration>
+			</PowerStatus>
+		</PowerStatusGroup>
+		<AnimType>"NONE"</AnimType>
+		<PowerParticle>0</PowerParticle>
+		<HitParticle>0</HitParticle>
+		<PowerParticleV2>0</PowerParticleV2>
+		<HitParticleV2>0</HitParticleV2>
+		<PowerSound>""</PowerSound>
+		<PowerHitSound>""</PowerHitSound>
+		<Rarity>80</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+		<CageIcon file="game/pets/p_cinder.rttex" frameSize="32,32" frame="0,0"/>
+	</Pet>
+
+
 </BattlePets>

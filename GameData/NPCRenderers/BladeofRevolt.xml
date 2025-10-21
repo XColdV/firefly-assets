@@ -51,16 +51,47 @@
 			</CurveAnimationVec4>		
 		</Animations>
 		<StateMachines>
-			<StateMachine name="NPC">
-				<States>
-					<State name="FlyPatrol"/>
-					<State name="Chase"/>
-					<State name="AttackProjectile"/>
-					<State name="AttackMelee"/>
-					<State name="Idle"/>
-					<State name="Anticipation"/>
+			<StateMachine name="NPC" ServerOnly="true">
+				<States start="FlyPatrol">
+					<NPCFlyingPatrol name="FlyPatrol">
+						<PatrolSpeed>0</PatrolSpeed>
+						<PatrolRange>0</PatrolRange>
+						<StayHome>false</StayHome>
+					</NPCFlyingPatrol>
+					<NPCFlyingChase name="Chase">
+						<ChaseSpeed>200</ChaseSpeed>
+					</NPCFlyingChase>	
+					<NPCFlyingAttack name="AttackProjectile" ExitTime="0.5">
+						<AttackTimeoutInSeconds>0</AttackTimeoutInSeconds>
+						<ProjectileName>"BladeSlash"</ProjectileName>
+					</NPCFlyingAttack>
+					<NPCAnticipation name="Anticipation" ExitTime="0.25"/>
 				</States>
 				<Transitions>
+					<Transition to="Chase" from="FlyPatrol">
+						<Condition type="and">
+							<IsPlayerDistanceMatching operatorType="Less">250</IsPlayerDistanceMatching>
+							<IsPlayerDistanceMatching operatorType="Greater">40</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>	
+					<Transition to="Chase" from="AttackProjectile">
+						<Condition type="or">
+							<IsPlayerDistanceMatching operatorType="Greater">40</IsPlayerDistanceMatching>
+							<IsCollidableBetweenTarget Width="8">false</IsCollidableBetweenTarget>
+						</Condition>
+					</Transition>	
+					<Transition to="FlyPatrol" from="Chase|AttackProjectile|Anticipation">
+						<Condition>
+							<IsPlayerDistanceMatching operatorType="Greater">250</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>								
+					<Transition to="Anticipation" from="AttackProjectile|Chase">
+						<Condition type="and">
+							<IsPlayerDistanceMatching operatorType="LessOrEqual">40</IsPlayerDistanceMatching>
+							<IsCollidableBetweenTarget Width="8">false</IsCollidableBetweenTarget>
+						</Condition>
+					</Transition>				
+					<Transition to="AttackProjectile" from="Anticipation"/>
 				</Transitions>
 			</StateMachine>
 		</StateMachines>
@@ -87,10 +118,9 @@
 		<Components>
 			<Info/>
 			<MustKillNPC/>
-			<StateMachineTimer>
-				<Set name="NPC.Anticipation">0.25</Set>
-				<Set name="NPC.AttackProjectile">0.5</Set>
-			</StateMachineTimer>
+			<AttachmentSlotsCmp/>
+			<StateMachineTimer/>
+			<TintOverrideCmp/>
 			<Enemy>
 				<Set name="SoulsReward">5</Set>
 				<Set name="destroyTileId">186</Set>
@@ -99,17 +129,8 @@
 			<Damage>
 				<Set name="damage">10</Set>
 			</Damage>
-			<StateMachine>
-				<Set name="type">"Flyer"</Set>
-				<Set name="stayHome">false</Set>
-				<Set name="chaseRange">200</Set>
-				<Set name="patrolSpeed">0</Set>
-				<Set name="chaseSpeed">200</Set>
-				<Set name="attackRange">40</Set>
-				<Set name="attackTimeoutInSeconds">0</Set>
-				<Set name="patrolRange">0</Set>
-				<Set name="projectileName">"BladeSlash"</Set>
-			</StateMachine>
+			<StateMachine/>
+			<NPCRenderActionCmp/>
 			<Health>
 				<Set name="healthAmount">200</Set>
 				<Set name="maxHealth">200</Set>

@@ -71,6 +71,7 @@
     display: block;
     position: relative;
     max-width: 928dp;
+    min-height: 0vh;
     max-height: 85vh;
     /* 
     min-width: 400dp;
@@ -107,9 +108,11 @@
         right: -15dp;
         position: absolute;
         decorator: image(interface/cross.rttex);
+        z-index: 2;
+	    sound-on-click: true;
     }
 
-        .window .window-close-button:active {
+        .window .window-close-button:active{
             filter: brightness(0.85);
             transform: scale(0.95);
         }

@@ -6,16 +6,62 @@
 		<Sprite name="trail_sprite" fileName="game/particles_large14.rttex" textureSize="64" frame="10,1"/>
 		<Sprite name="s_HitEffect" fileName="game/particles.rttex" textureSize="32" frame="10,9" />
 		<StateMachines>
-			<StateMachine name="NPC">
-				<States>
-					<State name="Patrol"/>
-					<State name="Dash"/>
-					<State name="SpawnParticlesWithMinions"/>
-					<State name="Jump"/>
-					<State name="AnticipationDash"/>
-					<State name="AnticipationLeap"/>
-					<State name="AnticipationFire"/>
+			<StateMachine name="NPC" ServerOnly="true">
+				<States start="Patrol">
+					<NPCPlatformPatrol name="Patrol">
+						<PatrolSpeed>70</PatrolSpeed>
+						<DisableFall>false</DisableFall>
+					</NPCPlatformPatrol>
+					<NPCPlatformDash name="Dash" ExitTime="5">
+						<DashVelocity>400, -10</DashVelocity>
+						<UsePlayerPosition>true</UsePlayerPosition>
+					</NPCPlatformDash>				
+					<NPCPlatformSpawnParticlesWithMinions name="SpawnParticlesWithMinions" ExitTime="3">
+						<ProjectileName>"JellyBossNPCFire"</ProjectileName>
+					</NPCPlatformSpawnParticlesWithMinions>	
+					<NPCPlatformJump name="Jump" ExitTime="1">
+						<JumpHeight>150</JumpHeight>
+					</NPCPlatformJump>				
+					<NPCCounterOperation name="JumpCounter">
+						<CounterName>"JumpCounter"</CounterName>
+						<CounterModifier>-1</CounterModifier>
+					</NPCCounterOperation>
+					<NPCAnticipation name="AnticipationDash" ExitTime="1.5"/>
+					<NPCAnticipation name="AnticipationLeap" ExitTime="0.5"/>
+					<NPCAnticipation name="AnticipationFire" ExitTime="2"/>
 				</States>
+				<Transitions>
+					<Transition to="Patrol" from="Dash|SpawnParticlesWithMinions"/>
+					<Transition to="Patrol" from="Jump">
+						<Condition>
+							<CheckCounter ResetOnSuccess="true" operatorType="LessOrEqual" name="JumpCounter">0</CheckCounter>
+						</Condition>
+					</Transition>	
+					<Transition to="AnticipationDash" from="Patrol">
+						<Condition>
+							<CheckRandomRangeNumber EndNumber="3">0</CheckRandomRangeNumber>
+						</Condition>
+					</Transition>			
+					<Transition to="AnticipationFire" from="Patrol">
+						<Condition>
+							<CheckRandomRangeNumber EndNumber="3">1</CheckRandomRangeNumber>
+						</Condition>
+					</Transition>
+					<Transition to="AnticipationLeap" from="Patrol">
+						<Condition>
+							<CheckRandomRangeNumber EndNumber="3">2</CheckRandomRangeNumber>
+						</Condition>
+					</Transition>						
+					<Transition to="AnticipationLeap" from="Jump">
+						<Condition>
+							<CheckCounter operatorType="Greater" name="JumpCounter">0</CheckCounter>
+						</Condition>
+					</Transition>				
+					<Transition to="Dash" from="AnticipationDash"/>
+					<Transition to="SpawnParticlesWithMinions" from="AnticipationFire"/>						
+					<Transition to="JumpCounter" from="AnticipationLeap"/>			
+					<Transition to="Jump" from="JumpCounter"/>
+				</Transitions>
 			</StateMachine>
 		</StateMachines>
 		<Animations>
@@ -222,16 +268,11 @@
       <IsBossNPC>
         <Set name="displayName">"Jelatinous Chunk"</Set>
       </IsBossNPC>
-			<StateMachineTimer>
-				<Set name="NPC.Dash">5</Set>
-				<Set name="NPC.SpawnParticlesWithMinions">3</Set>
-				<Set name="NPC.Jump">1</Set>
-				<Set name="NPC.AnticipationDash">1.5</Set>
-				<Set name="NPC.AnticipationLeap">0.5</Set>
-				<Set name="NPC.AnticipationFire">2</Set>
-				<Set name="TrialEmitterTimeout">0.3</Set>
-				<Set name="JumpCounterMax">3</Set>
-			</StateMachineTimer>
+			<StateMachineCounter>
+				<Set name="JumpCounter">3</Set>
+			</StateMachineCounter>
+			<AttachmentSlotsCmp/>
+			<TintOverrideCmp/>
 			<Enemy>
 				<Set name="SoulsReward">200</Set>
 				<Set name="destroyTileId">11782</Set>
@@ -241,18 +282,7 @@
 				<Set name="damage">20</Set>
 			</Damage>
 			<NPCRenderActionCmp/>
-			<StateMachine>
-				<Set name="type">"JellyBoss"</Set>
-				<Set name="patrolSpeed">70</Set>
-				<Set name="dashVelocity">400, -10</Set>
-				<Set name="projectileName">"JellyBossNPCFire"</Set>
-			</StateMachine>
-			<Jump>
-				<Set name="timeout">0</Set>
-				<Set name="timeToJump">0</Set>
-				<Set name="percentChance">0.99</Set>
-				<Set name="height">150</Set>
-			</Jump>
+			<StateMachine/>
 			<Physics>
 				<Set name="acceleration">0, 9.81</Set>
 				<Set name="mass">100</Set>
@@ -273,14 +303,12 @@
 	<RenderRules>
 		<Render>
 			<SpriteRender name="jelatinous_sprite"/>
+		</Render>
+		<Update>
 			<ParticleSystemUpdate name="fireParticle1" onState="NPC.Dash" />
 			<ParticleSystemUpdate name="trail_particle" onState="NPC.Dash" />
 			<ParticleSystemUpdate name="damagingAura" onState="NPC.Patrol|NPC.Jump" />
-		</Render>
-		<RenderInFront>
-			<Translate>0,-16,0</Translate>
-			<NPCHealthBarRender TexturePath="interface/large/gui_event_npchealth_bar.rttex" TextureSize="17,9" TextureCoordinates="0,0"/>
-		</RenderInFront>
+		</Update>
 		<SwitchOffClothingParticles>
 			<ParticleSystemOff name="fireParticle1"/>
 			<ParticleSystemOff name="trail_particle"/>

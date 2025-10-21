@@ -82,7 +82,7 @@
         <Particle>
           <Set name="sprite">s_lute</Set>
           <Set name="relativeToEmitter">true</Set>
-          <Set name="inSpecificOrder">true</Set>
+          <Set name="inSpecificOrder">false</Set>
           <Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
           <Set name="lifeTime">0.06</Set>
           <Set name="initialAngle" source="lute_angle"/>
@@ -110,7 +110,7 @@
         </Emitter>
         <Particle>
           <Set name="sprite">s_luteTrail</Set>
-          <Set name="inSpecificOrder">true</Set>
+          <Set name="inSpecificOrder">false</Set>
           <Set name="blendingMode">ADDITIVE</Set>
           <Curve name="initialAlpha">
             <KeyFrame>0, 1</KeyFrame>
@@ -152,7 +152,7 @@
         </Emitter>
         <Particle randomSpriteFrame="true">
           <Set name="sprite">s_luteTrailMusic</Set>
-          <Set name="inSpecificOrder">true</Set>
+          <Set name="inSpecificOrder">false</Set>
           <Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
           <Curve name="initialAlpha">
             <KeyFrame>0, 1</KeyFrame>
@@ -184,8 +184,8 @@
   </Data>
 
   <RenderRules>
-    <RenderInFront>
-        <MusicSource onState="Action.Punch">
+	  <Update>
+		  <MusicSource onState="Action.Punch">
           <Set name="MusicFile">audio/aibellharp.wav</Set>
           <Set name="FadeOutTimeMs">100</Set>
         </MusicSource>
@@ -193,6 +193,8 @@
           <Set name="MusicFile">audio/mp3/panflutemelody.mp3</Set>
           <Set name="FadeOutTimeMs">100</Set>
         </MusicSource>
+	  </Update>
+    <RenderInFront>
       <StopIf>
         <IsRenderMod>RENDER_MOD_MINI_YOU</IsRenderMod>
       </StopIf>

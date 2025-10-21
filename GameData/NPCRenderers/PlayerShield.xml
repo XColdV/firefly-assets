@@ -29,7 +29,9 @@
 		</ParticleSystems>
 		<Components>
 			<Info/>
-			<Movement/>
+			<Movement>
+				<Set name="IsStatic">true</Set>
+			</Movement>
 			<ShieldCmp/>
 			<NPCRenderActionCmp/>
 			<AttachmentCmp/>
@@ -50,9 +52,9 @@
 		</Components>
 	</Data>
 	<RenderRules>
-		<Render>
+		<Update>
 			<ParticleSystemUpdate name="shieldRight"/>
-		</Render>
+		</Update>
 		<SwitchOffClothingParticles>
 			<ParticleSystemOff name="shieldRight"/>
 		</SwitchOffClothingParticles>

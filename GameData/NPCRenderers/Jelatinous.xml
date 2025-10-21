@@ -38,7 +38,7 @@
 			</SpriteAnimation>
 		</Animations>
 		<ParticleSystems>
-			<ParticleSystem name="trail_particle" updateStage="Render" updateState="NPC.Chase">
+			<ParticleSystem name="trail_particle" updateStage="Update" updateState="NPC.Chase">
 				<Emitter>
 					<Set name="offset">0, 0</Set>
 					<Set name="emissionInterval">0.3</Set>
@@ -91,26 +91,79 @@
 			</ParticleSystem>
 		</ParticleSystems>
 		<StateMachines>
-			<StateMachine name="NPC">
-				<States>
-					<State name="Patrol"/>
-					<State name="Chase"/>
-					<State name="AttackProjectile"/>
-					<State name="Jump"/>
-					<State name="Fall"/>
+			<StateMachine name="NPC" ServerOnly="true">
+				<States start="Patrol">
+					<NPCPlatformPatrol name="Patrol">
+						<PatrolSpeed>10</PatrolSpeed>
+						<DisableFall>false</DisableFall>
+					</NPCPlatformPatrol>
+					<NPCPlatformChase name="Chase">
+						<ChaseSpeed>80</ChaseSpeed>
+						<DisableFall>false</DisableFall>
+					</NPCPlatformChase>					
+					<NPCPlatformAttack name="AttackProjectile" ExitTime="0.5">
+						<AttackSpeed>100</AttackSpeed>
+						<ProjectileName>"JellySlash"</ProjectileName>
+						<MinRangeToAttack>64</MinRangeToAttack>
+					</NPCPlatformAttack>					
+					<NPCPlatformJump name="Jump" ExitTime="0.4">
+						<JumpHeight>45</JumpHeight>
+					</NPCPlatformJump>
+					<NPCFall name="Fall" ExitTime="0.33"/>
 				</States>
 				<Transitions>
+					<Transition to="Fall" from="Patrol|Chase|Jump">
+						<Condition>
+							<IsOnGround>false</IsOnGround>
+						</Condition>
+					</Transition>
+					<Transition to="Chase" from="Patrol|Jump|Fall|AttackProjectile">
+						<Condition type="and">
+							<IsOnGround>true</IsOnGround>
+							<CheckNPCVelocity ComparisonElement="Y" operatorType="Less" abs="true">0.1</CheckNPCVelocity>
+							<IsPlayerDistanceMatching operatorType="Less">128</IsPlayerDistanceMatching>
+							<IsPlayerDistanceMatching operatorType="Greater">32</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>					
+					<Transition to="Patrol" from="Chase|Jump|Fall|AttackProjectile">
+						<Condition type="and">
+							<IsOnGround>true</IsOnGround>
+							<IsPlayerDistanceMatching operatorType="Greater">128</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>								
+					<Transition to="AttackProjectile" from="Patrol|Chase|Jump|Fall|AttackProjectile">
+						<Condition>
+							<IsPlayerDistanceMatching operatorType="LessOrEqual">32</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>
+					<Transition to="Jump" from="Chase">
+						<Condition type="and">
+							<IsPlayerDistanceMatching operatorType="Less">128</IsPlayerDistanceMatching>
+							<CheckTimer ResetOnSuccess="true" name="timeToJump">true</CheckTimer>
+							<IsCollidableBetweenPoint Width="8" TargetOffset="0, -32">false</IsCollidableBetweenPoint>
+							<SubCondition type="or">
+								<SubCondition type="and">
+									<IsCollidableBetweenTarget Width="8">true</IsCollidableBetweenTarget>
+									<IsPlayerDistanceMatching operatorType="Greater">45</IsPlayerDistanceMatching>
+								</SubCondition>
+								<CheckPositionDifferenceToPlayer UseVertical="true" operatorType="Less">-16</CheckPositionDifferenceToPlayer>
+							</SubCondition>
+						</Condition>
+					</Transition>
 				</Transitions>
 			</StateMachine>
 		</StateMachines>
 		<Components>
 			<Info/>
 			<MustKillNPC/>
+			<TintOverrideCmp/>
+			<AttachmentSlotsCmp/>
 			<StateMachineTimer>
-				<Set name="NPC.Jump">0.4</Set>
-				<Set name="NPC.Fall">0.33</Set>
-				<Set name="NPC.AttackProjectile">0.5</Set>
-			</StateMachineTimer>
+				<Set name="timeToJump">3</Set>
+			</StateMachineTimer>			
+			<StateMachineCounter>
+				<Set name="JumpCounter">3</Set>
+			</StateMachineCounter>
 			<Enemy>
 				<Set name="SoulsReward">8</Set>
 				<Set name="destroyTileId">11782</Set>
@@ -120,27 +173,11 @@
 				<Set name="damage">10</Set>
 			</Damage>
 			<NPCRenderActionCmp/>
-			<StateMachine>
-				<Set name="type">"PlatformJump"</Set>
-				<Set name="chaseRange">128</Set>
-				<Set name="attackSpeed">100</Set>
-				<Set name="patrolSpeed">10</Set>
-				<Set name="chaseSpeed">80</Set>
-				<Set name="patrolRange">160</Set>
-				<Set name="projectileName">"JellySlash"</Set>
-				<Set name="attackRange">32</Set>
-				<Set name="minRangeToAttack">32</Set>
-			</StateMachine>
+			<StateMachine/>
 			<Health>
 				<Set name="healthAmount">400</Set>
 				<Set name="maxHealth">400</Set>
 			</Health>
-			<Jump>
-				<Set name="timeout">3</Set>
-				<Set name="timeToJump">3</Set>
-				<Set name="percentChance">0.35</Set>
-				<Set name="height">45</Set>
-			</Jump>
 			<Physics>
 				<Set name="acceleration">0, 9.81</Set>
 				<Set name="mass">40</Set>

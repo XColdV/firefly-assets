@@ -51,7 +51,7 @@
             <Condition type="and">
               <CheckTimer name="timeToSpawn">true</CheckTimer>
               <CheckNpcHealth operatorType="Greater" onlyBoss="true">50</CheckNpcHealth>
-              <CheckNumberOfNpcsInWorld  Type="dynamic" operatorType="Less">64</CheckNumberOfNpcsInWorld>
+              <CheckNumberOfNpcsInWorld  Type="dynamic" operatorType="Less">15</CheckNumberOfNpcsInWorld>
             </Condition>
           </Transition>
           <Transition to="SpawnWait1" from="Start"/>

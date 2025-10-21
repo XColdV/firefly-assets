@@ -2,7 +2,7 @@
 <ItemRenderer NPCType="ShieldCrystal" NPCTypeID="8">
 	<Data>
 		<Sprite name="sprite" fileName="game/particles11.rttex" textureSize="32" frame="8,5"/>
-		<Sprite name="line_sprite" fileName="game/particles11.rttex" textureSize="32" frame="15,24"/>
+		<Sprite name="line_sprite" fileName="game/particles11.rttex" textureSize="32" frame="15,24" cullingDisabled="true"/>
 		<Animations>
 			<SpriteAnimation name="a_sprite_anim" autoPlay="true" sprite="sprite" isLoop="true" animTime="800">
 				<Frame>8,5</Frame>

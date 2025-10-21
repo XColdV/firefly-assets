@@ -42,28 +42,78 @@
 			</ParticleSystem>
 		</ParticleSystems>
 		<StateMachines>
-			<StateMachine name="NPC">
-				<States>
-					<State name="Patrol"/>
-					<State name="Chase"/>
-					<State name="AttackProjectile"/>
-					<State name="Jump"/>
-					<State name="Fall"/>
-					<State name="Anticipation"/>
+			<StateMachine name="NPC" ServerOnly="true">
+				<States start="Patrol">
+					<NPCPlatformPatrol name="Patrol">
+						<PatrolSpeed>0</PatrolSpeed>
+						<DisableFall>false</DisableFall>
+					</NPCPlatformPatrol>
+					<NPCPlatformChase name="Chase">
+						<ChaseSpeed>500</ChaseSpeed>
+						<DisableFall>false</DisableFall>
+					</NPCPlatformChase>	
+					<NPCPlatformAttack name="AttackProjectile" ExitTime="0.4">
+						<AttackSpeed>800</AttackSpeed>
+						<ProjectileName>"SwordsmanSlash"</ProjectileName>
+						<MinRangeToAttack>32</MinRangeToAttack>
+					</NPCPlatformAttack>
+					<NPCPlatformJump name="Jump" ExitTime="0.4">
+						<JumpHeight>90</JumpHeight>
+					</NPCPlatformJump>
+					<NPCFall name="Fall" ExitTime="0.33"/>
+					<NPCAnticipation name="Anticipation" ExitTime="0.25"/>
 				</States>
 				<Transitions>
+					<Transition to="Fall" from="Patrol|Chase|Jump">
+						<Condition>
+							<IsOnGround>false</IsOnGround>
+						</Condition>
+					</Transition>
+					<Transition to="Chase" from="Patrol|Jump|Fall|AttackProjectile">
+						<Condition type="and">
+							<IsOnGround>true</IsOnGround>
+							<CheckNPCVelocity ComparisonElement="Y" operatorType="Less" abs="true">0.1</CheckNPCVelocity>
+							<IsPlayerDistanceMatching operatorType="Less">128</IsPlayerDistanceMatching>
+							<IsPlayerDistanceMatching operatorType="Greater">64</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>					
+					<Transition to="Patrol" from="Chase|Jump|Fall|AttackProjectile">
+						<Condition type="and">
+							<IsOnGround>true</IsOnGround>
+							<IsPlayerDistanceMatching operatorType="Greater">128</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>		
+					<Transition to="Anticipation" from="AttackProjectile|Fall|Patrol|Chase|Jump">
+						<Condition>
+							<IsPlayerDistanceMatching operatorType="LessOrEqual">64</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>		
+					<Transition to="AttackProjectile" from="Anticipation"/>
+					<Transition to="Jump" from="Chase">
+						<Condition type="and">
+							<IsPlayerDistanceMatching operatorType="Less">128</IsPlayerDistanceMatching>
+							<CheckTimer ResetOnSuccess="true" name="timeToJump">true</CheckTimer>
+							<IsCollidableBetweenPoint TargetOffset="0, -32">false</IsCollidableBetweenPoint>
+							<SubCondition type="or">
+								<SubCondition type="and">
+									<IsCollidableBetweenTarget Width="8">true</IsCollidableBetweenTarget>
+									<IsPlayerDistanceMatching operatorType="Greater">45</IsPlayerDistanceMatching>
+								</SubCondition>
+								<CheckPositionDifferenceToPlayer UseVertical="true" operatorType="Less">-16</CheckPositionDifferenceToPlayer>
+							</SubCondition>
+						</Condition>
+					</Transition>
 				</Transitions>
 			</StateMachine>
 		</StateMachines>
 		<Components>
 			<Info/>
 			<MustKillNPC/>
+			<TintOverrideCmp/>
+			<AttachmentSlotsCmp/>
 			<StateMachineTimer>
-				<Set name="NPC.Jump">0.4</Set>
-				<Set name="NPC.Fall">0.2</Set>
-				<Set name="NPC.Anticipation">0.25</Set>
-				<Set name="NPC.AttackProjectile">0.4</Set>
-			</StateMachineTimer>
+				<Set name="timeToJump">3</Set>
+			</StateMachineTimer>	
 			<Enemy>
 				<Set name="SoulsReward">20</Set>
 				<Set name="destroyTileId">14752</Set>
@@ -72,28 +122,12 @@
 			<Damage>
 				<Set name="damage">10</Set>
 			</Damage>
+			<StateMachine/>
 			<NPCRenderActionCmp/>
-			<StateMachine>
-				<Set name="type">"PlatformJump"</Set>
-				<Set name="chaseRange">128</Set>
-				<Set name="attackSpeed">800</Set>
-				<Set name="patrolSpeed">0</Set>
-				<Set name="chaseSpeed">500</Set>
-				<Set name="patrolRange">0</Set>
-				<Set name="projectileName">"SwordsmanSlash"</Set>
-				<Set name="attackRange">64</Set>
-				<Set name="minRangeToAttack">32</Set>
-			</StateMachine>
 			<Health>
 				<Set name="healthAmount">200</Set>
 				<Set name="maxHealth">200</Set>
 			</Health>
-			<Jump>
-				<Set name="timeout">1</Set>
-				<Set name="timeToJump">1</Set>
-				<Set name="percentChance">0.35</Set>
-				<Set name="height">90</Set>
-			</Jump>
 			<Physics>
 				<Set name="acceleration">0, 16</Set>
 				<Set name="mass">40</Set>

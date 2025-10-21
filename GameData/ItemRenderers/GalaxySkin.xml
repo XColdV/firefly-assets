@@ -82,7 +82,7 @@
 				</Emitter>
 				<Particle randomSpriteFrame="true">
 					<Set name="sprite">s_skin_trail_blue</Set>
-					<Set name="inSpecificOrder">true</Set>
+					<Set name="inSpecificOrder">false</Set>
 					<Set name="blendingMode">ADDITIVE</Set>
 					<Curve name="initialAlpha">
 						<KeyFrame>0, 0.5</KeyFrame>
@@ -114,7 +114,7 @@
 				</Emitter>
 				<Particle randomSpriteFrame="true">
 					<Set name="sprite">s_skin_trail_blue</Set>
-					<Set name="inSpecificOrder">true</Set>
+					<Set name="inSpecificOrder">false</Set>
 					<Set name="blendingMode">ADDITIVE</Set>
 					<Curve name="initialAlpha">
 						<KeyFrame>0, 0.5</KeyFrame>
@@ -171,7 +171,7 @@
 				<Particle>
 					<Set name="sprite">s_skin_stars_blue</Set>
 					<Set name="relativeToEmitter">true</Set>
-					<Set name="inSpecificOrder">true</Set>
+					<Set name="inSpecificOrder">false</Set>
 					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
 					<Curve name="initialAlpha">
 						<KeyFrame>0, 1</KeyFrame>
@@ -204,7 +204,7 @@
 				<Particle>
 					<Set name="sprite">s_skin_stars_blue</Set>
 					<Set name="relativeToEmitter">true</Set>
-					<Set name="inSpecificOrder">true</Set>
+					<Set name="inSpecificOrder">false</Set>
 					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
 					<Curve name="initialAlpha">
 						<KeyFrame>0, 1</KeyFrame>

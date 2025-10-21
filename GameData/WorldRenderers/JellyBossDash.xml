@@ -15,7 +15,7 @@
 		</SpriteAnimation>
 		</Animations>
 		<ParticleSystems>
-			<ParticleSystem name="projectile_particle" updateStage="Render">
+			<ParticleSystem name="projectile_particle" updateStage="Update">
 				<Emitter>
 					<Set name="offset">96, 0</Set>
 					<Set name="infLifeTime">true</Set>

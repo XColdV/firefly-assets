@@ -5,7 +5,7 @@
         <link type="text/rcss" href="Base/WindowTitle.rcss" />
         <link type="text/rcss" href="MailMessage.rcss" />
     </head>
-    <body template="BasePopup">
+    <body template="BasePopup" class="show-scrollbar wondow-content-full wondow-content-horizontal">
         <div data-model="MailMessageModel" id="mailmessage-popup" class="font-content">
             <div>
                 <div id="window-title">

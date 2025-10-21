@@ -5,12 +5,29 @@
 		<Sprite name="s_HitEffect" fileName="game/npc1.rttex" textureSize="32" frame="22,8" />
 		<Sprite name="s_MuzzleFlash" fileName="game/npc1.rttex" textureSize="32" frame="22,9" />
 		<StateMachines>
-			<StateMachine name="NPC">
-				<States>
-					<State name="Stationary"/>
-					<State name="AttackProjectile"/>
-					<State name="Anticipation"/>
+			<StateMachine name="NPC" ServerOnly="true">
+				<States start="Stationary">
+					<NPCStationary name="Stationary"/>
+					<NPCPlatformAttack name="AttackProjectile" ExitTime="0.5">
+						<AttackSpeed>0</AttackSpeed>
+						<ProjectileName>"DragonsBreathProjectile"</ProjectileName>
+						<MinRangeToAttack>192</MinRangeToAttack>
+					</NPCPlatformAttack>	
+					<NPCAnticipation name="Anticipation" ExitTime="0.5"/>
 				</States>
+				<Transitions>							
+					<Transition to="Stationary" from="AttackProjectile">
+						<Condition>
+							<IsPlayerDistanceMatching operatorType="Greater">192</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>					
+					<Transition to="Anticipation" from="AttackProjectile|Stationary">
+						<Condition>
+							<IsPlayerDistanceMatching operatorType="LessOrEqual">192</IsPlayerDistanceMatching>
+						</Condition>
+					</Transition>				
+					<Transition to="AttackProjectile" from="Anticipation"/>
+				</Transitions>
 			</StateMachine>
 		</StateMachines>
 		<Animations>
@@ -63,28 +80,20 @@
 			</ParticleSystem>
 		</ParticleSystems>
 		<Components>
-			<StateMachineTimer>
-				<Set name="NPC.Anticipation">0.5</Set>
-				<Set name="NPC.AttackProjectile">0.5</Set>
-			</StateMachineTimer>
 			<Info/>
 			<MustKillNPC/>
+			<AttachmentSlotsCmp/>
+			<TintOverrideCmp/>
 			<Enemy>
 				<Set name="SoulsReward">2</Set>
+				<Set name="destroyTileId">4344</Set>
 			</Enemy>
 			<Movement/>
 			<Damage>
 				<Set name="damage">0</Set>
-				<Set name="destroyTileId">4344</Set>
 			</Damage>
-			<StateMachine>
-				<Set name="type">"Stationary"</Set>
-				<Set name="attackSpeed">0</Set>
-				<Set name="attackRange">192</Set>
-				<Set name="attackTimeoutInSeconds">1.5</Set>
-				<Set name="projectileName">"DragonsBreathProjectile"</Set>
-				<Set name="minRangeToAttack">32</Set>
-			</StateMachine>
+			<StateMachine/>
+			<NPCRenderActionCmp/>
 			<Health>
 				<Set name="healthAmount">200</Set>
 				<Set name="maxHealth">200</Set>
@@ -99,9 +108,11 @@
 	</Data>
 	<RenderRules>
 		<Render>
-			<ParticleSystemUpdate name="ps_MuzzleFlash" onState="NPC.AttackProjectile" />
 			<SpriteRender name="s_sprite"/>
 		</Render>
+		<Update>
+			<ParticleSystemUpdate name="ps_MuzzleFlash" onState="NPC.AttackProjectile" />
+		</Update>
 		<RenderInFront>
 			<Translate>0,-4,0</Translate>
 			<NPCHealthBarRender TexturePath="interface/large/gui_event_npchealth_bar.rttex" TextureSize="17,9" TextureCoordinates="0,0"/>

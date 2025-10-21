@@ -20,7 +20,7 @@
 					<Set name="collisionDamageAmount">100</Set>
 					<Set name="destroyOnCollision">false</Set>
 					<Set name="collisionSize">192,192</Set>
-					<Set name="initialScale">3,3</Set>
+					<Set name="initialScale">1,1</Set>
 					<Set name="collisionType">
 						<CollisionType>PROJECTILES</CollisionType>
 					</Set>

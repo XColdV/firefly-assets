@@ -181,10 +181,8 @@
 				<Set name="PunchSoundOverride">HAND</Set>
 				<Set name="PlayDefaultPunchAudio">false</Set>
 				<Set name="IgnoreDefaultDamagedTileEffect">true</Set>
+				<Set name="IncludeAllActions">true</Set>
 			</Default>
-			<Override overrideOnAction="DANCE">
-				<Set name="Music">audio/aibellharp.wav</Set>
-			</Override>
 		</RenderOptions>
 		
 	</Data>
@@ -200,6 +198,9 @@
                     alignmentLeft="LEFT_CENTER" alignmentRight="RIGHT_CENTER" drawShadow="false" flip="1,0" tintOverride="255,255,255,255"/>
 		</RenderHandItem>
 		<Update>
+			<MusicSource onAction="DANCE">
+				<Set name="MusicFile">audio/aibellharp.wav</Set>
+			</MusicSource>
 			<AvatarTransform class="Emotion" onAction="DANCE">
 				<Set name="emotion">CHILLED|CHILLED2</Set>
 				<Set name="interval">1000</Set>

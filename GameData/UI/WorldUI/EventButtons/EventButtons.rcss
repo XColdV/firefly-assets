@@ -98,6 +98,307 @@
 }
 
 /*-------------------------------------------------------------------------------*/
+
+/*--------------    Auction event button     --------------*/
+
+@spritesheet auction_button_sprite {
+    src: interface/large/event_button5.rttex;
+    resolution: 1x;
+    auction_button_icon: 256px 0px 128px 128px;
+    active_auction_button_icon: 0px 0px 128px 128px;
+    auction_button_text_panel: 0px 218px 128px 28px;
+    auction_button_text_panel_inner: 32px 230px 2px 2px;
+    auction_button_arrow_open: 128px 0px 128px 128px;
+    auction_button_arrow_close: 128px 128px 128px 128px;
+}
+
+.auction .label {
+    margin-top: 60dp;
+    font-size: 12dp;
+    decorator: ninepatch(auction_button_text_panel, auction_button_text_panel_inner);
+}
+
+.event_item .state0 .auction {
+    decorator: image(auction_button_icon);
+}
+
+.activeauction .itemIdIcon {
+    display: block;
+    width: 40%;
+    height: 40%;
+    position: absolute;
+    margin-top: 14%;
+    margin-left: 15%;
+}
+
+.activeauction .label {
+    margin-top: 60dp;
+    decorator: ninepatch(auction_button_text_panel, auction_button_text_panel_inner);
+}
+
+.activeauction .arrow {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    margin-top: 0%;
+    margin-left: 0%;
+    decorator: image(auction_button_arrow_close);
+}
+
+.open .activeauction .arrow {
+    decorator: image(auction_button_arrow_open);
+}
+
+.activeauction {
+    decorator: image(active_auction_button_icon);
+}
+
+/*-------------------------------------------------------------------------------*/
+/*--------------                   Active Auction button panel                     --------------*/
+
+#activeAuctionButtonPanel {
+    display: block;
+    position: absolute;
+    width: 605dp;
+    clip: always;
+    overflow-x: hidden;
+    visibility: hidden;
+    margin-left: 6dp;
+    padding-left: 6dp;
+    margin-top: -20dp;
+}
+
+#activeAuctionButtonPanel.visible {
+    display: block;
+    transition: visibility 0.01s linear-in;
+    visibility: visible;
+}
+
+#activeAuctionButtonPanel.hidden {
+    transition: visibility display 0.01s 0.2s linear-in;
+    visibility: visible;
+    display: none;
+}
+
+* #activeAuctionButtonPanel #panelContent,
+.full-hide #activeAuctionButtonPanel.visible #panelContent,
+.petbattle-hide #activeAuctionButtonPanel.visible #panelContent,
+.hide #activeAuctionButtonPanel.visible #panelContent {
+    width: 580dp;
+    transition: margin-left 0.2s linear-out;
+    margin-left: -830dp;
+}
+
+#activeAuctionButtonPanel.visible #panelContent {
+    transition: margin-left 0.2s linear-in;
+    margin-left: 0dp;
+}
+
+#activeAuctionButtonPanel #panelContent .content {
+    padding: 10dp 10dp 15dp 7dp;
+    width: 580dp;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    decorator: tiled-box( blue_panel_tl, blue_panel_t, blue_panel_tr, blue_panel_cl, blue_panel_c, blue_panel_cr, blue_panel_bl, blue_panel_b, blue_panel_br );
+    image-color: rgba(135, 184, 204, 255);
+}
+
+#activeAuctionButtonPanel #panelContent .frame {
+    z-index: -1;
+    position: absolute;
+    top: 0dp;
+    bottom: 0dp;
+    background-color: rgba(39, 125, 159, 225);
+    width: 590dp;
+    margin: 5dp 5dp 5dp 5dp;
+}
+
+#activeAuctionButtonPanel #panelSearchContent .content {
+    width: 80dp;
+    height: 80dp;
+    display: flex;
+    position: absolute;
+    top: 0dp;
+    left: 605dp;
+    align-items: center;
+    justify-content: space-between;
+    decorator: tiled-box( blue_panel_tl, blue_panel_t, blue_panel_tr, blue_panel_cl, blue_panel_c, blue_panel_cr, blue_panel_bl, blue_panel_b, blue_panel_br );
+    image-color: rgba(135, 184, 204, 255);
+}
+
+#activeAuctionButtonPanel #panelSearchContent .frame {
+    z-index: -1;
+    position: absolute;
+    top: 0dp;
+    bottom: 0dp;
+    background-color: rgba(255, 125, 159, 225);
+    width: 80dp;
+    height: 80dp
+}
+
+#activeAuctionButtonPanel #panelContent table {
+    width: 580dp;
+    font-size: 20dp;
+    column-gap: 10dp;
+}
+
+#activeAuctionButtonPanel #panelContent table #item-name {
+    font-size: 24dp;
+    word-break: break-word;
+    padding-bottom: 5dp;
+}
+
+#activeAuctionButtonPanel #panelContent table #bid-end-time {
+    font-size: 16dp;
+    padding-bottom: 5dp;
+}
+
+#activeAuctionButtonPanel #panelContent table #bid-buttons #bid-label {
+    font-size: 17dp;
+}
+
+@spritesheet auction-button-sprites {
+    src: interface/large/gui_auction_btn.rttex;
+    resolution: 1x;
+    auction-button-bg: 0px 0px 32px 32px;
+    auction-button-bg-inner: 15px 15px 2px 2px;
+}
+
+#activeAuctionButtonPanel #panelContent table #bid-buttons .img-button {
+    decorator: ninepatch(auction-button-bg, auction-button-bg-inner);
+    margin-right: 10dp;
+    width: 30dp;
+    height: 35dp;
+}
+
+#activeAuctionButtonPanel #panelContent table #bid-buttons .img-button .label {
+    font-size: 20dp;
+    line-height: 15dp;
+    margin-top: 8dp;
+    display: block;
+    width: auto;
+    font-effect: none;
+}
+
+#activeAuctionButtonPanel #panelContent table #bid-buttons .img-button .loader {
+    margin-top: 4dp;
+}
+
+#activeAuctionButtonPanel #panelContent table #bid-buttons .img-button .hidden {
+    display: none;
+}
+
+#activeAuctionButtonPanel #panelContent table tr:nth-child(4) {
+    background-color: rgba(81, 154, 188, 255);
+    vertical-align: middle;
+    padding-bottom: 5dp;
+    padding-top: 5dp;
+}
+
+#activeAuctionButtonPanel #panelContent table #col-1 {
+    width: 330dp;
+    padding-left: 10dp;
+}
+
+#activeAuctionButtonPanel #panelContent table #col-2 {
+    width: auto;
+    vertical-align: middle;
+}
+
+#activeAuctionButtonPanel #panelContent table #available-wl {
+    vertical-align: middle;
+}
+
+#wls_panel {
+    display: inline;
+}
+
+#wls_panel .panel {
+    width: 130dp;
+    height: 35dp;
+    decorator: ninepatch(gems_panel_bg, gems_panel_bg_inner);
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10dp;
+}
+
+#wls_panel #wl_left_panel {
+    width: 35dp;
+    height: 33dp;
+    background-color: rgba(121, 194, 222, 255);
+    border-top-left-radius: 6dp;
+    border-bottom-left-radius: 6dp;
+    margin-left: -1dp;
+    margin-right: 8dp;
+    display: inline-block;
+}
+
+#wls_panel #wl_left_panel #wl_icon {
+    width: 43dp;
+    height: 43dp;
+    decorator: image(interface/large/gui_world_lock_icon.rttex);
+    margin: auto;
+}
+
+#wls_panel #wl_right_panel {
+    font-size: 21dp;
+    font-weight: bold;
+    line-height: 25dp;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 4dp;
+}
+
+#wls_panel #plus_button {
+    display: inline-block;
+    width: 35dp;
+    height: 35dp;
+    decorator: image(interface/large/gui_buy_plus.rttex);
+    vertical-align: top;
+	sound-on-click: true;
+}
+
+#wls_panel #plus_button:active {
+    image-color: #aaa;
+}
+
+#available-wl #search-button {
+    display: inline-block;
+    width: 35dp;
+    height: 35dp;
+    decorator: ninepatch(auction-button-bg, auction-button-bg-inner);
+    image-color: rgba(121, 194, 222, 255);
+    vertical-align: top;
+	sound-on-click: true;
+}
+
+@spritesheet auction-search-sprite {
+    src: interface/large/gui_inv_tab_icons.rttex;
+    resolution: 1x;
+    auction_search_icon: 128px 180px 64px 60px;
+}
+
+
+
+#available-wl #search-button #search-icon{
+    display: block;
+    width: 40dp;
+    height: 40dp;
+    padding: 0;
+    position: relative;
+    margin: auto;
+    margin-top: -3dp;
+    decorator: image(auction_search_icon);
+}
+
+#available-wl #search-button *:active {
+		filter: brightness(0.85);
+}
+
+
+/*-------------------------------------------------------------------------------*/
 /*--------------                   FTUE button                     --------------*/
 @spritesheet ftue_button_sprite {
     src: interface/large/ftue_buttons.rttex;
@@ -285,6 +586,7 @@
             width: 48dp;
             height: 48dp;
             display: inline-block;
+	sound-on-click: true;
         }
 
             #ftueButtonPanel #buttons #phone:active {
@@ -296,6 +598,7 @@
             width: 48dp;
             height: 48dp;
             display: inline-block;
+	sound-on-click: true;
         }
 
             #ftueButtonPanel #buttons #scroll.hidden {
@@ -735,4 +1038,34 @@
     }
 
 
-/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*//*--------------           Halloween event button             --------------*/
+
+@spritesheet halloween_button_sprite {
+    src: interface/large/event_button2.rttex;
+    resolution: 1x;
+    halloween_button_state0_icon: 0px 0px 128px 128px;
+    halloween_button_state1_anim_icon: 0px 128px 128px 128px;
+    halloween_button_state1_icon: 128px 0px 128px 128px;
+    halloween_button_state2_icon: 128px 128px 128px 128px;
+}
+
+.event_item .state0 .halloween {
+    decorator: image(halloween_button_state0_icon);
+}
+
+.event_item .state1 .halloween {
+    decorator: image(halloween_button_state1_icon);
+}
+
+    .event_item .state1 .halloween .rays {
+        decorator: image(halloween_button_state1_anim_icon);
+        animation: 3s fade-in-out infinite;
+    }
+
+.event_item .state2 .halloween {
+    decorator: image(halloween_button_state2_icon);
+}
+
+.halloween .label {
+    margin-top: 43dp;
+}

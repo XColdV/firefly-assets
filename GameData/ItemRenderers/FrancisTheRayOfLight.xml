@@ -108,6 +108,7 @@
 				<Set name="ShouldHover">true</Set>
 				<Set name="AllowChangePunchType">true</Set>
 				<Set name="IncludeAllActions">true</Set>
+				<Set name="IgnorePunchTypeCheck">true</Set>
 			</Default>
 		</RenderOptions>
 		<ParticleSystems>
@@ -205,13 +206,18 @@
 				<Set name="foot1y">0</Set>
 				<Set name="foot2y">0</Set>
 			</AvatarTransform>
+			<Group>
+				<StopIf>
+					<IsAction>PUNCH</IsAction>
+				</StopIf>
+				<AvatarTransform class="ArmAngle" onState="Mobility.Moving">
+					<Set name="armName">arm1Angle</Set>
+					<Set name="armAngle">-45</Set>
+				</AvatarTransform>
+			</Group>
 			<AvatarTransform class="ArmAngle" onState="Mobility.Moving">
 				<Set name="armName">arm2Angle</Set>
 				<Set name="armAngle">45</Set>
-			</AvatarTransform>
-			<AvatarTransform class="ArmAngle" onState="Mobility.Moving">
-				<Set name="armName">arm1Angle</Set>
-				<Set name="armAngle">-45</Set>
 			</AvatarTransform>
 			<StopIf type="or">
 				<IsRenderMod>RENDER_MOD_SPIRIT_GUIDE</IsRenderMod>

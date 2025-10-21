@@ -38,6 +38,7 @@
         background: rgba(24, 107, 139, 255);
         border-top-left-radius: 7dp;
         border-top-right-radius: 7dp;
+	sound-on-click: true;
     }
         /* Animate the arrows on hover. */
         /*#events_panel scrollbarvertical sliderarrowdec:hover {
@@ -62,6 +63,7 @@
     border-bottom-left-radius: 7dp;
     border-bottom-right-radius: 7dp;
     decorator: image( event_scroll_button_down );
+	sound-on-click: true;
 }
 
     #events_panel scrollbarvertical sliderarrowinc:active {
@@ -108,6 +110,7 @@
     width: 80dp;
     height: 80dp;
     position: relative;
+	sound-on-click: true;
 }
 
     .event_button_body > div {
