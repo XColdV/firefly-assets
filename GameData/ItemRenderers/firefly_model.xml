@@ -3,23 +3,23 @@
 	<Data>
 		<Sprite name="p_effect" fileName="game/firefly_particles_large.rttex" textureSize="64"/>
 		<Sprite name="firefly" fileName="game/firefly_model.rttex" textureSize="64,64"/>
-        <Sprite name="punch_firefly" fileName="game/firefly_model.rttex" textureSize="64,64" frame="0,4"/>
+        <Sprite name="punch_firefly" fileName="game/firefly_model.rttex" textureSize="64,64" frame="0,4"/>
 		<Animations>
 			<SpriteAnimation name="firefly_idle" isLoop="true" playOnState="Motion.Idle" sprite="firefly" animTime="1200">
-                <Frame>0,2</Frame>
-                <Frame>1,2</Frame>
-                <Frame>2,2</Frame>
-                <Frame>3,2</Frame>
-            </SpriteAnimation>
+                <Frame>0,2</Frame>
+                <Frame>1,2</Frame>
+                <Frame>2,2</Frame>
+                <Frame>3,2</Frame>
+            </SpriteAnimation>
 			<SpriteAnimation name="firefly_walk" isLoop="true" playOnState="Motion.Move" sprite="firefly" animTime="600">
 				<Frame>0,0</Frame>
-                <Frame>1,0</Frame>
-                <Frame>2,0</Frame>
-                <Frame>3,0</Frame>
-                <Frame>4,0</Frame>
-                <Frame>5,0</Frame>
-                <Frame>7,0</Frame>
-                <Frame>0,1</Frame>
+                <Frame>1,0</Frame>
+                <Frame>2,0</Frame>
+                <Frame>3,0</Frame>
+                <Frame>4,0</Frame>
+                <Frame>5,0</Frame>
+                <Frame>7,0</Frame>
+                <Frame>0,1</Frame>
 			</SpriteAnimation>
 			<SpriteAnimation name="firefly_jump" sprite="firefly" playOnState="Motion.Jump">
 				<Frame>0,3</Frame>
@@ -31,13 +31,13 @@
 				<Frame>5,3</Frame>
 				<Frame>6,3</Frame>
 			</SpriteAnimation>
-            <SpriteAnimation name="firefly_punch" autoPlay="true" isLoop="true" playOnState="Action1.Punch" sprite="punch_firefly" animTime="600">
-                <Frame>0,4</Frame>
-                <Frame>1,4</Frame>
-                <Frame>2,4</Frame>
-                <Frame>3,4</Frame>
-                <Frame>4,4</Frame>
-            </SpriteAnimation>
+            <SpriteAnimation name="firefly_punch" autoPlay="true" isLoop="true" playOnState="Action1.Punch" sprite="punch_firefly" animTime="600">
+                <Frame>0,4</Frame>
+                <Frame>1,4</Frame>
+                <Frame>2,4</Frame>
+                <Frame>3,4</Frame>
+                <Frame>4,4</Frame>
+            </SpriteAnimation>
 			<SpriteAnimation name="punch_continue" sprite="p_effect" animTime="200" isLoop="true" playOnAction="PUNCH">
 				<Frame>1,0</Frame>
 				<Frame>2,0</Frame>
@@ -166,11 +166,15 @@
 		</OnPunchStop>
 		<RenderInFront>
 			<ParticleSystemRender name="punch_continue_particle" onAction="PUNCH"/>
-			<SpriteRender name="punch_firefly" offset="32,0" alignment="DOWN_CENTER" onState="Action1.Punch"/>
-			<StopIf type="and">
-				<IsAction>PUNCH</IsAction>
-			</StopIf>
-			<SpriteRender name="firefly" offset="32,0" alignment="DOWN_CENTER"/>
+			
+			<Switch onState="Action1">
+				<Case name="Punch">
+					<SpriteRender name="punch_firefly" offset="0,0" alignment="DOWN_CENTER"/>
+				</Case>
+				<Default>
+					<SpriteRender name="firefly" offset="0,0" alignment="DOWN_CENTER"/>
+				</Default>
+			</Switch>
 		</RenderInFront>
 		<OnRespawned>
 			<ParticleSystemUpdate name="effect_sp"/>
@@ -184,6 +188,6 @@
 		<SwitchOffClothingParticles>
 			<ParticleSystemOff name="effect_sp"/>
 			<ParticleSystemOff name="punch_continue_particle"/>
-		</SwitchOffClothingParticles>
+		</ SwitchOffClothingParticles>
 	</RenderRules>
 </ItemRenderer>
