@@ -1,170 +1,160 @@
 <?xml version="1.0"?>
 <ItemRenderer>
-	<Data>
-		<Sprite name="p_effect" fileName="game/firefly_particles_large.rttex" textureSize="64"/>
-		<Sprite name="firefly" fileName="game/firefly_model.rttex" textureSize="64,64"/>
+  <Data>
 
-		<Animations>
-			<SpriteAnimation name="firefly_idle" isLoop="true" playOnState="Motion.Idle" sprite="firefly" animTime="1800">
-				<Frame>0,2</Frame>
-				<Frame>1,2</Frame>
-				<Frame>2,2</Frame>
-				<Frame>3,2</Frame>
-			</SpriteAnimation>
+    <Sprite name="s_transform" fileName="game/firefly_model.rttex" textureSize="64"/>
 
-			<SpriteAnimation name="firefly_walk" isLoop="true" playOnState="Motion.Move" sprite="firefly" animTime="1000">
-				<Frame>0,0</Frame>
-				<Frame>1,0</Frame>
-				<Frame>2,0</Frame>
-				<Frame>3,0</Frame>
-				<Frame>4,0</Frame>
-				<Frame>5,0</Frame>
-				<Frame>6,0</Frame>
-				<Frame>7,0</Frame>
-			</SpriteAnimation>
+    <StateMachines>
+      <StateMachine name="Main">
+        <States>
+          <State name="Idle" />
+          <State name="Walk" />
+          <State name="Jump" />
+          <State name="Fall" />
+          <State name="PunchOnGround" />
+          <State name="PunchInAir" />
+        </States>
 
-			<SpriteAnimation name="firefly_jump" sprite="firefly" playOnState="Motion.Jump" animTime="500">
-				<Frame>0,3</Frame>
-				<Frame>1,3</Frame>
-				<Frame>2,3</Frame>
-			</SpriteAnimation>
+        <Transitions>
 
-			<SpriteAnimation name="firefly_fall" sprite="firefly" playOnState="Motion.Fall" animTime="500">
-				<Frame>4,3</Frame>
-				<Frame>5,3</Frame>
-				<Frame>6,3</Frame>
-			</SpriteAnimation>
+          <Transition to="Idle" from="Walk|Fall|PunchOnGround|Jump|PunchInAir">
+            <Condition type="and">
+              <IsVariableBool name="onGround">true</IsVariableBool>
+              <IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
+              <IsAction operator="NotEqual">PUNCH</IsAction>
+            </Condition>
+          </Transition>
 
-			<SpriteAnimation name="firefly_punch" autoPlay="true" isLoop="true" playOnState="Action1.Punch" sprite="firefly" animTime="550">
-				<Frame>0,4</Frame>
-				<Frame>1,4</Frame>
-				<Frame>2,4</Frame>
-				<Frame>3,4</Frame>
-				<Frame>4,4</Frame>
-			</SpriteAnimation>
-		</Animations>
+          <Transition to="Walk" from="Idle|Fall|PunchOnGround|PunchInAir|Jump">
+            <Condition type="and">
+              <IsVariableBool name="onGround">true</IsVariableBool>
+              <IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
+              <IsAction operator="NotEqual">PUNCH</IsAction>
+            </Condition>
+          </Transition>
 
-		<StateMachines>
-			<StateMachine name="Motion">
-				<States>
-					<State name="Idle"/>
-					<State name="Move"/>
-					<State name="Jump"/>
-					<State name="Fall"/>
-				</States>
+          <Transition to="Jump" from="Idle|Walk|Fall|PunchInAir|PunchOnGround">
+            <Condition type="and">
+              <IsVariableBool name="onGround">false</IsVariableBool>
+              <IsVariableFloat name="speed.y" operator="Less">-0.1</IsVariableFloat>
+              <IsAction operator="NotEqual">PUNCH</IsAction>
+            </Condition>
+          </Transition>
 
-				<Transitions>
-					<Transition to="Idle" from="Fall|Move">
-						<Condition type="and">
-							<IsVariableBool name="onGround">true</IsVariableBool>
-							<IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
-						</Condition>
-					</Transition>
+          <Transition to="Fall" from="Jump|Idle|Walk|PunchInAir|PunchOnGround">
+            <Condition type="and">
+              <IsVariableBool name="onGround">false</IsVariableBool>
+              <IsVariableFloat name="speed.y" operator="Greater">0.1</IsVariableFloat>
+              <IsAction operator="NotEqual">PUNCH</IsAction>
+            </Condition>
+          </Transition>
 
-					<Transition to="Move" from="Jump|Fall|Idle">
-						<Condition type="and">
-							<IsVariableBool name="onGround">true</IsVariableBool>
-							<IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
-						</Condition>
-					</Transition>
+          <Transition to="PunchOnGround" from="Idle|Walk|PunchInAir|Jump|Fall">
+            <Condition type="and">
+              <IsAction>PUNCH</IsAction>
+              <IsVariableBool name="onGround">true</IsVariableBool>
+            </Condition>
+          </Transition>
 
-					<Transition to="Jump" from="Idle|Move">
-						<Condition type="and">
-							<IsVariableBool name="onGround">false</IsVariableBool>
-							<IsVariableFloat name="speed.y" operator="Less">-0.1</IsVariableFloat>
-						</Condition>
-					</Transition>
+          <Transition to="PunchInAir" from="Idle|Walk|Jump|Fall|PunchOnGround">
+            <Condition type="and">
+              <IsAction>PUNCH</IsAction>
+              <IsVariableBool name="onGround">false</IsVariableBool>
+            </Condition>
+          </Transition>
 
-					<Transition to="Fall" from="Jump|Idle|Move">
-						<Condition type="and">
-							<IsVariableBool name="onGround">false</IsVariableBool>
-							<IsVariableFloat name="speed.y" operator="Greater">0.1</IsVariableFloat>
-						</Condition>
-					</Transition>
-				</Transitions>
-			</StateMachine>
+        </Transitions>
+      </StateMachine>
 
-			<StateMachine name="Action1">
-				<States>
-					<State name="Idle"/>
-					<State name="Punch"/>
-				</States>
+      <StateMachine name="IsTransformed">
+        <States>
+          <State name="No" />
+          <State name="Transition" />
+          <State name="Yes" />
+        </States>
 
-				<Transitions>
-					<Transition from="Punch" to="Idle">
-						<Condition>
-							<IsAction operatorType="NotEqual">PUNCH</IsAction>
-						</Condition>
-					</Transition>
+        <Transitions>
+          <Transition to="Yes" from="Transition">
+            <Condition>
+              <IsItemTransformed>true</IsItemTransformed>
+            </Condition>
+          </Transition>
 
-					<Transition from="Idle" to="Punch">
-						<Condition>
-							<IsAction>PUNCH</IsAction>
-						</Condition>
-					</Transition>
-				</Transitions>
-			</StateMachine>
-		</StateMachines>
+          <Transition to="No" from="Transition">
+            <Condition>
+              <IsItemTransformed>false</IsItemTransformed>
+            </Condition>
+          </Transition>
 
-		<RenderOptions>
-			<Default>
-				<Set name="IncludeAllActions">true</Set>
-				<Set name="IgnorePunchTypeCheck">true</Set>
-				<Set name="UserNameOffset">40</Set>
-			</Default>
-		</RenderOptions>
-	</Data>
+          <Transition to="Transition" from="No">
+            <Condition>
+              <IsItemTransformed>true</IsItemTransformed>
+            </Condition>
+          </Transition>
 
-	<RenderRules>
+          <Transition to="Transition" from="Yes">
+            <Condition>
+              <IsItemTransformed>false</IsItemTransformed>
+            </Condition>
+          </Transition>
+        </Transitions>
+      </StateMachine>
+    </StateMachines>
 
-		<!-- KILL DEFAULT AVATAR -->
+    <Animations>
 
-		<RenderHair>
-			<StopIf>true</StopIf>
-		</RenderHair>
+      <SpriteAnimation name="a_walk" sprite="s_transform" animTime="1200" isLoop="true" playOnState="Main.Walk">
+        <Frame>0,0</Frame>
+        <Frame>1,0</Frame>
+        <Frame>2,0</Frame>
+        <Frame>3,0</Frame>
+        <Frame>4,0</Frame>
+        <Frame>5,0</Frame>
+        <Frame>6,0</Frame>
+        <Frame>7,0</Frame>
+        <Frame>0,1</Frame>
+        <Frame>1,1</Frame>
+      </SpriteAnimation>
 
-		<RenderBody>
-			<StopIf>true</StopIf>
-		</RenderBody>
+      <SpriteAnimation name="a_idle" sprite="s_transform" animTime="1800" isLoop="true" playOnState="Main.Idle">
+        <Frame>0,2</Frame>
+        <Frame>1,2</Frame>
+        <Frame>2,2</Frame>
+        <Frame>3,2</Frame>
+      </SpriteAnimation>
 
-		<RenderShirt>
-			<StopIf>true</StopIf>
-		</RenderShirt>
+      <SpriteAnimation name="a_jump" sprite="s_transform" animTime="500" isLoop="true" playOnState="Main.Jump">
+        <Frame>0,3</Frame>
+        <Frame>1,3</Frame>
+        <Frame>2,3</Frame>
+      </SpriteAnimation>
 
-		<RenderPants>
-			<StopIf>true</StopIf>
-		</RenderPants>
+      <SpriteAnimation name="a_fall" sprite="s_transform" animTime="500" isLoop="true" playOnState="Main.Fall">
+        <Frame>3,3</Frame>
+        <Frame>4,3</Frame>
+        <Frame>5,3</Frame>
+      </SpriteAnimation>
 
-		<RenderFeet>
-			<StopIf>true</StopIf>
-		</RenderFeet>
+      <SpriteAnimation name="a_punch" sprite="s_transform" animTime="650" isLoop="true" playOnState="Main.PunchOnGround|Main.PunchInAir">
+        <Frame>0,4</Frame>
+        <Frame>1,4</Frame>
+        <Frame>2,4</Frame>
+        <Frame>3,4</Frame>
+        <Frame>4,4</Frame>
+        <Frame>5,4</Frame>
+      </SpriteAnimation>
 
-		<RenderHand>
-			<StopIf>true</StopIf>
-		</RenderHand>
+    </Animations>
 
-		<RenderFace>
-			<StopIf>true</StopIf>
-		</RenderFace>
+  </Data>
 
-		<!-- DRAW FIREFLY -->
+  <RenderRules>
+    <RenderTransform>
+      <StopIf>
+        <IsAction>DIE</IsAction>
+      </StopIf>
 
-		<RenderInFront>
-			<SpriteRender
-				name="firefly"
-				alignment="DOWN_CENTER"
-				offset="0,-8"/>
-
-			<StopIf>
-				<IsAction>PUNCH</IsAction>
-			</StopIf>
-
-			<SpriteRender
-				name="firefly"
-				alignment="DOWN_CENTER"
-				offset="0,-8"
-				onState="Action1.Punch"/>
-		</RenderInFront>
-
-	</RenderRules>
+      <SpriteRender name="s_transform" alignment="DOWN_CENTER" offset="0,-8" />
+    </RenderTransform>
+  </RenderRules>
 </ItemRenderer>
