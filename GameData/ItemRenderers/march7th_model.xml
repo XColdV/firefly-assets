@@ -23,15 +23,11 @@
 				<Frame>0,0</Frame><Frame>1,0</Frame><Frame>2,0</Frame><Frame>3,0</Frame>
 			</SpriteAnimation>
 			
-			<SpriteAnimation name="bow_slash_frames" autoPlay="false" sprite="p_effect">
+			<SpriteAnimation name="bow_slash_frames" autoPlay="true" isLoop="true" sprite="p_effect" animTime="250">
 				<Frame>0,3</Frame>
 				<Frame>1,3</Frame>
-			</SpriteAnimation>
-			<SpriteAnimation name="HitSpark_Anim" autoPlay="false" isLoop="false" sprite="p_effect" animTime="200">
 				<Frame>2,3</Frame>
 				<Frame>3,3</Frame>
-			</SpriteAnimation>
-			<SpriteAnimation name="trail_anim" autoPlay="true" sprite="p_effect" animTime="1200">
 				<Frame>4,3</Frame>
 			</SpriteAnimation>
 		</Animations>
@@ -88,15 +84,13 @@
 		<ParticleSystems>
 			<ParticleSystem name="puncheffect">
 				<Emitter>
-					<Set name="offset">16,-20</Set>
-					<Set name="emissionInterval">0.25</Set>
+					<Set name="offset">0,-22</Set> <Set name="emissionInterval">0.25</Set>
 					<Set name="lifeTime">0.25</Set>
 					<Set name="particlesPerEmission">1</Set>
 					<Set name="particlesToEmit">1</Set>
 				</Emitter>
 				<Particle alternateSpriteFrameWithPunch="true">
 					<Set name="sprite">p_effect</Set>
-					<Set name="spriteFrame">0,3</Set>
 					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
 					<Set name="lifeTime">0.4</Set>
 					<Set name="rotateWithVelocity">true</Set>
@@ -104,111 +98,12 @@
 					<Set name="initialAlpha">1</Set>
 					<Set name="finalAlpha">1</Set>
 					<Curve name="initialScale">
-						<KeyFrame>1.5, 1.5, 1.5</KeyFrame>
-						<KeyFrame>2, 2, 2</KeyFrame>
+						<KeyFrame>0, 1.5, 1.5</KeyFrame>
+						<KeyFrame>1, 1.5, 1.5</KeyFrame>
 					</Curve>
 					<Set name="interpolateVelocity">true</Set>
 					<VectorTo name="initialVelocity" source="targetPos" duration="lifeTime" x="1" angle="0"/>
 					<VectorTo name="finalVelocity" source="targetPos" duration="lifeTime" x="1" angle="0"/>
-				</Particle>
-			</ParticleSystem>
-
-			<ParticleSystem name="ps_hitspark" secondary="trail_hitspark">
-				<Emitter>
-					<Set name="particlesPerEmission">8</Set>
-					<Set name="lifeTime">2</Set>
-					<Set name="useTargetTileColorForTint">true</Set>
-				</Emitter>
-				<Particle randomSpriteFrame="true">
-					<Set name="sprite">p_effect</Set>
-					<Set name="spriteFrame">1,3</Set>
-					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
-					<Set name="useGravity">true</Set>
-					<Set name="interpolateScale">true</Set>
-					<Set name="initialScale">2,2</Set>
-					<Random name="finalScale" min="0.1, 0.1" max="0.4, 0.4"/>
-					<Set name="lifeTime">1</Set>
-					<RandomRadial name="initialVelocity" angleRange="30,330" radiusRange="80,200"/>
-					<Set name="gravityVector">0, 100</Set>
-					<Random name="initialRotationRate" min="-300" max="300"/>
-					<Random name="posOffset" min="0.1, 0" max="16.1, 16.3"/>
-				</Particle>
-			</ParticleSystem>
-
-			<ParticleSystem name="trail_hitspark">
-				<Emitter>
-					<Set name="lifeTime">1</Set>
-					<Set name="particlesPerEmission">1</Set>
-					<Set name="particlesToEmit">80</Set>
-					<Set name="emissionInterval">0.2</Set>
-				</Emitter>
-				<Particle>
-					<Set name="sprite">p_effect</Set>
-					<Set name="spriteFrame">2,3</Set>
-					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
-					<Set name="lifeTime">1.2</Set>
-					<Set name="initalRGB">0.6, 0.8, 1.0</Set>
-					<Set name="initialRotationRate">150</Set>
-					<Curve name="initialScale">
-						<KeyFrame>0, 0, 0</KeyFrame>
-						<KeyFrame>0.4, 1, 1</KeyFrame>
-						<KeyFrame>0.8, 0.3, 0.3</KeyFrame>
-						<KeyFrame>1, 0</KeyFrame>
-					</Curve>
-					<Curve name="initialAlpha">
-						<KeyFrame>0, 0.5</KeyFrame>
-						<KeyFrame>0.8, 0</KeyFrame>
-						<KeyFrame>1, 0</KeyFrame>
-					</Curve>
-					<Set name="initialVelocity">0,0</Set>
-				</Particle>
-			</ParticleSystem>
-
-			<ParticleSystem name="ice_aura_left">
-				<Emitter>
-					<Set name="infParticles">true</Set>
-					<Set name="infLifeTime">true</Set>
-					<Set name="emissionInterval">0.25</Set>
-					<Set name="particlesPerEmission">3</Set>
-				</Emitter>
-				<Particle>
-					<Random name="offset" min="9, 0" max="16, 0"/>
-					<Set name="sprite">p_effect</Set>
-					<Set name="spriteFrame">3,3</Set>
-					<Set name="blendingMode">ADDITIVE</Set>
-					<Set name="initalRGB">0.6, 0.8, 1.0</Set>
-					<Set name="lifeTime">0.75</Set>
-					<Set name="initialAlpha">1</Set>
-					<Set name="finalAlpha">1</Set>
-					<Set name="interpolateAlpha">true</Set>
-					<Set name="interpolateScale">true</Set>
-					<Set name="initialScale">0.45, 0.20</Set>
-					<Set name="finalScale">0, 0.55</Set>
-					<Random name="initialVelocity" min="0,-16" max="0,-14"/>
-				</Particle>
-			</ParticleSystem>
-			
-			<ParticleSystem name="ice_aura_right">
-				<Emitter>
-					<Set name="infParticles">true</Set>
-					<Set name="infLifeTime">true</Set>
-					<Set name="emissionInterval">0.25</Set>
-					<Set name="particlesPerEmission">3</Set>
-				</Emitter>
-				<Particle>
-					<Random name="offset" min="-16, 0" max="-9, 0"/>
-					<Set name="sprite">p_effect</Set>
-					<Set name="spriteFrame">3,3</Set>
-					<Set name="blendingMode">ADDITIVE</Set>
-					<Set name="initalRGB">0.6, 0.8, 1.0</Set>
-					<Set name="lifeTime">0.75</Set>
-					<Set name="initialAlpha">1</Set>
-					<Set name="finalAlpha">1</Set>
-					<Set name="interpolateAlpha">true</Set>
-					<Set name="interpolateScale">true</Set>
-					<Set name="initialScale">0.45, 0.20</Set>
-					<Set name="finalScale">0, 0.55</Set>
-					<Random name="initialVelocity" min="0,-16" max="0,-14"/>
 				</Particle>
 			</ParticleSystem>
 		</ParticleSystems>
@@ -233,14 +128,6 @@
 		<OnPunchStart>
 			<ParticleSystemUpdate name="puncheffect"/>
 		</OnPunchStart>
-		<OnDestroyedTile>
-			<ParticleSystemUpdate name="ps_hitspark"/>
-		</OnDestroyedTile>
-		
-		<AddClothingParticles>
-			<ParticleSystemUpdate name="ice_aura_left" onAction="IDLE|FALL|WALK|PUNCH|JUMP"/>
-			<ParticleSystemUpdate name="ice_aura_right" onAction="IDLE|FALL|WALK|PUNCH|JUMP"/>
-		</AddClothingParticles>
 		
 		<RenderInFront>
 			<SpriteRender name="march7th_punch_sprite" offset="-32,0" alignment="DOWN_CENTER" onState="Action1.Punch"/>
