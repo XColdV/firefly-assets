@@ -166,18 +166,11 @@
 	</Data>
 
 	<RenderRules>
-
-		<RenderTransform>
-			<ParticleSystemRender name="punch_continue_particle"/>
-			<StopIf>
-				<IsAction>DIE</IsAction>
-			</StopIf>
-
+		<RenderInFront>
 			<SpriteRender
 				name="firefly"
 				alignment="DOWN_CENTER"
 				offset="0,-8"/>
-		</RenderTransform>
-
+		</RenderInFront>
 	</RenderRules>
 </ItemRenderer>
