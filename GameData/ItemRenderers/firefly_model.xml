@@ -7,9 +7,6 @@
 		<Animations>
 			<SpriteAnimation name="firefly_idle" isLoop="true" playOnState="Motion.Idle" sprite="firefly" animTime="1200">
 				<Frame>0,2</Frame>
-				<Frame>1,2</Frame>
-				<Frame>2,2</Frame>
-				<Frame>3,2</Frame>
 			</SpriteAnimation>
 			<SpriteAnimation name="firefly_walk" isLoop="true" playOnState="Motion.Move" sprite="firefly" animTime="600">
 				<Frame>0,0</Frame>
@@ -21,12 +18,12 @@
 				<Frame>7,0</Frame>
 				<Frame>0,1</Frame>
 			</SpriteAnimation>
-			<SpriteAnimation name="firefly_jump" sprite="firefly" playOnState="Motion.Jump">
+			<SpriteAnimation name="firefly_jump" isLoop="false" sprite="firefly" playOnState="Motion.Jump" animTime="300">
 				<Frame>0,3</Frame>
 				<Frame>1,3</Frame>
 				<Frame>2,3</Frame>
 			</SpriteAnimation>
-			<SpriteAnimation name="firefly_fall" sprite="firefly" playOnState="Motion.Fall">
+			<SpriteAnimation name="firefly_fall" isLoop="false" sprite="firefly" playOnState="Motion.Fall" animTime="400">
 				<Frame>4,3</Frame>
 				<Frame>5,3</Frame>
 				<Frame>6,3</Frame>
