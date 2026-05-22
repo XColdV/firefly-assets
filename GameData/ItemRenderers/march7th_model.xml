@@ -186,7 +186,8 @@
 			
 			<SpriteRender name="march7th_fall_sprite" offset="-16,0" alignment="DOWN_CENTER" onState="Motion.Fall"/>
 			<StopIf type="and">
-				<IsState>Motion.Fall</IsState>
+				<IsVariableBool name="onGround">false</IsVariableBool>
+				<IsVariableFloat name="speed.y" operator="Greater">0.1</IsVariableFloat>
 			</StopIf>
 			
 			<SpriteRender name="march7th" offset="0,0" alignment="DOWN_CENTER"/>
