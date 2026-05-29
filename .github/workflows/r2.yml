@@ -11,14 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install AWS CLI
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscliv2.zip
-          unzip -q awscliv2.zip
-          sudo ./aws/install
+      - name: Check AWS CLI
+        run: aws --version
 
       - name: Upload Assets to R2
         env:
