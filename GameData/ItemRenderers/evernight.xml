@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ItemRenderer>
 	<Data>
-		<!-- Model sheet: each cell 64x96. Attack sheet: single cell 160x96. -->
+		<!-- Model sheet: each cell 64x96 (8 cols x 5 rows). Attack sheet: 160x96 (3 cols x 5 rows). -->
 		<Sprite name="s_body" fileName="game/evernight_model.rttex" textureSize="64,96" frame="0,0"/>
 		<Sprite name="s_attack" fileName="game/evernight_attacks.rttex" textureSize="160,96" frame="0,0"/>
+		<!-- Attack particle (row 3, col 0 of the model sheet) -->
+		<Sprite name="s_attackparticle" fileName="game/evernight_model.rttex" textureSize="64,96" frame="0,3"/>
 
 		<StateMachines>
 			<StateMachine name="Motion">
@@ -71,11 +73,48 @@
 			<SpriteAnimation name="a_Fall" playOnState="Motion.Fall" sprite="s_body" animTime="300" isLoop="true">
 				<Frame>0,2</Frame>
 			</SpriteAnimation>
-			<!-- Attack: single frame on the attacks sheet -->
+			<!-- Attack (attacks sheet, col 0): plays row 1 -> row 2 -> row 0 -->
 			<SpriteAnimation name="a_Punch" playOnState="Motion.Punch" sprite="s_attack" animTime="250" isLoop="true">
+				<Frame>0,1</Frame>
+				<Frame>0,2</Frame>
 				<Frame>0,0</Frame>
 			</SpriteAnimation>
 		</Animations>
+
+		<ParticleSystems>
+			<!-- Attack particle (model sheet row 3, col 0) flung toward the punch target -->
+			<ParticleSystem name="attack_particle">
+				<Emitter>
+					<Set name="offset">0,-32</Set>
+					<Set name="lifeTime">0</Set>
+					<Set name="particlesPerEmission">1</Set>
+					<Set name="particlesToEmit">1</Set>
+					<Set name="useCharacterPos">true</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">s_attackparticle</Set>
+					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
+					<Set name="rotateWithVelocity">true</Set>
+					<Set name="lifeTime">0.35</Set>
+					<Curve name="initialScale">
+						<KeyFrame>0, 0.8,0.8</KeyFrame>
+						<KeyFrame>1, 1.1,1.1</KeyFrame>
+					</Curve>
+					<Curve name="initialAlpha">
+						<KeyFrame>0, 1</KeyFrame>
+						<KeyFrame>0.7, 1</KeyFrame>
+						<KeyFrame>1, 0</KeyFrame>
+					</Curve>
+					<VectorTo name="initialVelocity" source="targetPos" duration="lifeTime" x="1"/>
+				</Particle>
+			</ParticleSystem>
+		</ParticleSystems>
+
+		<TileStampData>
+			<Set name="FileName">game/firefly_particle.rttex</Set>
+			<Set name="EndFrame">7,1</Set>
+			<Set name="FrameCount">3</Set>
+		</TileStampData>
 
 		<RenderOptions>
 			<Default>
@@ -87,9 +126,12 @@
 
 	<RenderRules>
 		<RenderInFront>
-			<!-- Body for every non-attack state -->
-			<SpriteRender name="s_body" offset="0,0" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA" onState="Motion.Idle|Motion.Move|Motion.Jump|Motion.Fall"/>
-			<!-- Wider attack sprite swaps in during Punch -->
+			<!-- One render per state (combined "A|B|C" onState on SpriteRender is unreliable and caused the attack sprite to leak on equip) -->
+			<SpriteRender name="s_body" offset="0,0" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA" onState="Motion.Idle"/>
+			<SpriteRender name="s_body" offset="0,0" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA" onState="Motion.Move"/>
+			<SpriteRender name="s_body" offset="0,0" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA" onState="Motion.Jump"/>
+			<SpriteRender name="s_body" offset="0,0" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA" onState="Motion.Fall"/>
+			<!-- Wider attack sprite only during Punch -->
 			<SpriteRender name="s_attack" offset="0,0" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA" onState="Motion.Punch"/>
 		</RenderInFront>
 
@@ -98,5 +140,13 @@
 				<Set name="face">MAD</Set>
 			</AvatarTransform>
 		</OnPunchUpdate>
+
+		<OnPunchStart>
+			<ParticleSystemUpdate name="attack_particle"/>
+		</OnPunchStart>
+
+		<SwitchOffClothingParticles>
+			<ParticleSystemOff name="attack_particle"/>
+		</SwitchOffClothingParticles>
 	</RenderRules>
 </ItemRenderer>
