@@ -72,8 +72,8 @@
     <!-- 128x128 tiles. Left wing nudged right ~3px; right wing shifted left ~4px and up ~7px.
          NOTE: offset applies to the whole render (all frames). Per-frame offsets (e.g. frames 1/2/3 only) aren't possible here - that would need the sprite sheet itself realigned. -->
     <RenderBackpack>
-      <SpriteRender name="s_wings_left" offset="-21,5" alignmentLeft="LEFT_CENTER" alignmentRight="RIGHT_CENTER" blend="PREMULTIPLIED_ALPHA"/>
-      <SpriteRender name="s_wings_right" offset="22,-20" flip="1,0" alignmentLeft="RIGHT_CENTER" alignmentRight="LEFT_CENTER" blend="PREMULTIPLIED_ALPHA" alignment="CENTER"/>
+      <SpriteRender name="s_wings_left" offset="-3,5" alignmentLeft="LEFT_CENTER" alignmentRight="RIGHT_CENTER" blend="PREMULTIPLIED_ALPHA"/>
+      <SpriteRender name="s_wings_right" offset="8,-16" flip="1,0" alignmentLeft="RIGHT_CENTER" alignmentRight="LEFT_CENTER" blend="PREMULTIPLIED_ALPHA" alignment="CENTER"/>
     </RenderBackpack>
 
     <OnPunchUpdate>
