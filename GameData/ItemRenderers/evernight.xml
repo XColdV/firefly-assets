@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+	<Data>
+		<!-- Model sheet: each cell 64x96. Attack sheet: single cell 160x96. -->
+		<Sprite name="s_body" fileName="game/evernight_model.rttex" textureSize="64,96" frame="0,0"/>
+		<Sprite name="s_attack" fileName="game/evernight_attacks.rttex" textureSize="160,96" frame="0,0"/>
+
+		<StateMachines>
+			<StateMachine name="Motion">
+				<States>
+					<State name="Idle" />
+					<State name="Move" />
+					<State name="Jump" />
+					<State name="Fall" />
+					<State name="Punch"/>
+				</States>
+				<Transitions>
+					<Transition to="Idle" from="Fall|Move|Jump|Punch">
+						<Condition type="and">
+							<IsVariableBool name="onGround">true</IsVariableBool>
+							<IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Move" from="Jump|Fall|Idle|Punch">
+						<Condition type="and">
+							<IsVariableBool name="onGround">true</IsVariableBool>
+							<IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Jump" from="Idle|Move|Fall|Punch">
+						<Condition type="and">
+							<IsVariableBool name="onGround">false</IsVariableBool>
+							<IsVariableFloat name="speed.y" operator="Less">-0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Fall" from="Jump|Idle|Move|Punch">
+						<Condition type="and">
+							<IsVariableBool name="onGround">false</IsVariableBool>
+							<IsVariableFloat name="speed.y" operator="Greater">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Punch" from="Idle|Move|Jump|Fall">
+						<Condition>
+							<IsAction>PUNCH</IsAction>
+						</Condition>
+					</Transition>
+				</Transitions>
+			</StateMachine>
+		</StateMachines>
+
+		<Animations>
+			<!-- Idle: row 0, col 0 -->
+			<SpriteAnimation name="a_Idle" playOnState="Motion.Idle" sprite="s_body" animTime="600" isLoop="true">
+				<Frame>0,0</Frame>
+			</SpriteAnimation>
+			<!-- Jump: row 0, col 1 -->
+			<SpriteAnimation name="a_Jump" playOnState="Motion.Jump" sprite="s_body" animTime="300" isLoop="true">
+				<Frame>1,0</Frame>
+			</SpriteAnimation>
+			<!-- Walk/Run: row 1, cols 0-2 -->
+			<SpriteAnimation name="a_Move" playOnState="Motion.Move" sprite="s_body" animTime="450" isLoop="true">
+				<Frame>0,1</Frame>
+				<Frame>1,1</Frame>
+				<Frame>2,1</Frame>
+			</SpriteAnimation>
+			<!-- Fall: row 2, col 0 -->
+			<SpriteAnimation name="a_Fall" playOnState="Motion.Fall" sprite="s_body" animTime="300" isLoop="true">
+				<Frame>0,2</Frame>
+			</SpriteAnimation>
+			<!-- Attack: single frame on the attacks sheet -->
+			<SpriteAnimation name="a_Punch" playOnState="Motion.Punch" sprite="s_attack" animTime="250" isLoop="true">
+				<Frame>0,0</Frame>
+			</SpriteAnimation>
+		</Animations>
+
+		<RenderOptions>
+			<Default>
+				<Set name="IncludeAllActions">true</Set>
+				<Set name="PlayDefaultPunchAudio">true</Set>
+			</Default>
+		</RenderOptions>
+	</Data>
+
+	<RenderRules>
+		<RenderInFront>
+			<!-- Body for every non-attack state -->
+			<SpriteRender name="s_body" offset="0,0" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA" onState="Motion.Idle|Motion.Move|Motion.Jump|Motion.Fall"/>
+			<!-- Wider attack sprite swaps in during Punch -->
+			<SpriteRender name="s_attack" offset="0,0" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA" onState="Motion.Punch"/>
+		</RenderInFront>
+
+		<OnPunchUpdate>
+			<AvatarTransform class="Face">
+				<Set name="face">MAD</Set>
+			</AvatarTransform>
+		</OnPunchUpdate>
+	</RenderRules>
+</ItemRenderer>

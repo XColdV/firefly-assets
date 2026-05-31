@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<ItemRenderer>
+	<Data>
+		<!-- Pollux dragon pet. Sheet cells are 64x48.
+		     head = row 0 cols 1,3,5  |  back = row 0 cols 0,2,4
+		     attack back = row 1 col 0  |  attack head = row 1 col 1
+		     wing = row 1 cols 2,3,4    |  fire breath = row 2 col 0 -->
+		<Sprite name="s_Pet_head" fileName="game/pollux_dragon.rttex" textureSize="64,48" frame="1,0"/>
+		<Sprite name="s_Pet_back" fileName="game/pollux_dragon.rttex" textureSize="64,48" frame="0,0"/>
+		<Sprite name="s_Pet_wing" fileName="game/pollux_dragon.rttex" textureSize="64,48" frame="2,1"/>
+		<Sprite name="dragon_fire" fileName="game/pollux_dragon.rttex" textureSize="64,48" frame="0,2"/>
+
+		<StateMachines>
+			<StateMachine name="Motion">
+				<States>
+					<State name="Idle" />
+					<State name="Move" />
+					<State name="Punch" />
+				</States>
+				<Transitions>
+					<Transition to="Idle" from="Move|Punch">
+						<Condition type="and">
+							<IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Move" from="Idle|Punch">
+						<Condition type="and">
+							<IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Punch" from="Idle|Move">
+						<Condition>
+							<IsAction>PUNCH</IsAction>
+						</Condition>
+					</Transition>
+				</Transitions>
+			</StateMachine>
+		</StateMachines>
+
+		<Animations>
+			<!-- Idle/flying head: row 0 cols 1,3,5 -->
+			<SpriteAnimation name="a_dragon_head" sprite="s_Pet_head" animTime="700" isLoop="true" autoPlay="true">
+				<Frame>1,0</Frame>
+				<Frame>3,0</Frame>
+				<Frame>5,0</Frame>
+			</SpriteAnimation>
+			<!-- Idle/flying back: row 0 cols 0,2,4 -->
+			<SpriteAnimation name="a_dragon_back" sprite="s_Pet_back" animTime="700" isLoop="true" autoPlay="true">
+				<Frame>0,0</Frame>
+				<Frame>2,0</Frame>
+				<Frame>4,0</Frame>
+			</SpriteAnimation>
+			<!-- Wing flap: row 1 cols 2,3,4 -->
+			<SpriteAnimation name="a_dragon_wing" sprite="s_Pet_wing" animTime="700" isLoop="true" autoPlay="true">
+				<Frame>2,1</Frame>
+				<Frame>3,1</Frame>
+				<Frame>4,1</Frame>
+			</SpriteAnimation>
+			<!-- Attack head: row 1 col 1 -->
+			<SpriteAnimation name="a_dragon_punch_head" sprite="s_Pet_head" animTime="700" isLoop="true" playOnState="Motion.Punch">
+				<Frame>1,1</Frame>
+			</SpriteAnimation>
+			<!-- Attack back: row 1 col 0 -->
+			<SpriteAnimation name="a_dragon_punch_back" sprite="s_Pet_back" animTime="700" isLoop="true" playOnState="Motion.Punch">
+				<Frame>0,1</Frame>
+			</SpriteAnimation>
+		</Animations>
+
+		<ParticleSystems>
+			<!-- Fire breath toward the punch target -->
+			<ParticleSystem name="ps_punchProjectile" updateStage="RenderPet" updateState="Motion.Punch">
+				<Emitter usePlayerFacing="true">
+					<Random name="emissionInterval" min="0.002" max="0.004"/>
+					<Set name="infParticles">true</Set>
+					<Set name="lifeTime">0.15</Set>
+					<Set name="particlesPerEmission">3</Set>
+					<Set name="offset">14,-14</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">dragon_fire</Set>
+					<Set name="blendingMode">ADDITIVE</Set>
+					<Set name="lifeTime">0.15</Set>
+					<Curve name="initialAlpha">
+						<KeyFrame>0, 1</KeyFrame>
+						<KeyFrame>1, 1</KeyFrame>
+					</Curve>
+					<Curve name="initialScale">
+						<KeyFrame>0, 1.1,1.1</KeyFrame>
+						<KeyFrame>1, 1.25,1.25</KeyFrame>
+					</Curve>
+					<Random name="targetPosOffset" min="-3, -13" max="3, 13"/>
+					<VectorTo name="initialVelocity" source="targetPos" offset="targetPosOffset" duration="lifeTime" x="1"/>
+					<Set name="rotateWithVelocity">true</Set>
+					<OnFinish>
+						<ParticleSystemName>ps_punchSmoke</ParticleSystemName>
+					</OnFinish>
+				</Particle>
+			</ParticleSystem>
+			<ParticleSystem name="ps_punchSmoke">
+				<Emitter>
+					<Set name="emissionInterval">0.01</Set>
+					<Set name="infParticles">true</Set>
+					<Set name="lifeTime">0.5</Set>
+					<Set name="particlesPerEmission">2</Set>
+					<Set name="delay">-0.25</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">dragon_fire</Set>
+					<Set name="renderAlignment">CENTER</Set>
+					<Set name="blendingMode">ADDITIVE</Set>
+					<Random name="offset" min="-8, -8" max="8, 8" />
+					<Set name="initialAngle">180</Set>
+					<Curve name="initialAlpha">
+						<KeyFrame>0, 1</KeyFrame>
+						<KeyFrame>1, 0</KeyFrame>
+					</Curve>
+					<Curve name="initialScale">
+						<KeyFrame>0, 0.6, 0.6</KeyFrame>
+						<KeyFrame>1, 0.05, 0.05</KeyFrame>
+					</Curve>
+					<Set name="rotateWithVelocity">true</Set>
+					<RandomRadial name="initialVelocity" angleRange="0,360" radiusRange="60,80"/>
+					<Set name="lifeTime">0.5</Set>
+				</Particle>
+			</ParticleSystem>
+		</ParticleSystems>
+
+		<VariableMap>
+			<Set name="projectile_offset">0, 0</Set>
+			<Set name="projectile_angle">0</Set>
+		</VariableMap>
+
+		<RenderOptions>
+			<Default>
+				<Set name="NeedRenderPet">true</Set>
+				<Set name="PetOffsetDuplication">0,0</Set>
+				<Set name="IgnoreDefaultDamagedTileEffect">false</Set>
+				<Set name="IgnoreDefaultDestroyedTileEffect">false</Set>
+				<Set name="HideParticlesOnTransform">false</Set>
+				<Set name="PunchSoundOverride">HAND</Set>
+				<Set name="PlayDefaultPunchAudio">false</Set>
+			</Default>
+		</RenderOptions>
+	</Data>
+
+	<RenderRules>
+		<RenderPet>
+			<SpriteRender name="s_Pet_head" alignment="DOWN_CENTER" offset="0,11"/>
+			<SpriteRender name="s_Pet_back" alignment="DOWN_CENTER" offset="-48,11"/>
+			<SpriteRender name="s_Pet_wing" alignment="DOWN_CENTER" offset="-24,8"/>
+		</RenderPet>
+		<Update>
+			<AvatarTransform class="ArmAngle" onAction="PUNCH">
+				<Set name="armName">arm2Angle</Set>
+				<Set name="armAngle">1700</Set>
+				<Set name="isAdditive">true</Set>
+				<Set name="pointTowardsPunchTarget">true</Set>
+			</AvatarTransform>
+		</Update>
+		<OnPunchUpdate>
+			<AvatarTransform class="Face">
+				<Set name="face">MAD</Set>
+			</AvatarTransform>
+		</OnPunchUpdate>
+	</RenderRules>
+</ItemRenderer>
