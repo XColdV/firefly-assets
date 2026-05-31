@@ -2,15 +2,15 @@
 <ItemRenderer>
   <Data>
     <!-- phainon_wings.rttex, each tile 128x128. Row 0 = left wing, Row 1 = right wing (flipped). -->
-    <Sprite name="s_wings_left" fileName="game/phainon_wings.rttex" textureSize="128" frame="0,0" />
-    <Sprite name="s_wings_right" fileName="game/phainon_wings.rttex" textureSize="128" frame="0,1" />
+    <Sprite name="s_wings_left" fileName="game/phainon_wings.rttex" textureSize="128" frame="0,0"/>
+    <Sprite name="s_wings_right" fileName="game/phainon_wings.rttex" textureSize="128" frame="1,1"/>
 
     <StateMachines>
       <StateMachine name="Action">
         <States>
-          <State name="Idle" />
-          <State name="Jump" />
-          <State name="Fall" />
+          <State name="Idle"/>
+          <State name="Jump"/>
+          <State name="Fall"/>
         </States>
         <Transitions>
           <Transition to="Idle" from="Fall|Jump">
@@ -53,27 +53,27 @@
 
       <!-- Right wing (row 1) -->
       <SpriteAnimation name="a_equip_right" sprite="s_wings_right" playOnState="Action.Idle" isLoop="true" animTime="300">
-        <Frame>0,1</Frame>
+        <Frame>1,1</Frame>
       </SpriteAnimation>
       <SpriteAnimation name="a_jump_right" sprite="s_wings_right" animTime="400" playOnState="Action.Jump">
+        <Frame>2,1</Frame>
         <Frame>1,1</Frame>
-        <Frame>2,1</Frame>
         <Frame>3,1</Frame>
-        <Frame>2,1</Frame>
       </SpriteAnimation>
       <SpriteAnimation name="a_fall_right" sprite="s_wings_right" animTime="300" isLoop="true" playOnState="Action.Fall">
         <Frame>2,1</Frame>
+        <Frame>0,1</Frame>
         <Frame>1,1</Frame>
-        <Frame>2,1</Frame>
       </SpriteAnimation>
     </Animations>
   </Data>
 
   <RenderRules>
-    <!-- 128x128 tiles: offsets scaled up (~2x) from the 64px Occeans values so the bigger wings sit on the back and don't overlap at center -->
+    <!-- 128x128 tiles. Left wing nudged right ~3px; right wing shifted left ~4px and up ~7px.
+         NOTE: offset applies to the whole render (all frames). Per-frame offsets (e.g. frames 1/2/3 only) aren't possible here - that would need the sprite sheet itself realigned. -->
     <RenderBackpack>
-      <SpriteRender name="s_wings_left" offset="-14,-26" alignmentLeft="LEFT_CENTER" alignmentRight="RIGHT_CENTER" blend="PREMULTIPLIED_ALPHA" />
-      <SpriteRender name="s_wings_right" offset="14,-26" flip="1,0" alignmentLeft="RIGHT_CENTER" alignmentRight="LEFT_CENTER" blend="PREMULTIPLIED_ALPHA" />
+      <SpriteRender name="s_wings_left" offset="-21,5" alignmentLeft="LEFT_CENTER" alignmentRight="RIGHT_CENTER" blend="PREMULTIPLIED_ALPHA"/>
+      <SpriteRender name="s_wings_right" offset="22,-20" flip="1,0" alignmentLeft="RIGHT_CENTER" alignmentRight="LEFT_CENTER" blend="PREMULTIPLIED_ALPHA" alignment="CENTER"/>
     </RenderBackpack>
 
     <OnPunchUpdate>
