@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+	<Data>
+		<!-- Sans character: 128x128 tiles, scaled to 0.5 (64x64 effective size) -->
+		<Sprite name="s_sans" fileName="game/sans_undertale.rttex" textureSize="128" frame="0,0"/>
+		
+		<!-- Gaster Blaster: 128x80 tiles, scaled to 0.4 (51x32 effective size) -->
+		<Sprite name="s_blaster" fileName="game/gaster_blaster.rttex" textureSize="128,80" frame="0,0"/>
+		
+		<!-- Gaster Blaster laser beam -->
+		<Sprite name="s_laser" fileName="game/gaster_blaster.rttex" textureSize="128,80" frame="0,3"/>
+		
+		<!-- Particle effects for charging -->
+		<Sprite name="s_charge_particle" fileName="game/gaster_blaster.rttex" textureSize="128,80" frame="3,2"/>
+		
+		<!-- TileStamp particles -->
+		<Sprite name="s_stamp" fileName="game/firefly_particle.rttex" textureSize="64" frame="7,2"/>
+
+		<StateMachines>
+			<StateMachine name="Motion">
+				<States>
+					<State name="Idle" />
+					<State name="Move" />
+					<State name="Jump" />
+					<State name="Fall" />
+					<State name="Punch"/>
+				</States>
+				<Transitions>
+					<Transition to="Idle" from="Fall|Move|Jump|Punch">
+						<Condition type="and">
+							<IsVariableBool name="onGround">true</IsVariableBool>
+							<IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Move" from="Jump|Fall|Idle|Punch">
+						<Condition type="and">
+							<IsVariableBool name="onGround">true</IsVariableBool>
+							<IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Jump" from="Idle|Move|Fall|Punch">
+						<Condition type="and">
+							<IsVariableBool name="onGround">false</IsVariableBool>
+							<IsVariableFloat name="speed.y" operator="Less">-0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Fall" from="Jump|Idle|Move|Punch">
+						<Condition type="and">
+							<IsVariableBool name="onGround">false</IsVariableBool>
+							<IsVariableFloat name="speed.y" operator="Greater">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Punch" from="Idle|Move|Jump|Fall">
+						<Condition>
+							<IsAction>PUNCH</IsAction>
+						</Condition>
+					</Transition>
+				</Transitions>
+			</StateMachine>
+		</StateMachines>
+
+		<Animations>
+			<!-- Sans Idle: row 0, cols 0-2 -->
+			<SpriteAnimation name="a_sans_idle" playOnState="Motion.Idle" sprite="s_sans" animTime="900" isLoop="true">
+				<Frame>0,0</Frame>
+				<Frame>1,0</Frame>
+				<Frame>2,0</Frame>
+			</SpriteAnimation>
+			
+			<!-- Sans Walking: row 1, cols 0-3 -->
+			<SpriteAnimation name="a_sans_walk" playOnState="Motion.Move" sprite="s_sans" animTime="600" isLoop="true">
+				<Frame>0,1</Frame>
+				<Frame>1,1</Frame>
+				<Frame>2,1</Frame>
+				<Frame>3,1</Frame>
+			</SpriteAnimation>
+			
+			<!-- Sans Jump: row 2, col 0 -->
+			<SpriteAnimation name="a_sans_jump" playOnState="Motion.Jump" sprite="s_sans" animTime="300" isLoop="true">
+				<Frame>0,2</Frame>
+			</SpriteAnimation>
+			
+			<!-- Sans Fall: row 2, col 1 -->
+			<SpriteAnimation name="a_sans_fall" playOnState="Motion.Fall" sprite="s_sans" animTime="300" isLoop="true">
+				<Frame>1,2</Frame>
+			</SpriteAnimation>
+			
+			<!-- Sans Attack: row 3, cols 1 then 0 (summoning animation) -->
+			<SpriteAnimation name="a_sans_attack" playOnState="Motion.Punch" sprite="s_sans" animTime="400" isLoop="true">
+				<Frame>1,3</Frame>
+				<Frame>0,3</Frame>
+			</SpriteAnimation>
+
+			<!-- Gaster Blaster Idle: row 0, cols 0-2 -->
+			<SpriteAnimation name="a_blaster_idle" sprite="s_blaster" animTime="800" isLoop="true" autoPlay="true">
+				<Frame>0,0</Frame>
+				<Frame>1,0</Frame>
+				<Frame>2,0</Frame>
+			</SpriteAnimation>
+			
+			<!-- Gaster Blaster Charging: row 1, cols 0-2 -->
+			<SpriteAnimation name="a_blaster_charge" sprite="s_blaster" animTime="600" isLoop="true" playOnState="Motion.Punch">
+				<Frame>0,1</Frame>
+				<Frame>1,1</Frame>
+				<Frame>2,1</Frame>
+			</SpriteAnimation>
+			
+			<!-- Gaster Blaster Firing: row 2, col 0 (mouth open) -->
+			<SpriteAnimation name="a_blaster_fire" sprite="s_blaster" animTime="200" isLoop="false" playOnState="Motion.Punch">
+				<Frame>0,2</Frame>
+			</SpriteAnimation>
+
+			<!-- Gentle floating for Sans -->
+			<SpriteSinPulseAnimation name="a_sans_float" sprite="s_sans" autoPlay="true">
+				<Parameter name="pos.y">
+					<Set name="period">2800</Set>
+					<Set name="scale">2</Set>
+				</Parameter>
+			</SpriteSinPulseAnimation>
+		</Animations>
+
+		<ParticleSystems>
+			<!-- Charging particles around Gaster Blaster -->
+			<ParticleSystem name="ps_blaster_charge" updateStage="RenderPet" updateState="Motion.Punch">
+				<Emitter>
+					<Random name="offset" min="-15,-10" max="15,-20"/>
+					<Random name="emissionInterval" min="0.05" max="0.1"/>
+					<Set name="infParticles">true</Set>
+					<Set name="lifeTime">0.4</Set>
+					<Set name="particlesPerEmission">2</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">s_charge_particle</Set>
+					<Set name="blendingMode">ADDITIVE</Set>
+					<Random name="lifeTime" min="0.8" max="1.2"/>
+					<Curve name="initialAlpha">
+						<KeyFrame>0, 0.9</KeyFrame>
+						<KeyFrame>1, 0</KeyFrame>
+					</Curve>
+					<Curve name="initialScale">
+						<KeyFrame>0, 0.3,0.3</KeyFrame>
+						<KeyFrame>1, 0.8,0.8</KeyFrame>
+					</Curve>
+					<Set name="initalRGB">0.5, 0.8, 1</Set>
+					<Random name="initialVelocity" min="0,-25" max="0,-35"/>
+					<Random name="initialAngle" min="0" max="360"/>
+					<Random name="initialRotationRate" min="-180" max="180"/>
+				</Particle>
+			</ParticleSystem>
+
+			<!-- Laser beam projectile toward target -->
+			<ParticleSystem name="ps_laser_beam" updateStage="RenderPet" updateState="Motion.Punch">
+				<Emitter usePlayerFacing="true">
+					<Random name="emissionInterval" min="0.002" max="0.004"/>
+					<Set name="infParticles">true</Set>
+					<Set name="lifeTime">0.2</Set>
+					<Set name="particlesPerEmission">4</Set>
+					<Set name="offset">18,-12</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">s_laser</Set>
+					<Set name="blendingMode">ADDITIVE</Set>
+					<Set name="lifeTime">0.18</Set>
+					<Curve name="initialAlpha">
+						<KeyFrame>0, 1</KeyFrame>
+						<KeyFrame>1, 1</KeyFrame>
+					</Curve>
+					<Curve name="initialScale">
+						<KeyFrame>0, 1.2,1.2</KeyFrame>
+						<KeyFrame>1, 1.4,1.4</KeyFrame>
+					</Curve>
+					<Set name="initalRGB">0.4, 0.7, 1</Set>
+					<Random name="targetPosOffset" min="-4,-15" max="4,15"/>
+					<VectorTo name="initialVelocity" source="targetPos" offset="targetPosOffset" duration="lifeTime" x="1"/>
+					<Set name="rotateWithVelocity">true</Set>
+					<OnFinish>
+						<ParticleSystemName>ps_laser_impact</ParticleSystemName>
+					</OnFinish>
+				</Particle>
+			</ParticleSystem>
+
+			<!-- Laser impact explosion -->
+			<ParticleSystem name="ps_laser_impact">
+				<Emitter>
+					<Set name="emissionInterval">0.01</Set>
+					<Set name="infParticles">true</Set>
+					<Set name="lifeTime">0.6</Set>
+					<Set name="particlesPerEmission">3</Set>
+					<Set name="delay">-0.3</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">s_laser</Set>
+					<Set name="renderAlignment">CENTER</Set>
+					<Set name="blendingMode">ADDITIVE</Set>
+					<Random name="offset" min="-10,-10" max="10,10"/>
+					<Set name="initialAngle">180</Set>
+					<Curve name="initialAlpha">
+						<KeyFrame>0, 1</KeyFrame>
+						<KeyFrame>1, 0</KeyFrame>
+					</Curve>
+					<Curve name="initialScale">
+						<KeyFrame>0, 0.7,0.7</KeyFrame>
+						<KeyFrame>1, 0.1,0.1</KeyFrame>
+					</Curve>
+					<Set name="initalRGB">0.5, 0.8, 1</Set>
+					<Set name="rotateWithVelocity">true</Set>
+					<RandomRadial name="initialVelocity" angleRange="0,360" radiusRange="70,100"/>
+					<Set name="lifeTime">0.6</Set>
+				</Particle>
+			</ParticleSystem>
+
+			<!-- Ambient blue glow around Sans -->
+			<ParticleSystem name="ps_sans_aura">
+				<Emitter>
+					<Random name="offset" min="-20,-15" max="20,-30"/>
+					<Random name="emissionInterval" min="0.2" max="0.4"/>
+					<Set name="infParticles">true</Set>
+					<Set name="infLifeTime">true</Set>
+					<Set name="particlesPerEmission">1</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">s_stamp</Set>
+					<Set name="blendingMode">ADDITIVE</Set>
+					<Set name="isBackgroundParticle">false</Set>
+					<Set name="relativeToEmitter">false</Set>
+					<Set name="initalRGB">0.4, 0.7, 1</Set>
+					<Set name="interpolateAlpha">true</Set>
+					<Set name="initialAlpha">0.7</Set>
+					<Set name="finalAlpha">0</Set>
+					<Set name="interpolateScale">true</Set>
+					<Set name="initialScale">0.4,0.4</Set>
+					<Set name="finalScale">0.8,0.8</Set>
+					<Random name="lifeTime" min="1.5" max="2.5"/>
+					<Random name="initialVelocity" min="-5,-30" max="5,-40"/>
+					<Random name="initialAngle" min="0" max="360"/>
+					<Random name="initialRotationRate" min="-90" max="90"/>
+				</Particle>
+			</ParticleSystem>
+
+			<!-- Hit impact particles -->
+			<ParticleSystem name="ps_hit_burst" updateStage="OnDamagedTile">
+				<Emitter>
+					<Set name="offset">0,0</Set>
+					<Set name="lifeTime">0</Set>
+					<Random name="particlesPerEmission" min="10" max="15"/>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">s_stamp</Set>
+					<Set name="blendingMode">ADDITIVE</Set>
+					<Set name="isBackgroundParticle">false</Set>
+					<Set name="lifeTime">0.9</Set>
+					<Set name="rotateWithVelocity">true</Set>
+					<Set name="finalRotationRate">8</Set>
+					<Set name="initialAlpha">1</Set>
+					<Set name="finalAlpha">0</Set>
+					<Set name="interpolateAlpha">true</Set>
+					<Set name="interpolateScale">true</Set>
+					<Set name="initialScale">1.0,1.0</Set>
+					<Random name="finalScale" min="0.2,0.2" max="0.5,0.5"/>
+					<Set name="initalRGB">0.4, 0.7, 1</Set>
+					<Set name="interpolateAngle">true</Set>
+					<Random name="initialAngle" min="-360" max="360"/>
+					<Random name="finalAngle" min="-360" max="360"/>
+					<RandomRadial name="initialVelocity" angleRange="0,360" radiusRange="60,110"/>
+					<Random name="posOffset" min="0,0" max="16,16"/>
+				</Particle>
+			</ParticleSystem>
+
+			<!-- Destruction burst -->
+			<ParticleSystem name="ps_destroy_burst">
+				<Emitter>
+					<Set name="lifeTime">0.25</Set>
+					<Set name="particlesPerEmission">25</Set>
+					<Set name="particlesToEmit">1</Set>
+				</Emitter>
+				<Particle>
+					<Set name="sprite">s_stamp</Set>
+					<Set name="blendingMode">ADDITIVE</Set>
+					<Set name="lifeTime">1.8</Set>
+					<Curve name="initialAlpha">
+						<KeyFrame>0, 1</KeyFrame>
+						<KeyFrame>0.6, 0.9</KeyFrame>
+						<KeyFrame>1, 0</KeyFrame>
+					</Curve>
+					<Curve name="initialScale">
+						<KeyFrame>0, 1.3,1.3</KeyFrame>
+						<KeyFrame>1, 0.15,0.15</KeyFrame>
+					</Curve>
+					<Set name="initalRGB">0.4, 0.7, 1</Set>
+					<Random name="initialRotationRate" min="5" max="25"/>
+					<Random name="offset" min="0" max="16"/>
+					<Set name="useGravity">true</Set>
+					<Set name="gravityVector">0,120</Set>
+					<RandomRadial name="initialVelocity" angleRange="0,360" radiusRange="70,160"/>
+				</Particle>
+			</ParticleSystem>
+		</ParticleSystems>
+
+		<TileStampData>
+			<Set name="FileName">game/firefly_particle.rttex</Set>
+			<Set name="StartFrame">7,2</Set>
+			<Set name="EndFrame">9,2</Set>
+			<Set name="FrameCount">3</Set>
+		</TileStampData>
+
+		<VariableMap>
+			<Set name="projectile_offset">0,0</Set>
+			<Set name="projectile_angle">0</Set>
+		</VariableMap>
+
+		<RenderOptions>
+			<Default>
+				<Set name="NeedRenderPet">true</Set>
+				<Set name="PetOffsetDuplication">0,0</Set>
+				<Set name="IgnoreDefaultDamagedTileEffect">true</Set>
+				<Set name="IgnoreDefaultDestroyedTileEffect">true</Set>
+				<Set name="HideParticlesOnTransform">false</Set>
+				<Set name="PunchSoundOverride">HAND</Set>
+				<Set name="PlayDefaultPunchAudio">false</Set>
+				<Set name="IncludeAllActions">true</Set>
+			</Default>
+		</RenderOptions>
+	</Data>
+
+	<RenderRules>
+		<!-- Sans character rendered in front -->
+		<RenderInFront>
+			<SpriteRender name="s_sans" offset="0,0" scale="0.5,0.5" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA"/>
+		</RenderInFront>
+
+		<!-- Gaster Blaster as pet companion -->
+		<RenderPet>
+			<SpriteRender name="s_blaster" alignment="DOWN_CENTER" offset="0,8" scale="0.4,0.4" blend="PREMULTIPLIED_ALPHA"/>
+		</RenderPet>
+
+		<Update>
+			<AvatarTransform class="ArmAngle" onAction="PUNCH">
+				<Set name="armName">arm2Angle</Set>
+				<Set name="armAngle">1800</Set>
+				<Set name="isAdditive">true</Set>
+				<Set name="pointTowardsPunchTarget">true</Set>
+			</AvatarTransform>
+		</Update>
+
+		<OnPunchUpdate>
+			<AvatarTransform class="Face">
+				<Set name="face">MAD</Set>
+			</AvatarTransform>
+		</OnPunchUpdate>
+
+		<OnDamagedTile>
+			<ParticleSystemUpdate name="ps_hit_burst"/>
+		</OnDamagedTile>
+
+		<OnDestroyedTile>
+			<ParticleSystemUpdate name="ps_destroy_burst"/>
+		</OnDestroyedTile>
+
+		<AddClothingParticles>
+			<ParticleSystemUpdate name="ps_sans_aura" drawShadow="false"/>
+		</AddClothingParticles>
+
+		<SwitchOffClothingParticles>
+			<ParticleSystemOff name="ps_blaster_charge"/>
+			<ParticleSystemOff name="ps_laser_beam"/>
+			<ParticleSystemOff name="ps_laser_impact"/>
+			<ParticleSystemOff name="ps_sans_aura"/>
+			<ParticleSystemOff name="ps_hit_burst"/>
+			<ParticleSystemOff name="ps_destroy_burst"/>
+		</SwitchOffClothingParticles>
+	</RenderRules>
+</ItemRenderer>
+
+<!-- Made with Bob -->
