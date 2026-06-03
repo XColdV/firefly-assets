@@ -134,8 +134,6 @@ body.world_ui {
     }
 
     #gems_panel .panel_name {
-        justify-content: left;
-        align-items: left;
         width: 95%; /* Ensure it takes full width */
         height: 33dp;
         vertical-align: top;

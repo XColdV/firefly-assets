@@ -20,13 +20,13 @@
         </div>
         <p class="color_brown" data-class-hidden="!IsInFashionShow" data-rml="ToRMLText(Localize('[WARDROBE_MAIN_ERROR_MSG]'))"/>
         <div id="button-holder">
-          <div onclick="OnEvent(event, 'WardrobeMain.UnequipAll')" class="img-button button-default-color" data-class-disabled="IsInFashionShow || !HasClothes">
+          <div id="unequip-all-button" onclick="OnEvent(event, 'WardrobeMain.UnequipAll')" class="img-button button-default-color" data-class-disabled="IsInFashionShow || !HasClothes">
             <span class="label" data-rml="ToRMLText(Localize('[WARDROBE_MAIN_UNEQUIP_BTN]'))"/>
           </div>
-          <div onclick="OnEvent(event, 'WardrobeMain.Save')" class="img-button button-default-color" data-class-disabled="IsInFashionShow">
+          <div id="save-button" onclick="OnEvent(event, 'WardrobeMain.Save')" class="img-button button-default-color" data-class-disabled="IsInFashionShow">
             <span class="label" data-rml="ToRMLText(Localize('[WARDROBE_MAIN_SAVE_BTN]'))"/>
           </div>
-          <div onclick="OnEvent(event, 'WardrobeMain.Load')" class="img-button button-default-color" data-class-disabled="IsInFashionShow">
+          <div id="load-button" onclick="OnEvent(event, 'WardrobeMain.Load')" class="img-button button-default-color" data-class-disabled="IsInFashionShow">
             <span class="label" data-rml="ToRMLText(Localize('[WARDROBE_MAIN_LOAD_BTN]'))"/>
           </div>
         </div>

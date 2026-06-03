@@ -62,7 +62,8 @@ button.common_btn:hover
 	font-size: 36dp;
 }
 
-.font-body1 {
+.font-body1,
+.font-regular {
 	font-family: Century Gothic;
 	font-size: 26dp;
 }
@@ -365,6 +366,13 @@ button.common_btn:hover
 }
 
 
+/*---------------------     Grow Emoji      --------------*/
+
+.grow_emoji {
+	color: rgb(255, 255, 255);
+	font-family: grow_emoji;
+	margin: 1dp;
+}
 
 /*---------------------     Basic Animations      --------------*/
 
@@ -561,7 +569,7 @@ button.common_btn:hover
 select selectarrow {
     decorator: image(interface/large/gui_auction_dropdown_arrow.rttex);
     width: 40dp;
-    height: 20dp;
+    height: 100%;
 	box-shadow: #000 0 2dp 2dp 0dp;
 }
 
@@ -614,4 +622,8 @@ option.selected {
 }
 truncatingstring {
 	display: block;
+}
+.link
+{
+text-decoration: underline;
 }

@@ -59,55 +59,23 @@
 							<td class="row-bg">Place Bid</td>
 							<td class="row-bg">
 								<div class="horizontal-panel">
-									<div onclick="OnEvent(event, 'auction.OnPlus1')" class="img-button button-green-color" data-class-disabled="!AuctionBlockModel.CanBid || !AuctionBlockModel.IsActive || AuctionBlockModel.IsOwner || 1 > AuctionBlockModel.AlreadyBidLocks + AuctionBlockModel.AvailableLocks - AuctionBlockModel.HighBidLocks">
-										<span class="label" data-class-hidden="!AuctionBlockModel.CanBid">+1</span>
-										<div class="loader" data-class-hidden="AuctionBlockModel.CanBid">
-											<div class="bar1"></div>
-											<div class="bar2"></div>
-											<div class="bar3"></div>
-											<div class="bar4"></div>
-											<div class="bar5"></div>
-											<div class="bar6"></div>
-											<div class="bar7"></div>
-											<div class="bar8"></div>
-											<div class="bar9"></div>
-											<div class="bar10"></div>
-											<div class="bar11"></div>
-											<div class="bar12"></div>
-										</div>
-									</div>
-									<div onclick="OnEvent(event, 'auction.OnPlus5')" class="img-button button-green-color" data-class-disabled="!AuctionBlockModel.CanBid || !AuctionBlockModel.IsActive || AuctionBlockModel.IsOwner || 5 > AuctionBlockModel.AlreadyBidLocks + AuctionBlockModel.AvailableLocks - AuctionBlockModel.HighBidLocks">
-										<span class="label" data-class-hidden="!AuctionBlockModel.CanBid">+5</span>
-										<div class="loader" data-class-hidden="AuctionBlockModel.CanBid">
-											<div class="bar1"></div>
-											<div class="bar2"></div>
-											<div class="bar3"></div>
-											<div class="bar4"></div>
-											<div class="bar5"></div>
-											<div class="bar6"></div>
-											<div class="bar7"></div>
-											<div class="bar8"></div>
-											<div class="bar9"></div>
-											<div class="bar10"></div>
-											<div class="bar11"></div>
-											<div class="bar12"></div>
-										</div>
-									</div>
-									<div onclick="OnEvent(event, 'auction.OnPlus10')" class="img-button button-green-color" data-class-disabled="!AuctionBlockModel.CanBid || !AuctionBlockModel.IsActive || AuctionBlockModel.IsOwner || 10 > AuctionBlockModel.AlreadyBidLocks + AuctionBlockModel.AvailableLocks - AuctionBlockModel.HighBidLocks">
-										<span class="label" data-class-hidden="!AuctionBlockModel.CanBid">+10</span>
-										<div class="loader" data-class-hidden="AuctionBlockModel.CanBid">
-											<div class="bar1"></div>
-											<div class="bar2"></div>
-											<div class="bar3"></div>
-											<div class="bar4"></div>
-											<div class="bar5"></div>
-											<div class="bar6"></div>
-											<div class="bar7"></div>
-											<div class="bar8"></div>
-											<div class="bar9"></div>
-											<div class="bar10"></div>
-											<div class="bar11"></div>
-											<div class="bar12"></div>
+									<div data-for="bid : AuctionBlockModel.PossibleBids">
+										<div data-attr-bid_value="bid" onclick="OnEvent(event, 'auction.OnBid')" class="img-button button-green-color" data-class-disabled="!AuctionBlockModel.CanBid || !AuctionBlockModel.IsActive || AuctionBlockModel.IsOwner || bid > AuctionBlockModel.AlreadyBidLocks + AuctionBlockModel.AvailableLocks - AuctionBlockModel.HighBidLocks">
+											<span class="label" data-class-hidden="!AuctionBlockModel.CanBid">+{{bid}}</span>
+											<div class="loader" data-class-hidden="AuctionBlockModel.CanBid">
+												<div class="bar1"></div>
+												<div class="bar2"></div>
+												<div class="bar3"></div>
+												<div class="bar4"></div>
+												<div class="bar5"></div>
+												<div class="bar6"></div>
+												<div class="bar7"></div>
+												<div class="bar8"></div>
+												<div class="bar9"></div>
+												<div class="bar10"></div>
+												<div class="bar11"></div>
+												<div class="bar12"></div>
+											</div>
 										</div>
 									</div>
 								</div>

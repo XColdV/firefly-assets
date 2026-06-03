@@ -49,8 +49,8 @@
                                 </td>
                                 <td class="middle-container">
                                     <div class="split">
-                                        <div class="title font-body1" data-rml="ToRMLText(Localize(Message.Title))"></div>
-                                        <div class="descr font-body2 color_dreamsicle" data-rml="ToRMLText(Localize(Message.DescrShort))"></div>
+                                        <div class="title font-body1" data-rml="ToRMLText(LocalizeWithTokenizedStringParameter(Message.Title, Message.TitleParams, '|'))"></div>
+                                        <div class="descr font-body2 color_dreamsicle" data-rml="ToRMLText(LocalizeWithTokenizedStringParameter(Message.DescrShort, Message.DescriptionParams, '|'))"></div>
                                     </div>
                                 </td>
                                 <td class="right">

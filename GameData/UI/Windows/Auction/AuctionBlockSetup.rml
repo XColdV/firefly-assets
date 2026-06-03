@@ -41,17 +41,11 @@
 							<td class="vcenter row-bg">Set Duration</td>
 							<td class="row-bg">
 								<form class="horizontal-panel" name="duration" data-value="AuctionBlockModel.DurationHours">
-									<div class="radio-container">
-										<input type="radio" value="1" data-checked="AuctionBlockModel.DurationHours"/>
-										<span class="label">1 Hr</span>
-									</div>
-									<div class="radio-container">
-										<input type="radio" value="3" data-checked="AuctionBlockModel.DurationHours"/>
-										<span class="label">3 Hr</span>
-									</div>
-									<div class="radio-container">
-										<input type="radio" value="12" data-checked="AuctionBlockModel.DurationHours"/>
-										<span class="label">12 Hr</span>
+									<div data-for="duration : AuctionBlockModel.PossibleDurations">
+										<div class="radio-container">
+											<input type="radio" data-value="duration" data-checked="AuctionBlockModel.DurationHours"/>
+											<span class="label">{{duration}} Hr</span>
+										</div>
 									</div>
 								</form>
 							</td>

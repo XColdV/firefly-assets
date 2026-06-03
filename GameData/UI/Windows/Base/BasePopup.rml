@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="window-close-button" onclick="OnEvent(event, 'dialog.OnCancel')"></div>
+                <div id="popup-close-button" class="window-close-button" onclick="OnEvent(event, 'dialog.OnCancel')" actionkey="back"></div>
             </div>
         </div>
     </body>

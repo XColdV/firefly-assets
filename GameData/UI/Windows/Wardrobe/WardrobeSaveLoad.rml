@@ -73,7 +73,7 @@
             </tr>
             <tr class="button-row">
               <td class="button-cell" colspan="4">
-                <div onclick="OnEvent(event, 'WardrobeSaveLoad.PresetOne')" class="equip-button img-button button-default-color">
+				  <div id="save-as-button-1" onclick="OnEvent(event, 'WardrobeSaveLoad.PresetOne')" class="equip-button img-button button-default-color">
                   <div class="label">
                     <span data-class-hidden="WardrobeSaveLoadModel.IsSaveUi"
                           data-rml="ToRMLText(Localize('[WARDROBE_LOAD_UI_BTN_1]'))"/>

@@ -2,7 +2,7 @@
 <ItemRenderer>
   <Data>
     <Sprite name="s_staff" fileName="game/player_longhanditem4.rttex" textureSize="64,32" frame="4,10" />
-    <Sprite name="s_chain" fileName="game/particles12.rttex" textureSize="32,32" frame="27,7" />
+    <Sprite name="s_chain" fileName="game/particles12.rttex" textureSize="32,32" frame="29,7" />
     <Sprite name="s_mist" fileName="game/particles12.rttex" textureSize="32,32" frame="28,7" />
     <Sprite name="s_punchCurve" fileName="game/particles_large16.rttex" textureSize="64" frame="15,0" />
     <Sprite name="s_hit" fileName="game/particles_large16.rttex" textureSize="64" frame="15,3" />

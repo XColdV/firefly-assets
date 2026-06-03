@@ -15,13 +15,14 @@
       not ftueButton or
       not ftueButton.offset_parent or
       not ftueButton.offset_parent.offset_parent or
-      not ftueButton.parent_node
+      not ftueButton.parent_node or
+      not ftueButton.parent_node.parent_node
       then
       return
       end
-
-      ftuePanel.style.top = (ftueButton.offset_top + ftueButton.offset_parent.offset_top - ftueButton.offset_parent.offset_parent.scroll_top)..'px';
-      ftuePanel.style.left = (ftueButton.parent_node.client_width + ftueButton.offset_parent.offset_left)..'px';
+      
+      ftuePanel.style.top = (ftueButton.parent_node.offset_top + ftueButton.parent_node.offset_parent.offset_top - ftueButton.parent_node.offset_parent.offset_parent.scroll_top)..'px';
+      ftuePanel.style.left = (ftueButton.parent_node.parent_node.client_width + ftueButton.parent_node.offset_parent.offset_left)..'px';
       end
 
       function onToggleAuctionPanel(document)
@@ -47,8 +48,8 @@
       activeAuctionButton:SetClass('open', true)
       activeAuctionPanel:SetClass('visible', true)
       activeAuctionPanel:SetClass('hidden', false)
-      activeAuctionPanel.style.top = (activeAuctionButton.offset_top + activeAuctionButton.offset_parent.offset_top - activeAuctionButton.offset_parent.offset_parent.scroll_top)..'px';
-      activeAuctionPanel.style.left = (activeAuctionButton.parent_node.client_width + activeAuctionButton.offset_parent.offset_left)..'px';
+      activeAuctionPanel.style.top = (activeAuctionButton.parent_node.offset_top + activeAuctionButton.parent_node.offset_parent.offset_top - activeAuctionButton.parent_node.offset_parent.offset_parent.scroll_top)..'px';
+      activeAuctionPanel.style.left = (activeAuctionButton.parent_node.parent_node.client_width + activeAuctionButton.parent_node.offset_parent.offset_left)..'px';
       end
       end
 
@@ -70,12 +71,14 @@
 	</head>
 	<body>
 		<div id="events_panel" onscroll="OnEvent(event, 'event_buttons.scroll') closeActiveAuctionPanel(document)" class="scroll-on-top">
-			<div data-model="EventButtons">
-				<div data-for="eventButton : eventButtons" class="event_item" data-event-click="oneventclick(it_index, eventButton.buttonAction);" data-attr-id="eventButton.name" data-if="eventButton.visible">
-					<div data-alias-buttonData="eventButton">
-						<template src="BaseEventButton" />
-					</div>
-				</div>
+			<div data-model="EventButtons" data-for="eventButton : eventButtons">
+					<FeatureEnableFlag data-attr-flag-id="eventButton.featureEnableFlag">
+						<div class="event_item" data-event-click="oneventclick(it_index, eventButton.buttonAction);" data-attr-id="eventButton.name" data-if="eventButton.visible">
+							<div data-alias-buttonData="eventButton">
+								<template src="BaseEventButton" />
+							</div>
+						</div>
+					</FeatureEnableFlag>
 			</div>
 		</div>
 
@@ -85,17 +88,13 @@
 				<div class="content">
 					<div id="description">
 						<div class="title color_pale_yellow" data-rml="ToRMLText(title)"></div>
-						<div class="descriptopn" data-rml="ToRMLText(description)"></div>
 					</div>
-					<div id="buttons" data-if="buttonsVisible">
-						<div id="phone" data-event-click="onphineclick"><div class="notification_icon" data-visible="state > 0 && notification"></div></div>
-						<div id="scroll" data-event-click="onscrollclick" data-class-hidden="state == 0"></div>
-						<div id="switcher" data-class-on="hintState == 1" class="on" data-event-click="onhintclick();"></div>
+					<div id="scroll" data-event-click="onscrollclick" >
+						<div class="notification_exclamation" data-visible="notification"></div>
 					</div>
 				</div>
-
 			</div>
-			</div>
+        </div>
 
     <div id="activeAuctionButtonPanel" data-model="ActiveAuctionPanelModel" onactiveauctionend="closeActiveAuctionPanel(document)" class="hidden">
       <div id="panelContent">
@@ -151,57 +150,25 @@
                   </div>
                 </td>
                 <td id="bid-buttons">
-                  <div data-class-hidden="ActiveAuctionPanel.isOwner">
+                  <div data-class-hidden="ActiveAuctionPanel.isOwner" id="bid-buttons-container" >
                     <span id="bid-label" class="color_dreamsicle">Bid: </span>
-                    <div data-attr-bid_amount="1" onclick="OnEvent(event, 'ActiveAuction.Bid')" class="img-button button-green-color" data-class-disabled="!ActiveAuctionPanel.canBid ||1 > ActiveAuctionPanel.alreadyBidLocks + ActiveAuctionPanel.availableLocks - ActiveAuctionPanel.highestBidWlCount ">
-                      <span class="label"  data-class-hidden="!ActiveAuctionPanel.canBid">+1</span>
-                      <div class="loader" data-class-hidden="ActiveAuctionPanel.canBid">
-                        <div class="bar1"></div>
-                        <div class="bar2"></div>
-                        <div class="bar3"></div>
-                        <div class="bar4"></div>
-                        <div class="bar5"></div>
-                        <div class="bar6"></div>
-                        <div class="bar7"></div>
-                        <div class="bar8"></div>
-                        <div class="bar9"></div>
-                        <div class="bar10"></div>
-                        <div class="bar11"></div>
-                        <div class="bar12"></div>
-                      </div>
-                    </div>
-                    <div data-attr-bid_amount="5" onclick="OnEvent(event, 'ActiveAuction.Bid')" class="img-button button-green-color" data-class-disabled="!ActiveAuctionPanel.canBid || 5 > ActiveAuctionPanel.alreadyBidLocks + ActiveAuctionPanel.availableLocks - ActiveAuctionPanel.highestBidWlCount ">
-                      <span class="label"  data-class-hidden="!ActiveAuctionPanel.canBid ">+5</span>
-                      <div class="loader" data-class-hidden="ActiveAuctionPanel.canBid ">
-                        <div class="bar1"></div>
-                        <div class="bar2"></div>
-                        <div class="bar3"></div>
-                        <div class="bar4"></div>
-                        <div class="bar5"></div>
-                        <div class="bar6"></div>
-                        <div class="bar7"></div>
-                        <div class="bar8"></div>
-                        <div class="bar9"></div>
-                        <div class="bar10"></div>
-                        <div class="bar11"></div>
-                        <div class="bar12"></div>
-                      </div>
-                    </div>
-                    <div data-attr-bid_amount="10" onclick="OnEvent(event, 'ActiveAuction.Bid')" class="img-button button-green-color" data-class-disabled="!ActiveAuctionPanel.canBid || 10 > ActiveAuctionPanel.alreadyBidLocks + ActiveAuctionPanel.availableLocks - ActiveAuctionPanel.highestBidWlCount ">
-                      <span class="label"  data-class-hidden="!ActiveAuctionPanel.canBid ">+10</span>
-                      <div class="loader" data-class-hidden="ActiveAuctionPanel.canBid ">
-                        <div class="bar1"></div>
-                        <div class="bar2"></div>
-                        <div class="bar3"></div>
-                        <div class="bar4"></div>
-                        <div class="bar5"></div>
-                        <div class="bar6"></div>
-                        <div class="bar7"></div>
-                        <div class="bar8"></div>
-                        <div class="bar9"></div>
-                        <div class="bar10"></div>
-                        <div class="bar11"></div>
-                        <div class="bar12"></div>
+                    <div data-for="bid : ActiveAuctionPanel.PossibleBids">
+                      <div data-attr-bid_amount="bid" onclick="OnEvent(event, 'ActiveAuction.Bid')" class="img-button button-green-color" data-class-disabled="!ActiveAuctionPanel.canBid || bid > ActiveAuctionPanel.alreadyBidLocks + ActiveAuctionPanel.availableLocks - ActiveAuctionPanel.highestBidWlCount ">
+                        <span class="label" data-class-hidden="!ActiveAuctionPanel.canBid">+{{bid}}</span>
+                        <div class="loader" data-class-hidden="ActiveAuctionPanel.canBid">
+                          <div class="bar1"></div>
+                          <div class="bar2"></div>
+                          <div class="bar3"></div>
+                          <div class="bar4"></div>
+                          <div class="bar5"></div>
+                          <div class="bar6"></div>
+                          <div class="bar7"></div>
+                          <div class="bar8"></div>
+                          <div class="bar9"></div>
+                          <div class="bar10"></div>
+                          <div class="bar11"></div>
+                          <div class="bar12"></div>
+                        </div>
                       </div>
                     </div>
                   </div>

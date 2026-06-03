@@ -15,8 +15,9 @@
 					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
 					<Set name="rotateWithVelocity">true</Set>
 					<Set name="initialVelocity">75,0</Set>
-					<Set name="collisionDamageAmount">50</Set>
-					<Set name="collisionSize">8,8</Set>
+					<Set name="collisionDamageAmount">1</Set>
+					<Set name="initialScale">1.4,1.4</Set>
+					<Set name="collisionSize">12,12</Set>
 					<Set name="lifeTime">3</Set>
 					<Set name="useTargetDir">true</Set>
 					<Set name="collisionType">

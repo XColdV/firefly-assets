@@ -5,7 +5,8 @@
 		<Sprite name="s_Pet" fileName="game/pets/p_cinder.rttex" textureSize="32" frame="0,0" />
 		<Animations>
 			<SpriteAnimation name="a_Attack" sprite="s_Pet" animTime="200" isLoop="true" playOnState="Motion.Punch">
-				<Frame>0,1</Frame>
+				<Frame>0,0</Frame>
+				<Frame>1,0</Frame>
 			</SpriteAnimation>
 			<SpriteAnimation name="a_Fall" sprite="s_Pet" animTime="100" isLoop="true" playOnState="Motion.Down">
 				<Frame>7,0</Frame>
@@ -38,12 +39,12 @@
 				<Transitions>
 					<Transition to="Idle" from="Movement">
 						<Condition>
-							<IsVariableFloat name="pet.velocity.length" operator="Less" abs="true">0.1</IsVariableFloat>
+							<IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
 						</Condition>
 					</Transition>
 					<Transition to="Movement" from="Idle">
 						<Condition>
-							<IsVariableFloat name="pet.velocity.length" operator="GreaterOrEqual" abs="true">0.1</IsVariableFloat>
+							<IsVariableFloat name="speed.length" operator="GreaterOrEqual" abs="true">0.1</IsVariableFloat>
 						</Condition>
 					</Transition>
 				</Transitions>
@@ -143,13 +144,10 @@
 		<RenderPet>
 			<Group>
 				<Group onState="Movement.Idle">
-					<ArithmethicOperation LeftHandVariableName="FirstCinderDesiredPos" RightHandVariableName="48,0,0" OperationType="Set" onState="Facing.Left"/>
-					<ArithmethicOperation LeftHandVariableName="FirstCinderDesiredPos" RightHandVariableName="48,0,0" OperationType="Set" onState="Facing.Right"/>
-
+					<ArithmethicOperation LeftHandVariableName="FirstCinderDesiredPos" RightHandVariableName="48,0,0" OperationType="Set"/>
 				</Group>
 				<Group onState="Movement.Movement">
-					<ArithmethicOperation LeftHandVariableName="FirstCinderDesiredPosWalk" RightHandVariableName="24,0,0" OperationType="Set" onState="Facing.Left"/>
-					<ArithmethicOperation LeftHandVariableName="FirstCinderDesiredPosWalk" RightHandVariableName="24,0,0" OperationType="Set" onState="Facing.Right"/>
+					<ArithmethicOperation LeftHandVariableName="FirstCinderDesiredPosWalk" RightHandVariableName="24,0,0" OperationType="Set"/>
 				</Group>
 
 				<Translate>FirstCinderPosOffset</Translate>
@@ -157,14 +155,10 @@
 			</Group>
 			<Group>
 				<Group onState="Movement.Idle">
-					<ArithmethicOperation LeftHandVariableName="SecondCinderDesiredPos" RightHandVariableName="-16,0,0" OperationType="Set" onState="Facing.Left"/>
-					<ArithmethicOperation LeftHandVariableName="SecondCinderDesiredPos" RightHandVariableName="-16,0,0" OperationType="Set" onState="Facing.Right"/>
-		
+					<ArithmethicOperation LeftHandVariableName="SecondCinderDesiredPos" RightHandVariableName="-16,0,0" OperationType="Set"/>
 				</Group>
 				<Group onState="Movement.Movement">
-					<ArithmethicOperation LeftHandVariableName="SecondCinderDesiredPosWalk" RightHandVariableName="-8,0,0" OperationType="Set" onState="Facing.Left"/>
-					<ArithmethicOperation LeftHandVariableName="SecondCinderDesiredPosWalk" RightHandVariableName="-8,0,0" OperationType="Set" onState="Facing.Right"/>
-
+					<ArithmethicOperation LeftHandVariableName="SecondCinderDesiredPosWalk" RightHandVariableName="-8,0,0" OperationType="Set"/>
 				</Group>
 				
 				<Translate>SecondCinderPosOffset</Translate>

@@ -7,11 +7,13 @@
 
 		<StateMachines>
 			<StateMachine name="NPC" ServerOnly="true">
-				<States start="FullHealth">
+				<States start="InitialState">
+					<NPCStationary name="InitialState" ExitTime="0.2"/>
 					<NPCStationary name="FullHealth" ExitTime="5"/>
 					<NPCKill name="KillState"/>
 				</States>
 				<Transitions>
+					<Transition to="FullHealth" from="InitialState"/>
 					<Transition to="KillState" from="FullHealth"/>
 				</Transitions>
 			</StateMachine>
@@ -49,28 +51,31 @@
 			</ParticleSystem>
 			<ParticleSystem name="ps_HitEffect">
 				<Emitter>
-					<Set name="offset">0, -10</Set>
-					<Set name="emissionInterval">0.6</Set>
+					<Set name="offset">0, -8</Set>
+					<Set name="emissionInterval">0.15</Set>
+					<Set name="forceXScaling">true</Set>
 					<Set name="infParticles">true</Set>
 					<Set name="infLifeTime">true</Set>
-					<Set name="particlesPerEmission">2</Set>
+					<Set name="particlesPerEmission">3</Set>
 				</Emitter>
-				<Particle>
+				<Particle velocityRelativeToPlayerSpeed="true">
 					<Set name="sprite">s_HitEffect</Set>
-					<Set name="relativeToEmitter">true</Set>
+					<Random name="offset" min="-16, -8" max="16, 8"/>
 					<Set name="rotateWithVelocity">true</Set>
-					<Set name="useGravity">true</Set>
-					<Set name="lifeTime">1</Set>
-					<Random name="initialScale" min="0.75" max="1.25"/>
-					<RandomRadial name="initialVelocity" angleRange="50,95" radiusRange="20,60"/>
-					<Set name="gravityVector">0, 45</Set>
 					<Curve name="initialAlpha">
-						<KeyFrame>0, 0</KeyFrame>
-						<KeyFrame>0.4, 0</KeyFrame>
-						<KeyFrame>0.41, 1</KeyFrame>
+						<KeyFrame>0, 1</KeyFrame>
+						<KeyFrame>0.8, 1</KeyFrame>
 						<KeyFrame>1, 0</KeyFrame>
 					</Curve>
+					<Set name="useGravity">true</Set>
+					<Curve name="initialScale">
+						<KeyFrame>0, 0.5, 0.5</KeyFrame>
+						<KeyFrame>1, 1, 1</KeyFrame>
+					</Curve>
 					<Set name="initalRGB">0.37,0.9,0.4</Set>
+					<Set name="lifeTime">0.8</Set>
+					<Set name="initialVelocity">-10, -40</Set>
+					<Set name="gravityVector">0, 100</Set>
 				</Particle>
 			</ParticleSystem>
 		</ParticleSystems>
@@ -79,6 +84,7 @@
 			<Movement>
 				<Set name="IsStatic">true</Set>
 			</Movement>
+			<StateMachine/>
 			<NPCRenderActionCmp/>
 			<AttachmentCmp/>
 			<Enemy>
@@ -88,9 +94,7 @@
 			<PlayerXMLAttachmentCmp>
 				<Set name="AttachmentName">"PoisonStatusEffect"</Set>
 			</PlayerXMLAttachmentCmp>
-			<PoisonStatusEffect>
-				<Set name="ColorOverride">0.37,0.9,0.4</Set>
-			</PoisonStatusEffect>
+			<ParentInfo/>
 			<DebugDraw/>
 		</Components>
 	</Data>
@@ -101,9 +105,9 @@
 			<ApplyTintOverrideNPC TintOverride="255, 255, 255, 255" ApplyToParent="true"/>
 		</OnDie>		
 		<Update>
-			<ParticleSystemUpdate name="ps_HitEffect" nState="NPC.FullHealth"/>
-			<ParticleSystemUpdate name="poisonEffectArea" nState="NPC.FullHealth"/>
-			<ApplyTintOverrideNPC TintOverride="3, 165, 3, 255" ApplyToParent="true"/>
+			<ParticleSystemUpdate name="ps_HitEffect" onState="NPC.FullHealth"/>
+			<ParticleSystemUpdate name="poisonEffectArea" onState="NPC.FullHealth"/>
+			<ApplyTintOverrideNPC TintOverride="3, 165, 3, 255" ApplyToParent="true" onState="NPC.FullHealth"/>
 		</Update>
 		<SwitchOffClothingParticles>
 			<ParticleSystemOff name="poisonEffectArea"/>

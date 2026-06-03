@@ -13,7 +13,7 @@
                     <div class="title-text font-title label" data-rml="ToRMLText(Localize(MailMessageModel.Title))">
 					</div>
                 </div>
-                <div class="top-padding" data-rml="Localize(MailMessageModel.Descr)|ToRMLText">
+                <div class="top-padding" data-rml="ToRMLText(LocalizeWithTokenizedStringParameter(MailMessageModel.Descr, MailMessageModel.MessageBodyParams, '|'))">
 				</div>
 				<div class="top-padding rewards-panel" data-class-hidden="MailMessageModel.Reward.size == 0">
 					<div data-for="reward : MailMessageModel.Reward">

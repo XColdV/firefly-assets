@@ -6,6 +6,12 @@
 /*    background-color: rgb(76, 255, 0);*/
 }
 
+@spritesheet event_button4_sprite {
+    src: interface/large/event_button4.rttex;
+    resolution: 1x;
+    notification_icon_circle: 256px 384px 128px 128px;
+}
+
 #main_buttons {
     width: 76dp;
 }
@@ -74,4 +80,23 @@
 
 .full-hide #right_panel {
     margin-right: -160dp;
+}
+
+.notification_circle {
+    position: absolute;
+    width: 64dp;
+    height: 64dp;
+    decorator: image(notification_icon_circle);
+    margin-left: -18dp;
+    margin-top: -18dp;
+}
+
+.notification_text {
+    position: absolute;
+    width: 64dp;
+    height: 64dp;
+    text-align: center;
+    line-height: 64dp;
+    vertical-align: middle;
+    font-size: 0.65rem;
 }

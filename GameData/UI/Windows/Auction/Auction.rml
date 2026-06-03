@@ -32,17 +32,17 @@
               <div class="sort-options-container">
                 <div id="sort-label">Sort:</div>
                 <select id="sort-options" class="select">
-                  <option value="sort-wl-asc" data-class-selected="AuctionModel.SortType == 'WlAsc'" sort-type="WlAsc" onclick="OnEvent(event, 'Auction.ApplySort')">
-                    <div id="sort-wl-asc" class="img-button"/>Price: Low To High
-                  </option>
-                  <option value="sort-wl-des" data-class-selected="AuctionModel.SortType == 'WlDes'" sort-type="WlDes" onclick="OnEvent(event, 'Auction.ApplySort')">
-                    <div id="sort-wl-des" class="img-button"/>Price: High To Low
-                  </option>
                   <option value="sort-time-asc" data-class-selected="AuctionModel.SortType == 'TimeAsc'" sort-type="TimeAsc" onclick="OnEvent(event, 'Auction.ApplySort')">
                     <div id="sort-time-asc" class="img-button"/>Time Remaining: Low To High
                   </option>
                   <option value="sort-time-des" data-class-selected="AuctionModel.SortType == 'TimeDes'" sort-type="TimeDes" onclick="OnEvent(event, 'Auction.ApplySort')">
                     <div id="sort-time-des" class="img-button"/>Time Remaining: High To Low
+                  </option>
+                  <option value="sort-wl-asc" data-class-selected="AuctionModel.SortType == 'WlAsc'" sort-type="WlAsc" onclick="OnEvent(event, 'Auction.ApplySort')">
+                    <div id="sort-wl-asc" class="img-button"/>Price: Low To High
+                  </option>
+                  <option value="sort-wl-des" data-class-selected="AuctionModel.SortType == 'WlDes'" sort-type="WlDes" onclick="OnEvent(event, 'Auction.ApplySort')">
+                    <div id="sort-wl-des" class="img-button"/>Price: High To Low
                   </option>
                 </select>
               </div>

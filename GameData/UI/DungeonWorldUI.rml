@@ -4,6 +4,7 @@
         <link type="text/rcss" href="DungeonWorldUI.rcss" />
         <link type="text/template" href="BaseTemplate.rml" />
         <link type="text/template" href="WorldUI/RightMenuPanel.rml" />
+		<link type="text/template" href="Windows/Console/Console.rml" />
         <script lang="text/lua">
             function onShowUI(document, element)
                 local insets = GetInsets()
@@ -68,5 +69,6 @@
       <div id="right_panel">
           <template src="RightMenuPanel" />
       </div>
+	   <template src="Console" />
    </body>
 </rml>
