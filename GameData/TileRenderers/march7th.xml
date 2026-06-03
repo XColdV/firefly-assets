@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer itemID="ITEM_ID_MARCH7TH_LOCK">
+  <Data>
+    <Sprite name="s_lock" fileName="game/march7th_lock.rttex" textureSize="64" frame="0,0" />
+  </Data>
+  <RenderRules>
+    <Render>
+      <Scale>0.5,0.5,0.5</Scale>
+      <SpriteRender name="s_lock" blend="PREMULTIPLIED_ALPHA" />
+    </Render>
+  </RenderRules>
+</ItemRenderer>

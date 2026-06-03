@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf - 8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <BattlePets>
 
 
@@ -5042,7 +5042,6 @@
 	</Pet>
 
 
-
 	<Pet itemID="ITEM_ID_14DEVILS_FRIENDLY_DOGGY_LEASH">
 		<Name>"14DEViL's Friendly Doggy Leash"</Name>
 		<SubName>"friendly"</SubName>
@@ -5072,33 +5071,225 @@
 		<CageIcon file="game/pets/p_friendly_dog.rttex" frameSize="32,32" frame="0,0"/>
 	</Pet>
 
+	
+	
 	<Pet itemID="ITEM_ID_CINDER_SPRTIES">
 		<Name>"Cinder Sprites"</Name>
-		<SubName>"placeholder"</SubName>
-		<EndName>"placeholder"</EndName>
-		<PowerName>"placeholder!"</PowerName>
-		<PowerDesc>"placeholder."</PowerDesc>
+		<SubName>"cinder"</SubName>
+		<EndName>"sprites"</EndName>
+		<PowerName>"Multiply"</PowerName>
+		<PowerDesc>"Summon a friend for 5s. If beaten, it takes the hit instead, reviving you with 5% life."</PowerDesc>
 		<Element>"EARTH"</Element>
-		<Damage>5</Damage>
-		<Cooldown>12</Cooldown>
-		<PowerType>"ATTACK_AND_SELF_STATUS"</PowerType>
-		<PowerFlags>16</PowerFlags>
+		<Damage>0</Damage>
+		<Cooldown>5</Cooldown>
+		<PowerType>"SELF_STATUS"</PowerType>
+		<PowerFlags>0</PowerFlags>
 		<PowerStatusGroup>
-			<PowerStatus type="SURPRISE">
-				<Value>40</Value>
-				<Duration>2</Duration>
+			<PowerStatus type="REANIMATE">
+				<Value>5</Value>
+				<Duration>5</Duration>
 			</PowerStatus>
 		</PowerStatusGroup>
-		<AnimType>"NONE"</AnimType>
-		<PowerParticle>0</PowerParticle>
+		<AnimType>"DANCE"</AnimType>
+		<PowerParticle>1</PowerParticle>
+		<HitParticle>1</HitParticle>
+		<PowerParticleV2>1</PowerParticleV2>
+		<HitParticleV2>1</HitParticleV2>
+		<PowerSound>"audio/mlaunch.wav"</PowerSound>
+		<PowerHitSound>""</PowerHitSound>
+		<Rarity>20</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+		<BattleAnimation file="game/pets/p_cinder.rttex" frameSize="32,32">
+			<Animation type="Idle" frameInterval="100">
+				<Frame>0,0</Frame>
+				<Frame>1,0</Frame>
+				<Frame>2,0</Frame>
+			</Animation>
+			<Animation type="Attack" frameInterval="100">
+				<Frame>6,0</Frame>
+			</Animation>
+			<Animation type="GetHit" frameInterval="100">
+				<Frame>0,0</Frame>
+			</Animation>
+			<Animation type="Dead" frameInterval="100">
+				<Frame>0,0</Frame>
+			</Animation>
+		</BattleAnimation>
+		<CageIcon file="game/pets/p_cinder.rttex" frameSize="32,32" frame="0,0"/>
+	</Pet>
+	
+	
+
+	<Pet itemID="ITEM_ID_PET_PRESENT_GOBLIN">
+		<Name>"Pet Present Goblin"</Name>
+		<SubName>"Present"</SubName>
+		<EndName>"goblin"</EndName>
+		<PowerName>"Face Slap"</PowerName>
+		<PowerDesc>"Smack the target in the face with a tenis ball, enraging them to inflict 20% more Damage for 15s. The rage stacks up to 20 times."</PowerDesc>
+		<Element>"WATER"</Element>
+		<Damage>10</Damage>
+		<Cooldown>4</Cooldown>
+		<PowerType>"ATTACK"</PowerType>
+		<PowerFlags>0</PowerFlags>
+		<PowerStatusGroup>
+			<PowerStatus type="STACK_MIGHT">
+				<Value>20</Value>
+				<Duration>15</Duration>
+			</PowerStatus>
+		</PowerStatusGroup>
+		<AnimType>"SHOOT"</AnimType>
+		<PowerParticle>147</PowerParticle>
+		<HitParticle>147</HitParticle>
+		<PowerParticleV2>0</PowerParticleV2>
+		<HitParticleV2>0</HitParticleV2>
+		<PowerSound>"audio/swoosh.wav"</PowerSound>
+		<PowerHitSound>"audio/punch_organic.wav"</PowerHitSound>
+		<Rarity>100</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+	</Pet>
+	
+	
+	<Pet itemID="ITEM_ID_PET_CLOVER">
+		<Name>"Pet Clover"</Name>
+		<SubName>"Four"</SubName>
+		<EndName>"leaves"</EndName>
+		<PowerName>"Get Lucky"</PowerName>
+		<PowerDesc>"Grants 25% chance of hitting for double Damage for 10s."</PowerDesc>
+		<Element>"EARTH"</Element>
+		<Damage>0</Damage>
+		<Cooldown>20</Cooldown>
+		<PowerType>"SELF_STATUS"</PowerType>
+		<PowerFlags>0</PowerFlags>
+		<PowerStatusGroup>
+			<PowerStatus type="CRITICAL">
+				<Value>25</Value>
+				<Duration>10</Duration>
+			</PowerStatus>
+		</PowerStatusGroup>
+		<AnimType>"SPLAT"</AnimType>
+		<PowerParticle>124</PowerParticle>
 		<HitParticle>0</HitParticle>
 		<PowerParticleV2>0</PowerParticleV2>
 		<HitParticleV2>0</HitParticleV2>
-		<PowerSound>""</PowerSound>
+		<PowerSound>"audio/slot_win.wav"</PowerSound>
 		<PowerHitSound>""</PowerHitSound>
-		<Rarity>80</Rarity>
+		<Rarity>90</Rarity>
 		<EnableOnServer>true</EnableOnServer>
-		<CageIcon file="game/pets/p_cinder.rttex" frameSize="32,32" frame="0,0"/>
+	</Pet>
+	
+	
+	<Pet itemID="ITEM_ID_CALL_OF_CTHULHU">
+		<Name>"Eldritch Spawn"</Name>
+		<SubName>"Eldritch"</SubName>
+		<EndName>"spawn"</EndName>
+		<PowerName>"Cosmic Fear"</PowerName>
+		<PowerDesc>"Curse the target's skills to fail 20% of the time for 10s."</PowerDesc>
+		<Element>"WATER"</Element>
+		<Damage>20</Damage>
+		<Cooldown>20</Cooldown>
+		<PowerType>"ATTACK"</PowerType>
+		<PowerFlags>2</PowerFlags>
+		<PowerStatusGroup>
+			<PowerStatus type="NIGHTMARES">
+				<Value>20</Value>
+				<Duration>10</Duration>
+			</PowerStatus>
+		</PowerStatusGroup>
+		<AnimType>"SHOOT"</AnimType>
+		<PowerParticle>61</PowerParticle>
+		<HitParticle>0</HitParticle>
+		<PowerParticleV2>0</PowerParticleV2>
+		<HitParticleV2>0</HitParticleV2>
+		<PowerSound>"audio/oracle.wav"</PowerSound>
+		<PowerHitSound>""</PowerHitSound>
+		<Rarity>70</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+		<BattleAnimation file="game/pets/p_espawn.rttex" frameSize="32,32">
+			<Animation type="Idle" frameInterval="100">
+				<Frame>0,0</Frame>
+				<Frame>1,0</Frame>
+				<Frame>2,0</Frame>
+			</Animation>
+			<Animation type="Attack" frameInterval="100">
+				<Frame>4,1</Frame>
+			</Animation>
+			<Animation type="GetHit" frameInterval="100">
+				<Frame>6,0</Frame>
+			</Animation>
+			<Animation type="Dead" frameInterval="100">
+				<Frame>6,0</Frame>
+			</Animation>
+		</BattleAnimation>
+		<CageIcon file="game/pets/p_espawn.rttex" frameSize="32,32" frame="0,0"/>
+	</Pet>
+
+
+	<Pet itemID="ITEM_ID_ROYAL_CALL_OF_CTHULHU">
+		<Name>"Royal Eldritch Spawn"</Name>
+		<SubName>"Eldritch"</SubName>
+		<EndName>"spawn"</EndName>
+		<PowerName>"Cosmic Fear"</PowerName>
+		<PowerDesc>"Curse the target's skills to fail 20% of the time for 15s."</PowerDesc>
+		<Element>"WATER"</Element>
+		<Damage>30</Damage>
+		<Cooldown>30</Cooldown>
+		<PowerType>"ATTACK"</PowerType>
+		<PowerFlags>2</PowerFlags>
+		<PowerStatusGroup>
+			<PowerStatus type="NIGHTMARES">
+				<Value>20</Value>
+				<Duration>15</Duration>
+			</PowerStatus>
+		</PowerStatusGroup>
+		<AnimType>"SHOOT"</AnimType>
+		<PowerParticle>61</PowerParticle>
+		<HitParticle>0</HitParticle>
+		<PowerParticleV2>0</PowerParticleV2>
+		<HitParticleV2>0</HitParticleV2>
+		<PowerSound>"audio/oracle.wav"</PowerSound>
+		<PowerHitSound>""</PowerHitSound>
+		<Rarity>70</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+		<BattleAnimation file="game/pets/p_espawn_r.rttex" frameSize="32,32">
+			<Animation type="Idle" frameInterval="100">
+				<Frame>0,0</Frame>
+				<Frame>1,0</Frame>
+				<Frame>2,0</Frame>
+			</Animation>
+			<Animation type="Attack" frameInterval="100">
+				<Frame>3,0</Frame>
+			</Animation>
+			<Animation type="GetHit" frameInterval="100">
+				<Frame>0,0</Frame>
+			</Animation>
+			<Animation type="Dead" frameInterval="100">
+				<Frame>0,0</Frame>
+			</Animation>
+		</BattleAnimation>
+		<CageIcon file="game/pets/p_espawn_r.rttex" frameSize="32,32" frame="0,0"/>
+	</Pet>
+	
+	<Pet itemID="ITEM_ID_MUNIS_CASPIRO">
+		<Name>"Muni's Caspiro"</Name>
+		<SubName>"Muni"</SubName>
+		<EndName>"caspiro"</EndName>
+		<PowerName>"Luck Be A Kitty"</PowerName>
+		<PowerDesc>"Good luck heals thy teammate."</PowerDesc>
+		<Element>"WATER"</Element>
+		<Damage>30</Damage>
+		<Cooldown>15</Cooldown>
+		<PowerType>"HEAL_TEAMMATE"</PowerType>
+		<PowerFlags>0</PowerFlags>
+		<AnimType>"SHOOT_TEAMMATE"</AnimType>
+		<PowerParticle>184</PowerParticle>
+		<HitParticle>0</HitParticle>
+		<PowerParticleV2>0</PowerParticleV2>
+		<HitParticleV2>0</HitParticleV2>
+		<PowerSound>"audio/bell.wav"</PowerSound>
+		<PowerHitSound>""</PowerHitSound>
+		<Rarity>90</Rarity>
+		<EnableOnServer>true</EnableOnServer>
+		<CageIcon file="game/pets/p_mcaspiro2.rttex" frameSize="32,32" frame="0,0"/>
 	</Pet>
 
 

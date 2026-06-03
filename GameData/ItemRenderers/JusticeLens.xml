@@ -230,10 +230,6 @@
     </Data>
     <RenderRules>
         <RenderFaceItem>
-            <StopIf>
-                <IsSitting ItemID="ITEM_ID_THEATER_SEAT">true</IsSitting>
-                <IsRenderMod>RENDER_MOD_MINI_YOU</IsRenderMod>
-            </StopIf>
             <SpriteRender name="Sprite32" blend="NORMAL" alignment="DOWN_CENTER" drawShadow="false" />
             <ContextUpdate type="SetTintFromSlot">
                 <Set name="slot">FACEITEM</Set>
@@ -244,6 +240,10 @@
                 <Set name="seedFG">false</Set>
             </ContextUpdate>
             <SpriteRender name="Sprite9" blend="NORMAL" alignment="DOWN_CENTER" drawShadow="false" />
+            <StopIf>
+              <IsSitting ItemID="ITEM_ID_THEATER_SEAT">true</IsSitting>
+              <IsRenderMod>RENDER_MOD_MINI_YOU</IsRenderMod>
+            </StopIf>
             <Group onState="Punch.No">
                 <ParticleSystemOff name="PS119" />
                 <ParticleSystemOff name="PS343" />
@@ -274,5 +274,39 @@
                 <Set name="foot2y">0.1</Set>
             </AvatarTransform>
         </Update>
+        <OnDrawCustomOutline>
+            <AvatarTransform class="RenderData">
+                <Set name="saturation">getCurrent</Set>
+                <Set name="brightness">getCurrent</Set>
+                <Set name="contrast">getCurrent</Set>
+            </AvatarTransform>
+            <AvatarTransform class="Scale">
+                <Set name="targetScale">getCurrent</Set>
+            </AvatarTransform>
+            <AvatarTransform class="RenderData">
+                <Set name="saturation">1.5</Set>
+                <Set name="brightness">0.8</Set>
+                <Set name="contrast">0.15</Set>
+            </AvatarTransform>
+            <ContextUpdate type="SetTintFromSlot">
+                <Set name="slot">FACEITEM</Set>
+                <Set name="seedFG">false</Set>
+            </ContextUpdate>
+            <ContextUpdate type="SetTintFromSlot">
+                <Set name="slot">SHIRT</Set>
+                <Set name="seedFG">false</Set>
+            </ContextUpdate>
+            <AvatarOutline startScale="1,1" endScale="1.1,1.1" duration="1000" contextColor="true">
+                <Colours />
+            </AvatarOutline>
+            <AvatarTransform class="RenderData">
+                <Set name="saturation">reset</Set>
+                <Set name="brightness">reset</Set>
+                <Set name="contrast">reset</Set>
+            </AvatarTransform>
+            <AvatarTransform class="Scale">
+                <Set name="targetScale">reset</Set>
+            </AvatarTransform>
+        </OnDrawCustomOutline>
     </RenderRules>
 </ItemRenderer>

@@ -30,7 +30,7 @@
 					<KeyFrame>1, 0, 0, 0</KeyFrame>
 				</Curve>
 			</CurveAnimationVec3>
-			<CurveAnimationVec3 name="anim_normal" autoPlay="false" isLoop="true" animTime="0" playOnState="NPC.Chase|NPC.AttackProjectile" >
+			<CurveAnimationVec3 name="anim_normal" autoPlay="false" isLoop="true" animTime="1" playOnState="NPC.Chase|NPC.AttackProjectile" >
 				<Curve name="position">
 					<KeyFrame>0, 0, 0, 0</KeyFrame>
 					<KeyFrame>0.5, 0, 0, 0</KeyFrame>

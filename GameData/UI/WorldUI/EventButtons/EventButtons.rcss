@@ -255,8 +255,17 @@
     padding-bottom: 5dp;
 }
 
+#activeAuctionButtonPanel #panelContent table #bid-buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
 #activeAuctionButtonPanel #panelContent table #bid-buttons #bid-label {
     font-size: 17dp;
+    height: 20dp;
 }
 
 @spritesheet auction-button-sprites {
@@ -286,6 +295,7 @@
     margin-top: 4dp;
 }
 
+#activeAuctionButtonPanel #panelContent table #bid-buttons #bid-buttons-container.hidden,
 #activeAuctionButtonPanel #panelContent table #bid-buttons .img-button .hidden {
     display: none;
 }
@@ -452,7 +462,7 @@
     font-size: 16dp;
 }
 
-#phone .notification_icon {
+#scroll .notification_exclamation {
     margin-left: -18dp;
     margin-top: -18dp;
 }
@@ -504,7 +514,7 @@
 #ftueButtonPanel {
     display: block;
     position: absolute;
-    width: 575dp;
+    width: 472dp;
     clip: always;
     overflow-x: hidden;
     visibility: hidden;
@@ -539,13 +549,12 @@
     }
 
     #ftueButtonPanel #panelContent .content {
-        padding: 10dp 10dp 15dp 15dp;
-        width: 550dp;
+        padding: 10dp;
+        width: 350dp;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        decorator: tiled-box( blue_panel_tl, blue_panel_t, blue_panel_tr, blue_panel_cl, blue_panel_c, blue_panel_cr, blue_panel_bl, blue_panel_b, blue_panel_br );
-        image-color: rgba(135, 184, 204, 255);
+
     }
 
         #ftueButtonPanel #panelContent .frame {
@@ -553,29 +562,24 @@
             position: absolute;
             top: 0dp;
             bottom: 0dp;
-            background-color: rgba(39, 125, 159, 225);
-            width: 565dp;
+            background-color: rgba(39, 125, 159, 170);
+            width: 358dp;
             margin: 5dp 5dp 5dp 5dp;
+            border-radius: 7dp;
         }
 
     #ftueButtonPanel #description {
         font-size: 18dp;
         padding: 4dp;
+        padding-right: 8dp;
         margin-right: 0dp;
         flex-shrink: 1;
         flex-grow: 1;
     }
 
         #ftueButtonPanel #description .title {
-            font-size: 24dp;
+            font-size: 20dp;
         }
-
-    #ftueButtonPanel #buttons {
-        height: 48dp;
-        flex-shrink: 0;
-        min-width: 145dp;
-        display: inline-block;
-    }
 
 .ftue-hide #ftueButtonPanel #buttons {
     display: none;
@@ -593,19 +597,19 @@
                 image-color: #aaa;
             }
 
-        #ftueButtonPanel #buttons #scroll {
+        #ftueButtonPanel #scroll {
             decorator: image(ftue_scroll_icon_call);
             width: 48dp;
             height: 48dp;
             display: inline-block;
-	sound-on-click: true;
+	        sound-on-click: true;
         }
 
-            #ftueButtonPanel #buttons #scroll.hidden {
+            #ftueButtonPanel #scroll.hidden {
                 display: none;
             }
 
-            #ftueButtonPanel #buttons #scroll:active {
+            #ftueButtonPanel #scroll:active {
                 image-color: #aaa;
             }
 

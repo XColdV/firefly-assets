@@ -184,6 +184,7 @@
       <Default>
         <Set name="HideParticlesOnTransform">true</Set>
         <Set name="HideParticlesOnTheaterSeat">true</Set>
+		<Set name="IsToRenderParticlesWhenShrunken">true</Set>
       </Default>
     </RenderOptions>
   </Data>

@@ -88,11 +88,11 @@ body.start-screen {
 
 @keyframes logo-floating {
     from {
-        margin-top: 4.5vh;
+        transform: translateY(-1.5vh);
     }
 
     to {
-        margin-top: 5.5vh;
+        transform: translateY(1.5vh);
     }
 }
 
@@ -245,6 +245,10 @@ body.start-screen {
     .button-themed-colour {
 	    background-color: rgba(37, 171, 67, 255);
     }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
+    }
 }
 
 @media (theme: spp-theme) {
@@ -258,6 +262,10 @@ body.start-screen {
 
     .button-themed-colour {
 	    background-color: rgba(37, 171, 67, 255);
+    }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
     }
 }
 
@@ -273,6 +281,10 @@ body.start-screen {
     .button-themed-colour {
 	    background-color: rgba(144, 192, 255, 255);
     }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
+    }
 }
 
 @media (theme: summerfest-theme) {
@@ -286,6 +298,10 @@ body.start-screen {
 
     .button-themed-colour {
 	    background-color: rgba(77, 106, 240, 255);
+    }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
     }
 }
 
@@ -301,6 +317,10 @@ body.start-screen {
     .button-themed-colour {
 	    background-color: rgba(0, 170, 40, 255);
     }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
+    }
 }
 
 @media (theme: patricks-theme) {
@@ -314,5 +334,50 @@ body.start-screen {
 
     .button-themed-colour {
 	    background-color: rgba(165, 227, 251, 255);
+    }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
+    }
+}
+
+@media (theme: valentines-theme) {
+    #backGround {
+        display: block;
+    }
+
+    #backGround .background-img {
+        display: block;
+    }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
+    }
+}
+@media (theme: g4g-theme) {
+    #backGround {
+        display: block;
+    }
+
+    #backGround .background-img {
+        display: block;
+    }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
+    }
+}
+
+@media (theme: easter-theme) {
+    #backGround {
+        display: block;
+    }
+
+    #backGround .background-img {
+        display: block;
+    }
+
+    #logo .logo-img {
+        decorator: image("interface/large/game_title_themed.rttex" contain);
     }
 }

@@ -91,6 +91,7 @@
 				<Set name="IncludeAllActions">true</Set>
 				<Set name="PlayDefaultPunchAudio">true</Set>
 				<Set name="DefaultPunchSound">audio/shotgun.wav</Set>
+				<Set name="IsToRenderParticlesWhenShrunken">true</Set>
 			</Default>
 		</RenderOptions>
 		<ParticleSystems>

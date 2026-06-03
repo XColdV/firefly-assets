@@ -47,7 +47,7 @@
                     <div data-attr-class="buttonData.buttonClass">
                         <div class="label" data-rml="ToRMLText(buttonData.buttonText)">
                         </div>
-                        <div class="notification_exclamation" data-visible="buttonData.notification > 0"></div>
+                        <div class="notification_exclamation" data-visible="buttonData.notification > 0 && buttonData.buttonState == 0"></div>
                     </div>
                 </div>
             </div>

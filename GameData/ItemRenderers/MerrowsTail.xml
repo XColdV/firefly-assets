@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ItemRenderer item="ITEM_ID_MERROWS_TAIL">
   <Data>
-    <Sprite name="item_sprite" fileName="game/particles_large12.rttex" textureSize="64"/>
-    <Sprite name="aura_sprite" fileName="game/particles_large12.rttex" textureSize="64"/>
+    <Sprite name="item_sprite" fileName="game/particles_large12.rttex" textureSize="64" frame="8,12"/>
+    <Sprite name="aura_sprite" fileName="game/particles_large12.rttex" textureSize="64" frame="8,15"/>
 
     <Animations>
       <SpriteAnimation name="equip_anim" sprite="item_sprite" animTime="800" isLoop="true" playOnAction="IDLE">
