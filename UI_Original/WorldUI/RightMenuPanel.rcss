@@ -16,7 +16,7 @@
     border-radius: 12dp;
     border: 1dp rgba(128, 204, 232, 155);
     background-color: rgba(8, 20, 30, 210);
-    box-shadow: #000e 2dp 3dp 4dp 0dp;
+    box-shadow: #000e 2dp 3dp 10dp 0dp;
 }
 
 /* ============================================================
@@ -40,7 +40,7 @@
     background-color: rgba(20, 55, 75, 210);
     box-shadow: #000b 1dp 2dp 5dp 0dp, inset #ffffff0a 0dp 1dp 0dp 0dp;
     sound-on-click: true;
-    transition: background-color 0.12s ease-out, border 0.12s ease-out, box-shadow 0.12s ease-out, transform 0.12s ease-out;
+    transition: all 0.12s ease-out;
     position: relative;
 }
 
@@ -52,7 +52,7 @@
 
 .menu-button:active {
     transform: scale(0.90);
-    background-color: rgba(12, 35, 50, 210);
+    filter: brightness(0.72);
     box-shadow: #0008 0dp 1dp 3dp 0dp;
 }
 

@@ -1,0 +1,10 @@
+<template name="EventPanel">
+	<head>
+		<title>EventPanel</title>
+		<link type="text/rcss" href="../rml.rcss" />
+		<link type="text/rcss" href="../BaseStyles.rcss" />
+		<link type="text/rcss" href="EventPanel.rcss" />
+	</head>
+	<body>
+	</body>
+</template>

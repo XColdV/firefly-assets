@@ -4,17 +4,46 @@
 		<link type="text/rcss" href="../../BaseStyles.rcss" />
 		<link type="text/template" href="../Base/BasePopup.rml" />
         <link type="text/rcss" href="Console.rcss" />
+		<script lang="text/lua">
+			-- In RmlUI, 'document' is always available as a global.
+			-- Engine often calls these without passing args, so we use the global.
 
+			function ScrollConsoleToBottom(doc)
+				local d = doc or document
+				if not d then return end
+				local logContent = d:GetElementById('log-content')
+				if logContent then
+					-- column-reverse: scroll_top=0 = visual BOTTOM (newest).
+					-- If user is within 200px of the bottom, snap them to newest.
+					-- If they've scrolled up more than 200px, leave them alone.
+					if logContent.scroll_top <= 200 then
+						logContent.scroll_top = 0
+					end
+				end
+			end
+
+			function ForceScrollToBottom(doc)
+				local d = doc or document
+				if not d then return end
+				local logContent = d:GetElementById('log-content')
+				if logContent then
+					-- Force to visual bottom (newest) - scroll_top=0 with column-reverse
+					logContent.scroll_top = 0
+				end
+			end
+		</script>
 	</head>
-	<body>
+	<body onshow="ForceScrollToBottom(document)">
 		<div id="chat_window" class="chat_region" data-model="ConsoleModel" data-class-hidden="!ConsoleModel.IsShown">
 
 			<!-- Main Layout: Log fills everything, bottom has input + filters -->
 			<div class="log-panel" id="log-top">
 
 				<!-- Chat Log Content Area (fills all available space) -->
-				<div class="show-scrollbar" id="log-content">
-					<div id="log-lines">
+				<!-- onresize fires whenever #log-content changes size (e.g. window resize) -->
+				<div class="show-scrollbar" id="log-content" onresize="ScrollConsoleToBottom(document)">
+					<!-- onresize fires whenever #log-lines grows taller (new message added) -->
+					<div id="log-lines" onresize="ScrollConsoleToBottom(document)">
 						<div data-for="Line : ConsoleModel.ShowLogLines">
 							<div class="chat_padding" data-class-alternate="IsOdd(Line)">
 								<div id="text-line" data-rml="ToRMLText(ConsoleLogText(Line))" data-class-hidden="ConsoleLogDisplayType(Line) != 0"/>
