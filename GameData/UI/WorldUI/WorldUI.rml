@@ -9,32 +9,39 @@
             function onShowUI(document, element)
             local insets = GetInsets()
             element.style.width = (element.client_width - insets[1]).."px"
-            element: SetClass('full-hide', false)
+
+            local sidebar = element:GetElementById('right_sidebar')
+            if sidebar then
+                sidebar.style.right = (10 + insets[2]).."dp"
+            end
+
+            element:SetClass('full-hide', false)
             end
         </script>
     </head>
     <body template="BaseTemplate" class="world_ui full-hide" onshow="onShowUI(document, element)">
 
-		<!-- Right side: Panel buttons at top-right, Gems below -->
-        <div id="right_panel">
-            <template src="RightMenuPanel" />
-        </div>
+		<!-- Right sidebar: menu buttons at top, gems below, anchored to right inset -->
+		<div id="right_sidebar">
+			<div id="right_panel">
+				<template src="RightMenuPanel" />
+			</div>
 
-		<!-- Gems panel anchored below the right panel -->
-		<FeatureEnableFlag flag-id="EnableProfileHUD">
-			<div id="top_panel" data-model="PlayerInfoModel">
-				<div id="gems_panel">
-					<div class="panel" onclick="OnEvent(event, 'world_ui.gems_panel_click')" data-attrif-disabled="1">
-						<div id="gem_left_panel">
-							<div id="gem_icon"></div>
-						</div>
-						<div id="gem_right_panel">
-							{{PlayerInfo.gemsCount}}
+			<FeatureEnableFlag flag-id="EnableProfileHUD">
+				<div id="top_panel" data-model="PlayerInfoModel">
+					<div id="gems_panel">
+						<div class="panel" onclick="OnEvent(event, 'world_ui.gems_panel_click')" data-attrif-disabled="1">
+							<div id="gem_left_panel">
+								<div id="gem_icon"></div>
+							</div>
+							<div id="gem_right_panel">
+								{{PlayerInfo.gemsCount}}
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</FeatureEnableFlag>
+			</FeatureEnableFlag>
+		</div>
 
 		<template src="Console" />
     </body>
