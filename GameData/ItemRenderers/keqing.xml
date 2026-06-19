@@ -2,14 +2,83 @@
 <ItemRenderer>
 	<Data>
 		<Sprite name="keqing" fileName="game/keqing.rttex" textureSize="96,64"/>
-		<Sprite name="keqing_effect" fileName="game/keqing.rttex" textureSize="96,64" frame="0,4"/>
-		
+		<Sprite name="p_effect" fileName="game/keqing.rttex" textureSize="96,64" frame="1,4"/>
+
+		<StateMachines>
+			<StateMachine name="Motion">
+				<States>
+					<State name="Idle"/>
+					<State name="Move"/>
+					<State name="Jump"/>
+					<State name="Fall"/>
+					<State name="Punch"/>
+				</States>
+				<Transitions>
+					<!-- Enter Punch from any state the moment PUNCH is pressed -->
+					<Transition to="Punch" from="Idle|Move|Jump|Fall">
+						<Condition>
+							<IsAction>PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<!-- Leave Punch only after the punch animation has finished -->
+					<Transition to="Idle" from="Punch">
+						<Condition type="and">
+							<IsAnimationFinished>true</IsAnimationFinished>
+							<IsVariableBool name="onGround">true</IsVariableBool>
+							<IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
+						</Condition>
+					</Transition>
+					<Transition to="Move" from="Punch">
+						<Condition type="and">
+							<IsAnimationFinished>true</IsAnimationFinished>
+							<IsVariableBool name="onGround">true</IsVariableBool>
+							<IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
+						</Condition>
+					</Transition>
+					<Transition to="Fall" from="Punch">
+						<Condition type="and">
+							<IsAnimationFinished>true</IsAnimationFinished>
+							<IsVariableBool name="onGround">false</IsVariableBool>
+						</Condition>
+					</Transition>
+					<!-- Normal movement (blocked while PUNCH is held so the punch can start) -->
+					<Transition to="Idle" from="Fall|Move|Jump">
+						<Condition type="and">
+							<IsVariableBool name="onGround">true</IsVariableBool>
+							<IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Move" from="Jump|Fall|Idle">
+						<Condition type="and">
+							<IsVariableBool name="onGround">true</IsVariableBool>
+							<IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Jump" from="Idle|Move">
+						<Condition type="and">
+							<IsVariableBool name="onGround">false</IsVariableBool>
+							<IsVariableFloat name="speed.y" operator="Less">-0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+					<Transition to="Fall" from="Jump|Idle|Move">
+						<Condition type="and">
+							<IsVariableBool name="onGround">false</IsVariableBool>
+							<IsVariableFloat name="speed.y" operator="Greater">0.1</IsVariableFloat>
+							<IsAction operatorType="NotEqual">PUNCH</IsAction>
+						</Condition>
+					</Transition>
+				</Transitions>
+			</StateMachine>
+		</StateMachines>
+
 		<Animations>
-			<SpriteAnimation name="keqing_idle" isLoop="true" playOnState="Motion.Idle" sprite="keqing" animTime="1200">
+			<SpriteAnimation name="keqing_idle" playOnState="Motion.Idle" sprite="keqing" animTime="1200" isLoop="true">
 				<Frame>0,0</Frame>
 			</SpriteAnimation>
-			
-			<SpriteAnimation name="keqing_walk" isLoop="true" playOnState="Motion.Move" sprite="keqing" animTime="600">
+			<SpriteAnimation name="keqing_walk" playOnState="Motion.Move" sprite="keqing" animTime="600" isLoop="true">
 				<Frame>0,1</Frame>
 				<Frame>1,1</Frame>
 				<Frame>2,1</Frame>
@@ -17,83 +86,31 @@
 				<Frame>4,1</Frame>
 				<Frame>5,1</Frame>
 			</SpriteAnimation>
-			
-			<SpriteAnimation name="keqing_jump" isLoop="false" playOnState="Motion.Jump" sprite="keqing" animTime="300">
+			<SpriteAnimation name="keqing_jump" playOnState="Motion.Jump" sprite="keqing" animTime="600" isLoop="false">
 				<Frame>0,2</Frame>
-				<Frame>1,2</Frame>
 			</SpriteAnimation>
-
-			<SpriteAnimation name="keqing_fall" sprite="keqing" playOnState="Motion.Fall">
-				<Frame>3,2</Frame>
+			<SpriteAnimation name="keqing_fall" playOnState="Motion.Fall" sprite="keqing" animTime="600" isLoop="false">
+				<Frame>4,2</Frame>
 			</SpriteAnimation>
-			
-			<SpriteAnimation name="keqing_punch" autoPlay="true" isLoop="true" playOnState="Action1.Punch" sprite="keqing" animTime="600">
+			<!-- Punch is non-looping; the state machine waits for IsAnimationFinished -->
+			<SpriteAnimation name="keqing_punch" playOnState="Motion.Punch" sprite="keqing" animTime="400" isLoop="false">
 				<Frame>2,3</Frame>
 				<Frame>3,3</Frame>
 				<Frame>1,3</Frame>
 			</SpriteAnimation>
 		</Animations>
-		
-		<StateMachines>
-			<StateMachine name="Motion">
-				<States>
-					<State name="Idle" />
-					<State name="Move" />
-					<State name="Jump" />
-					<State name="Fall" />
-				</States>
-				<Transitions>
-					<Transition to="Idle" from="Fall|Move">
-						<Condition type="and"><IsVariableBool name="onGround">true</IsVariableBool><IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat></Condition>
-					</Transition>
-					<Transition to="Move" from="Jump|Fall|Idle">
-						<Condition type="and"><IsVariableBool name="onGround">true</IsVariableBool><IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat></Condition>
-					</Transition>
-					<Transition to="Jump" from="Idle|Move">
-						<Condition type="and"><IsVariableBool name="onGround">false</IsVariableBool><IsVariableFloat name="speed.y" operator="Less">-0.1</IsVariableFloat></Condition>
-					</Transition>
-					<Transition to="Fall" from="Jump|Idle|Move">
-						<Condition type="and"><IsVariableBool name="onGround">false</IsVariableBool><IsVariableFloat name="speed.y" operator="Greater">0.1</IsVariableFloat></Condition>
-					</Transition>
-				</Transitions>
-			</StateMachine>
-			<StateMachine name="Action1">
-				<States><State name="Idle"/><State name="Punch"/><State name="ZombiePunch"/></States>
-				<Transitions>
-					<Transition from="ZombiePunch|Punch" to="Idle"><Condition><IsAction operatorType="NotEqual">PUNCH</IsAction></Condition></Transition>
-					<Transition from="ZombiePunch|Idle" to="Punch"><Condition type="and"><IsAction>PUNCH</IsAction><IsZombified>false</IsZombified></Condition></Transition>
-					<Transition from="Idle|Punch" to="ZombiePunch"><Condition type="and"><IsAction>PUNCH</IsAction><IsZombified>true</IsZombified></Condition></Transition>
-				</Transitions>
-			</StateMachine>
-		</StateMachines>
-		
-		<RenderOptions>
-			<Default>
-				<Set name="UserNameOffset">40</Set>
-				<Set name="IgnoreDefaultDamagedTileEffect">true</Set>
-				<Set name="IgnoreDefaultDestroyedTileEffect">true</Set>
-				<Set name="HasDeathParticles">true</Set>
-				<Set name="IgnorePunchTypeCheck">true</Set>
-				<Set name="HideAvatarOnDeath">true</Set>
-				<Set name="IncludeAllActions">true</Set>
-				<Set name="PlayDefaultPunchAudio">false</Set>
-				<Set name="PunchSoundOverride">HAND</Set>
-				<Set name="RenderBackArmBuild">false</Set>
-				<Set name="HideAvatar">true</Set>
-			</Default>
-		</RenderOptions>
 
 		<ParticleSystems>
 			<ParticleSystem name="puncheffect">
 				<Emitter>
-					<Set name="offset">0,-22</Set> 
+					<Set name="offset">0,-22</Set>
 					<Set name="emissionInterval">0.25</Set>
 					<Set name="lifeTime">0.25</Set>
 					<Set name="particlesPerEmission">1</Set>
 					<Set name="particlesToEmit">1</Set>
 				</Emitter>
 				<Particle alternateSpriteFrameWithPunch="true">
-					<Set name="sprite">keqing_effect</Set>
+					<Set name="sprite">p_effect</Set>
 					<Set name="blendingMode">PREMULTIPLIED_ALPHA</Set>
 					<Set name="lifeTime">0.4</Set>
 					<Set name="rotateWithVelocity">true</Set>
@@ -110,32 +127,31 @@
 				</Particle>
 			</ParticleSystem>
 		</ParticleSystems>
-		
-		<TileStampData>
-			<Set name="FileName">game/particles11.rttex</Set>
-			<Set name="EndFrame">12,16</Set>
-			<Set name="FrameCount">4</Set>
-		</TileStampData>
+
+		<RenderOptions>
+			<Default>
+				<Set name="UserNameOffset">40</Set>
+				<Set name="IncludeAllActions">true</Set>
+				<Set name="PlayDefaultPunchAudio">true</Set>
+			</Default>
+		</RenderOptions>
 	</Data>
-	
+
 	<RenderRules>
-		<Update>
-			<StopIf>
-				<IsZombified>true</IsZombified>
-			</StopIf>
-			<AvatarTransform class="Face" onAction="PUNCH">
-				<Set name="face">MAD</Set>
-			</AvatarTransform>
-		</Update>
-		
 		<OnPunchStart>
 			<ParticleSystemUpdate name="puncheffect"/>
 		</OnPunchStart>
-		
+
+		<OnPunchUpdate>
+			<AvatarTransform class="Face">
+				<Set name="face">MAD</Set>
+			</AvatarTransform>
+		</OnPunchUpdate>
+
 		<RenderInFront>
-			<SpriteRender name="keqing" offset="0,0" alignment="DOWN_CENTER"/>
+			<SpriteRender name="keqing" offset="0,0" alignment="DOWN_CENTER" onState="Motion.Idle|Motion.Move|Motion.Jump|Motion.Fall|Motion.Punch"/>
 		</RenderInFront>
-		
+
 		<SwitchOffClothingParticles>
 			<ParticleSystemOff name="puncheffect"/>
 		</SwitchOffClothingParticles>
