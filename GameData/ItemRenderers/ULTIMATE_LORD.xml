@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <ItemRenderer>
 	<Data>
-		<Sprite name="ultimate_lord" fileName="game/ULTIMATE_LORD.rttex" textureSize="256,256"/>
-		<Sprite name="p_effect" fileName="game/ULTIMATE_LORD.rttex" textureSize="256,256" frame="0,4 1"/>
+		<Sprite name="ultimate_lord" fileName="game/ULTIMATE_LORD.rttex" textureSize="256,128"/>
+		<Sprite name="p_effect" fileName="game/ULTIMATE_LORD.rttex" textureSize="256,128" frame="0,4 1"/>
 
 		<StateMachines>
 			<StateMachine name="Motion">
