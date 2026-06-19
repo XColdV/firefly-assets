@@ -110,14 +110,7 @@
 
 		<RenderOptions>
 			<Default>
-				<Set name="JumpEndStateRange">100</Set>
-				<Set name="ClothingOffsetFromShoes">10000</Set>
-				<Set name="IsRidingBird">true</Set>
-				<Set name="IsVehicle">true</Set>
-				<Set name="UserNameOffset">15</Set>
-				<Set name="RenderShoesWithMermaidTail">true</Set>
-				<Set name="ShoesHidesBodyLegs">true</Set>
-				<Set name="IsToRenderPants">false</Set>
+				<Set name="UserNameOffset">40</Set>
 				<Set name="IncludeAllActions">true</Set>
 				<Set name="PlayDefaultPunchAudio">true</Set>
 			</Default>
@@ -129,21 +122,15 @@
 			<ParticleSystemUpdate name="puncheffect"/>
 		</OnPunchStart>
 
-		<RenderInFront>
-			<StopIf>
-				<IsVariableBool name="isMannequin">true</IsVariableBool>
-				<IsRenderMod>RENDER_MOD_MINI_YOU</IsRenderMod>
-			</StopIf>
-			<!-- ClothingOffsetFromShoes pushes the slot 10000 up, so offset pulls it back to the ground -->
-			<SpriteRender name="hutao" offset="0,-9900" alignment="DOWN_CENTER" drawShadow="true" scale="0.7,0.7" onState="Motion.Idle|Motion.Move|Motion.Jump|Motion.Fall|Motion.Punch"/>
-		</RenderInFront>
+		<OnPunchUpdate>
+			<AvatarTransform class="Face">
+				<Set name="face">MAD</Set>
+			</AvatarTransform>
+		</OnPunchUpdate>
 
-		<RenderShoes>
-			<StopIf>
-				<IsSitting>true</IsSitting>
-				<IsSleepingOnaBed>true</IsSleepingOnaBed>
-			</StopIf>
-		</RenderShoes>
+		<RenderInFront>
+			<SpriteRender name="hutao" offset="0,0" alignment="DOWN_CENTER" onState="Motion.Idle|Motion.Move|Motion.Jump|Motion.Fall|Motion.Punch"/>
+		</RenderInFront>
 
 		<SwitchOffClothingParticles>
 			<ParticleSystemOff name="puncheffect"/>
