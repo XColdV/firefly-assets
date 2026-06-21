@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <ItemRenderer>
 	<Data>
-		<Sprite name="arlecchino" fileName="game/ARLECINO.rttex" textureSize="96,96"/>
-		<Sprite name="p_effect" fileName="game/ARLECINO.rttex" textureSize="96,96" frame="0,4 1"/>
+		<Sprite name="arlecchino" fileName="game/ARLECCHINO.rttex" textureSize="96,96"/>
+		<Sprite name="p_effect" fileName="game/ARLECCHINO.rttex" textureSize="96,96" frame="0,4 1"/>
 
 		<StateMachines>
 			<StateMachine name="Motion">
