@@ -2,7 +2,7 @@
 <ItemRenderer>
 	<Data>
 		<Sprite name="kurama" fileName="game/kurama.rttex" textureSize="144,128"/>
-		<Sprite name="p_effect" fileName="game/kurama.rttex" textureSize="144,128" frame="0,4"/>
+		<Sprite name="p_effect" fileName="game/punchkurama.rttex" textureSize="144,128" frame="0.0,0"/>
 
 		<StateMachines>
 			<StateMachine name="Motion">
@@ -54,10 +54,10 @@
 		</StateMachines>
 
 		<Animations>
-			<SpriteAnimation name="kurama_idle" playOnState="Motion.Idle" sprite="kurama" animTime="1600" isLoop="true">
+			<SpriteAnimation name="kurama_idle" playOnState="Motion.Idle" sprite="kurama" animTime="1200" isLoop="true">
 				<Frame>0,0</Frame>
 			</SpriteAnimation>
-			<SpriteAnimation name="kurama_walk" playOnState="Motion.Move" sprite="kurama" animTime="800" isLoop="true">
+			<SpriteAnimation name="kurama_walk" playOnState="Motion.Move" sprite="kurama" animTime="600" isLoop="true">
 				<Frame>0,1</Frame>
 				<Frame>1,1</Frame>
 				<Frame>2,1</Frame>
@@ -112,7 +112,7 @@
 
 		<RenderOptions>
 			<Default>
-				<Set name="UserNameOffset">60</Set>
+				<Set name="UserNameOffset">40</Set>
 				<Set name="IncludeAllActions">true</Set>
 				<Set name="PlayDefaultPunchAudio">true</Set>
 			</Default>
