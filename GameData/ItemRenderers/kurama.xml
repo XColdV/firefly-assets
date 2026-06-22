@@ -85,7 +85,7 @@
 		<ParticleSystems>
 			<ParticleSystem name="puncheffect">
 				<Emitter>
-					<Set name="offset">-40,-60</Set>
+					<Set name="offset">45,40</Set>
 					<Set name="emissionInterval">0.25</Set>
 					<Set name="lifeTime">0.25</Set>
 					<Set name="particlesPerEmission">1</Set>
