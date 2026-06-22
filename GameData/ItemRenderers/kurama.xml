@@ -56,10 +56,6 @@
 		<Animations>
 			<SpriteAnimation name="kurama_idle" playOnState="Motion.Idle" sprite="kurama" animTime="1600" isLoop="true">
 				<Frame>0,0</Frame>
-				<Frame>1,0</Frame>
-				<Frame>2,0</Frame>
-				<Frame>3,0</Frame>
-				<Frame>4,0</Frame>
 			</SpriteAnimation>
 			<SpriteAnimation name="kurama_walk" playOnState="Motion.Move" sprite="kurama" animTime="800" isLoop="true">
 				<Frame>0,1</Frame>
