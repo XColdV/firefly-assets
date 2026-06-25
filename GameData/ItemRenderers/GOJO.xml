@@ -54,14 +54,20 @@
 
 		<Animations>
 			<!-- Idle: 0,0 sampai 5,0 -->
-			<SpriteAnimation name="gojo_idle" playOnState="Motion.Idle" sprite="gojo_sprite" animTime="1200" isLoop="true">
-				<Frame>0,0</Frame>
-				<Frame>1,0</Frame>
-				<Frame>2,0</Frame>
-				<Frame>3,0</Frame>
-				<Frame>4,0</Frame>
-				<Frame>5,0</Frame>
-			</SpriteAnimation>
+			<SpriteAnimation name="gojo_idle" playOnState="Motion.Idle" sprite="gojo_sprite" animTime="4000" isLoop="true">
+    <Frame>0,0</Frame>
+    <Frame>0,0</Frame>
+    <Frame>0,0</Frame>
+    <Frame>0,0</Frame>
+    
+    <Frame>1,0</Frame>
+    <Frame>2,0</Frame>
+    <Frame>3,0</Frame>
+    <Frame>4,0</Frame>
+    <Frame>5,0</Frame>
+    
+    <Frame>0,0</Frame>
+</SpriteAnimation>
 			
 			<!-- Walk: 0,1 sampai 3,1 -->
 			<SpriteAnimation name="gojo_walk" playOnState="Motion.Move" sprite="gojo_sprite" animTime="600" isLoop="true">
