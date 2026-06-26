@@ -54,7 +54,15 @@
 		</StateMachines>
 
 		<Animations>
-			<SpriteAnimation name="rimuru_idle" playOnState="Motion.Idle" sprite="rimuru" animTime="6000" isLoop="true">
+			<SpriteAnimation name="rimuru_idle" playOnState="Motion.Idle" sprite="rimuru" animTime="6500" isLoop="true">
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
 				<Frame>0,0</Frame>
 				<Frame>0,0</Frame>
 				<Frame>0,0</Frame>
