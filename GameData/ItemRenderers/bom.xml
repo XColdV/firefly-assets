@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ItemRenderer>
 	<Data>
-		<Sprite name="klee" fileName="game/bom" textureSize="124,124"/>
+		<Sprite name="bom" fileName="game/bom" textureSize="124,124"/>
 		<Sprite name="p_effect" fileName="game/bom1.rttex" textureSize="124,124" frame="0,0"/>
 
 		<StateMachines>
