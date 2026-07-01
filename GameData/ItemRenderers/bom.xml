@@ -132,7 +132,7 @@
 
 		<RenderOptions>
 			<Default>
-				<Set name="UserNameOffset">45</Set>
+				<Set name="UserNameOffset">55</Set>
 				<Set name="IncludeAllActions">true</Set>
 				<Set name="PlayDefaultPunchAudio">true</Set>
 			</Default>
