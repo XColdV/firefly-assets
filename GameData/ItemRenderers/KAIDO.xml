@@ -84,7 +84,7 @@
 					<Set name="infParticles">true</Set>
 					<Set name="lifeTime">0.15</Set>
 					<Set name="particlesPerEmission">3</Set>
-					<Set name="offset">0,-67</Set>
+					<Set name="offset">30,-67</Set>
 			</Emitter>
 				<Particle alternateSpriteFrameWithPunch="true">
 					<Set name="sprite">p_effect</Set>
