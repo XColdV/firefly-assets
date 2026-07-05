@@ -80,7 +80,7 @@
 		<ParticleSystems>
 			<ParticleSystem name="puncheffect">
 				<Emitter usePlayerFacing="true">
-					<Random name="emissionInterval" min="0.02" max="0.08"/>
+					<Random name="emissionInterval" min="0.002" max="0.004"/>
 					<Set name="infParticles">true</Set>
 					<Set name="lifeTime">0.4</Set>
 					<Set name="particlesPerEmission">3</Set>
