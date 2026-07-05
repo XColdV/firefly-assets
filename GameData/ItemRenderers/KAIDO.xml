@@ -100,7 +100,7 @@
 					</Curve>
 					<Curve name="initialScale">
 						<KeyFrame>0, 0.6, 0.6</KeyFrame>
-						<KeyFrame>1, 0.05, 0.05</KeyFrame>
+						<KeyFrame>3, 2, 1</KeyFrame>
 					</Curve>
 					<Set name="interpolateVelocity">true</Set>
 					<VectorTo name="initialVelocity" source="targetPos" duration="lifeTime" x="1" angle="0"/>
