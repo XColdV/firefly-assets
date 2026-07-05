@@ -2,7 +2,7 @@
 <ItemRenderer>
 	<Data>
 		<Sprite name="kaido" fileName="game/KAIDO.rttex" textureSize="150,150"/>
-		<Sprite name="p_effect" fileName="game/kaidop.rttex" textureSize="64,48" frame="0,0"/>
+		<Sprite name="p_effect" fileName="game/pkaido.rttex" textureSize="124,96 frame="0,0"/>
 
 		<StateMachines>
 			<StateMachine name="Motion">
@@ -111,7 +111,7 @@
 
 		<RenderOptions>
 			<Default>
-				<Set name="UserNameOffset">40</Set>
+				<Set name="UserNameOffset">55</Set>
 				<Set name="IncludeAllActions">true</Set>
 				<Set name="PlayDefaultPunchAudio">true</Set>
 				<Set name="ShouldHover">true</Set>
