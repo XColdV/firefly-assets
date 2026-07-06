@@ -54,7 +54,7 @@
 		</StateMachines>
 
 		<Animations>
-			<SpriteAnimation name="mavuika_idle" playOnState="Motion.Idle" sprite="mavuika" animTime="7300" isLoop="true">
+			<SpriteAnimation name="mavuika_idle" playOnState="Motion.Idle" sprite="mavuika" animTime="7900" isLoop="true">
 				<Frame>0,0</Frame>
 				<Frame>0,0</Frame>
 				<Frame>0,0</Frame>
