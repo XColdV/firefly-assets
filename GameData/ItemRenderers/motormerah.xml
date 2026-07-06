@@ -54,7 +54,14 @@
 		</StateMachines>
 
 		<Animations>
-			<SpriteAnimation name="mavuika_idle" playOnState="Motion.Idle" sprite="mavuika" animTime="8000" isLoop="false">
+			<SpriteAnimation name="mavuika_idle" playOnState="Motion.Idle" sprite="mavuika" animTime="7300" isLoop="true">
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
 				<Frame>0,0</Frame>
 				<Frame>1,0</Frame>
 				<Frame>2,0</Frame>
@@ -172,6 +179,122 @@
 				<Frame>4,2</Frame>
 				<Frame>5,2</Frame>
 				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>5,2</Frame>
+				<Frame>0,3</Frame>
+				<Frame>5,2</Frame>
+				<Frame>4,2</Frame>
+				<Frame>3,2</Frame>
+				<Frame>2,2</Frame>
+				<Frame>1,2</Frame>
+				<Frame>0,2</Frame>
+				<Frame>5,1</Frame>
+				<Frame>4,1</Frame>
+				<Frame>3,1</Frame>
+				<Frame>2,1</Frame>
+				<Frame>1,1</Frame>
+				<Frame>0,1</Frame>
+				<Frame>5,0</Frame>
+				<Frame>4,0</Frame>
+				<Frame>3,0</Frame>
+				<Frame>2,0</Frame>
+				<Frame>1,0</Frame>
+				<Frame>0,0</Frame>
 			</SpriteAnimation>
 			<SpriteAnimation name="mavuika_walk" playOnState="Motion.Move" sprite="mavuika" animTime="7000" isLoop="true">
 				<Frame>1,3</Frame>
@@ -204,7 +327,7 @@
 				<Frame>4,4</Frame>
 			</SpriteAnimation>
 			<!-- Punch loops while held; the Punch state is left when PUNCH is released -->
-			<SpriteAnimation name="mavuika_punch" playOnState="Motion.Punch" sprite="mavuika" animTime="900" isLoop="true">
+			<SpriteAnimation name="mavuika_punch" playOnState="Motion.Punch" sprite="mavuika" animTime="500" isLoop="true">
 				<Frame>5,4</Frame>
 				<Frame>0,5</Frame>
 				<Frame>1,5</Frame>
