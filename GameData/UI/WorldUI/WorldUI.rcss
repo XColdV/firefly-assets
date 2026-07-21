@@ -5,140 +5,471 @@ body.world_ui {
     margin-left: inset-left;
 }
 
-/* ============================================================
-   RIGHT SIDEBAR — Flex container for right_panel + gems
-   Anchored to top-right, uses inset-right for camera offset
-============================================================ */
-#right_sidebar {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 10dp;
-    right: 10dp;
-    z-index: 8;
-    gap: 8dp;
-}
-
-/* ============================================================
-   RIGHT PANEL — Top-right, contains menu buttons
-   Slides in/out with transition
-============================================================ */
-#right_panel {
-    display: block;
-    transition: margin-right 0.2s linear-in;
-    margin-right: 0dp;
-}
-
-/* .hide = user toggled photo mode / hide UI.
-   Keep the right_panel in place — only collapse main_buttons.
-   This ensures the photo/toggle button stays always visible. */
-.hide #right_panel {
-    margin-right: 0dp;
-}
-
-/* Hide just the nav buttons, NOT the photo toggle button */
-.hide #main_buttons {
-    display: none;
-}
-
-/* full-hide = game-driven state (loading, cutscenes etc) — hide everything */
-.full-hide #right_panel {
-    margin-right: -120dp;
-}
-
-/* ============================================================
-   TOP PANEL (Gems) — Below the right menu panel via flex layout
-   No longer hardcoded top: 360dp — flows naturally
-============================================================ */
 #top_panel {
     display: block;
-    transition: margin-top 0.2s linear-in, opacity 0.2s linear-in;
+    position: absolute;
+    top: 10dp;
+    left: 8dp;
+    transition: margin-top 0.2s linear-in;
     margin-top: 0dp;
+}
+
+#left_panel {
+    display: block;
+    position: absolute;
+    top: 90dp;
+    left: 8dp;
+    transition: margin-left 0.2s linear-in;
+    margin-left: 0dp;
+}
+
+#left_panel.withPearls {
+    top: 135dp;
+}
+
+.full-hide #left_panel,
+.petbattle-hide #left_panel,
+.hide #left_panel {
+    transition: margin-left 0.2s linear-in;
+    margin-left: -130dp;
 }
 
 .ftue-hide #top_panel,
 .full-hide #top_panel,
 .petbattle-hide #top_panel,
 .hide #top_panel {
-    margin-top: -70dp;
-    opacity: 0;
-}
-
-/* ============================================================
-   GEMS PANEL — Premium dark glassmorphism design
-============================================================ */
-#gems_panel {
-    width: 110dp;
-    height: 48dp;
-    padding: 4dp;
-    display: flex;
-    flex-direction: row;
-    border-radius: 10dp;
-    border: 1dp rgba(128, 204, 232, 160);
-    background-color: rgba(8, 22, 32, 200);
-    box-shadow: #000b 2dp 2dp 3dp 0dp;
-}
-
-#gems_panel .panel {
-    width: 100%;
-    height: 40dp;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 7dp;
-    background-color: rgba(30, 75, 100, 230);
-    box-shadow: inset #0005 0dp 1dp 2dp 0dp, #0008 0dp 1dp 2dp 0dp;
-    sound-on-click: true;
-    transition: background-color 0.12s ease-out;
-    overflow: hidden;
-}
-
-#gems_panel .panel:hover {
-    background-color: rgba(44, 95, 122, 240);
-}
-
-#gems_panel .panel:active,
-#gems_panel .panel:active * {
-    image-color: #aaa;
-    color: #aaa;
-    background-color: rgba(22, 58, 78, 220);
-}
-
-/* Gem icon area - accent left strip */
-#gems_panel #gem_left_panel {
-    width: 34dp;
-    height: 40dp;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    border-top-left-radius: 7dp;
-    border-bottom-left-radius: 7dp;
-    background-color: rgba(60, 150, 190, 220);
-}
-
-#gems_panel .panel:active #gem_left_panel {
-    background-color: rgba(40, 110, 145, 210);
-}
-
-#gems_panel #gem_icon {
-    width: 22dp;
-    height: 22dp;
-    decorator: image(interface/cash_icon_overlay.rttex);
-}
-
-/* Gem count text */
-#gems_panel #gem_right_panel {
-    flex: 1;
-    display: block;
-    text-align: center;
-    font-size: 84%;
-    font-weight: bold;
-    color: rgb(220, 248, 255);
-    white-space: nowrap;
-    overflow: hidden;
-    padding: 0dp 4dp;
-    line-height: 40dp;
+    transition: margin-top 0.2s linear-in;
+    margin-top: -100dp;
 }
 
 /*-------------------------------------------------------------------------------*/
+
+/* Final override: legacy top-left gems/avatar panel is hidden after all older
+   #gems_panel styles have loaded. */
+#gems_panel {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Keep the legacy top-left gems/avatar panel alive for bindings, but invisible.
+   The visible player HUD now lives in RightMenuPanel.rml/rcss. */
+#gems_panel {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/*--------------                   Gems panel                      --------------*/
+@spritesheet gems_panel_sprites {
+    src: interface/large/gui_store_top_scale9.rttex;
+    resolution: 1x;
+    gems_panel_bg: 0px 0px 32px 32px;
+    gems_panel_bg_inner: 15px 15px 2px 2px;
+}
+
+#gems_panel {
+    display: inline;
+    width: 250dp;
+    height: 75dp;
+    border-radius: 7dp;
+    background-color: rgba(24, 107, 139, 170);
+    display: inline-block;
+    vertical-align: top;
+}
+
+.box_border {
+    margin-top: 5dp;
+    margin-left: 5dp;
+    width: 65dp;
+    height: 65dp;
+    border-radius: 7dp;
+    background-color: #186B8BCC;
+    vertical-align: top;
+    /* Remove any margins that might interfere with centering */
+}
+
+.box_border_background {
+    width: 65dp;
+    height: 65dp;
+    background-color: rgba(121, 194, 222, 0);
+    border-top-left-radius: 6dp;
+    border-bottom-left-radius: 6dp;
+    vertical-align: top;
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+@spritesheet dungeon_avatar_sprite
+{
+	src: game/vilpix.rttex;
+    resolution: 1x;
+    dungeonAvatar0: 4px 164px 24px 24px;
+}
+
+.avatar {
+    width: 77%;
+    height: 77%;
+    margin-top: 13%;
+    margin-left: 12%;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    display: block;
+}
+
+    #gems_panel .panel {
+        margin-left: 15dp;
+        width: 70%;
+        height: 34dp;
+        background-color: rgba(65,123,150,255);
+        display: inline-block; 
+        vertical-align: top;
+        box-shadow: #000a 0px 2px 2px;
+        border-top-left-radius: 6dp;
+        border-top-right-radius: 6dp;
+        border-bottom-left-radius: 6dp;
+        border-bottom-right-radius: 6dp;
+    }
+
+    
+    #gems_panel .left_panel {
+        height:100%; 
+        width:20%; 
+        display: inline-block; 
+        vertical-align: top;
+    }    
+    
+    #gems_panel .right_panel {
+        margin-left: 12dp; 
+        height:100%; 
+        width:75%; 
+        display: inline-block;
+        vertical-align: top;
+	sound-on-click: true;
+    }
+
+    #gems_panel .panel_name {
+        width: 95%; /* Ensure it takes full width */
+        height: 33dp;
+        vertical-align: top;
+        margin-left: 15dp;
+    }
+
+    #gems_panel .panel:active,
+    #gems_panel .panel:active * {
+        image-color: #aaa;
+        color: #aaa;
+    }
+
+        #gems_panel .panel:active #gem_left_panel {
+            background-color: rgba(83, 133, 152, 255);
+        }
+
+    #gems_panel #gem_left_panel {
+        width: 41dp;
+        height: 100%;
+        background-color: rgba(116,189,212,255);
+        border-top-left-radius: 6dp;
+        border-bottom-left-radius: 6dp;
+        margin-left: -4dp;
+        margin-right: 8dp;
+        display: inline-block;
+    }
+
+        #gems_panel #gem_left_panel #gem_icon {
+            width: 28dp;
+            height: 28dp;
+            decorator: image(interface/cash_icon_overlay.rttex);
+            margin: auto;
+        }
+
+    #gems_panel #gem_right_panel {
+        width: 66%;
+        text-align: center;
+        margin-top: 12%;
+        font-size: 82%;
+        margin-left: -4%;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        font-effect: shadow(2dp 2dp black);
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    #gems_panel #gem_plus_button_right {
+        margin-left: 2dp; /* Space from currency panel */
+        margin-top: 0.5dp;
+        width: 35dp;
+        height: 35dp;
+        vertical-align: top;
+        display: inline-block;
+    }
+
+    #gems_panel #player_name {
+    text-align: left;
+    font-size: 20dp;
+    width: 95%; /* Make it take full width of its container */
+    min-width: 0; /* Allow it to shrink below content size */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 0dp; /* Remove fixed margin */
+    margin-top: 3dp; /* Remove fixed margin */
+    font-weight: bold;
+    font-effect: shadow(2dp 2dp black);
+    display: block; /* Change to block for full width */
+    vertical-align: top;
+    }
+
+    #gems_panel #plus_button {
+        display: inline-block;
+        width: 35dp;
+        height: 35dp;
+        decorator: image(interface/large/gui_buy_plus.rttex);
+	sound-on-click: true;
+    }
+
+    #gems_panel #plus_button:active {
+        image-color: #aaa;
+    }
+
+/*-------------------------------------------------------------------------------*/
+
+/* Firefly: New Dawn world HUD skin --------------------------------------------*/
+
+@keyframes firefly-panel-breathe {
+    from {
+        filter: brightness(0.95);
+    }
+
+    to {
+        filter: brightness(1.08);
+    }
+}
+
+#top_panel {
+    top: 14dp;
+    left: 14dp;
+    width: 184dp;
+    margin-left: 0dp;
+}
+
+#left_panel {
+    top: 104dp;
+    left: 14dp;
+}
+
+#gems_panel {
+    position: absolute;
+    width: 184dp;
+    height: 76dp;
+    border-radius: 7dp;
+    border: 1dp rgba(255, 255, 255, 38);
+    background-color: rgba(24, 107, 139, 170);
+    box-shadow: rgba(0, 0, 0, 80) 3dp 4dp 10dp 0dp;
+    overflow: visible;
+}
+
+/* Keep legacy bindings hidden; the visible profile HUD lives in RightMenuPanel. */
+#top_panel {
+    display: none;
+}
+
+#right_panel {
+    z-index: 90;
+}
+
+#left_panel.event-panel-unused {
+    display: none;
+    pointer-events: none;
+}
+
+.box_border {
+    display: block;
+    margin-top: 5dp;
+    margin-left: 5dp;
+    width: 66dp;
+    height: 66dp;
+    border-radius: 7dp;
+    border: 0dp;
+    background-color: rgba(0, 0, 0, 58);
+    box-shadow: none;
+}
+
+#gems_panel .right_panel {
+    position: relative;
+    width: 102dp;
+    height: 76dp;
+    margin-left: 6dp;
+    z-index: 2;
+}
+
+#gems_panel .left_panel {
+    display: inline-block;
+    position: relative;
+    width: 76dp;
+    height: 76dp;
+    z-index: 2;
+}
+
+#gems_panel .panel_name {
+    display: block;
+    width: 100dp;
+    height: 42dp;
+    margin-left: 0dp;
+    margin-top: 17dp;
+    border-radius: 7dp;
+    border: 0dp;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: none;
+}
+
+#gems_panel #player_name {
+    color: #ffffff;
+    font-size: 18dp;
+    line-height: 42dp;
+    font-weight: bold;
+    font-effect: shadow(1dp 1dp black);
+    margin-left: 8dp;
+    width: 84dp;
+}
+
+#gems_panel .panel {
+    display: block;
+    position: absolute;
+    top: 360dp;
+    left: 100vw;
+    width: 185dp;
+    height: 46dp;
+    margin-left: -304dp;
+    border-radius: 0dp;
+    border: 0dp;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: none;
+    animation: none;
+    overflow: visible;
+}
+
+#gems_panel #gem_left_panel {
+    position: absolute;
+    top: 4dp;
+    right: 0dp;
+    width: 41dp;
+    height: 41dp;
+    margin-left: 0dp;
+    margin-right: 0dp;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 0dp;
+}
+
+#gems_panel #gem_left_panel #gem_icon {
+    width: 37dp;
+    height: 37dp;
+    margin-top: 2dp;
+    margin-left: 2dp;
+}
+
+#gems_panel .panel:active #gem_left_panel {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#gems_panel #gem_right_panel {
+    color: #ffffff;
+    position: absolute;
+    top: 0dp;
+    right: 43dp;
+    width: 140dp;
+    margin-top: 0dp;
+    margin-left: 0dp;
+    line-height: 46dp;
+    font-size: 26dp;
+    text-align: right;
+    font-effect: shadow(1dp 1dp black);
+}
+
+#gems_panel #plus_button {
+    display: none;
+}
+
+#gems_panel #gem_plus_button_right {
+    display: none;
+}
+
+#pearls_panel .panel {
+    border-radius: 12dp;
+    border: 1dp rgba(255, 255, 255, 38);
+    background-color: rgba(0, 0, 0, 154);
+}
+
+#pearls_panel #pearl_left_panel {
+    background-color: #357ca1;
+}
+
+#pearls_panel #pearl_right_panel {
+    color: #ffffff;
+    font-effect: shadow(1dp 1dp black);
+}
+/*--------------                   Pearl panel                      --------------*/
+@spritesheet pearls_panel_sprites {
+    src: interface/large/gui_store_top_scale9.rttex;
+    resolution: 1x;
+    pearls_panel_bg: 0px 0px 32px 32px;
+    pearls_panel_bg_inner: 15px 15px 2px 2px;
+}
+
+#pearls_panel {
+    display: block;
+    margin-top: 5dp;
+}
+
+#pearls_panel.hidden {
+    display: none;
+}
+
+#pearls_panel .panel {
+    width: 186dp;
+    height: 41dp;
+    decorator: ninepatch(pearls_panel_bg, pearls_panel_bg_inner);
+    display: inline-block;
+    vertical-align: top;
+}
+
+#pearls_panel #pearl_left_panel {
+    width: 41dp;
+    height: 39dp;
+    background-color: rgba(121, 194, 222, 255);
+    border-top-left-radius: 6dp;
+    border-bottom-left-radius: 6dp;
+    margin-left: -1dp;
+    margin-right: 8dp;
+    display: inline-block;
+}
+
+#pearls_panel #pearl_left_panel #pearl_icon {
+    width: 26dp;
+    height: 26dp;
+    decorator: image(interface/large/pearl_icon_overlay.rttex);
+    margin: auto;
+}
+
+#pearls_panel #pearl_right_panel {
+    font-size: 24dp;
+    font-weight: bold;
+    line-height: 39dp;
+    font-effect: shadow(2dp 2dp black);
+    display: inline-block;
+    vertical-align: top;
+}
+
+/*-------------------------------------------------------------------------------*/
+
+/* Final override: legacy top-left gems/avatar panel is hidden after all older
+   #gems_panel styles have loaded. */
+#gems_panel {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}

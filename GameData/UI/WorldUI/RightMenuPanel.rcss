@@ -1,64 +1,33 @@
+#right_menu_panel {
+/*    width: 80dp;*/
+    padding: 0dp;
+    display: flex;
+
+/*    background-color: rgb(76, 255, 0);*/
+}
+
 @spritesheet event_button4_sprite {
     src: interface/large/event_button4.rttex;
     resolution: 1x;
     notification_icon_circle: 256px 384px 128px 128px;
 }
 
-/* ============================================================
-   RIGHT MENU PANEL CONTAINER
-   Dark glassmorphism card — top-right of screen
-============================================================ */
-#right_menu_panel {
-    padding: 6dp;
-    display: flex;
-    flex-direction: column;
-    gap: 5dp;
-    border-radius: 12dp;
-    border: 1dp rgba(128, 204, 232, 155);
-    background-color: rgba(8, 20, 30, 210);
-    box-shadow: #000e 2dp 3dp 4dp 0dp;
-}
-
-/* ============================================================
-   MAIN BUTTONS COLUMN WIDTH
-============================================================ */
 #main_buttons {
-    width: 56dp;
-    display: flex;
-    flex-direction: column;
-    gap: 5dp;
+    width: 76dp;
 }
 
-/* ============================================================
-   MENU BUTTONS — Premium glassy look
-============================================================ */
 .menu-button {
-    width: 56dp;
-    height: 56dp;
-    border-radius: 10dp;
-    border: 1dp rgba(128, 204, 232, 90);
-    background-color: rgba(20, 55, 75, 210);
-    box-shadow: #000b 1dp 2dp 5dp 0dp, inset #ffffff0a 0dp 1dp 0dp 0dp;
-    sound-on-click: true;
-    transition: background-color 0.12s ease-out, border 0.12s ease-out, box-shadow 0.12s ease-out, transform 0.12s ease-out;
-    position: relative;
+    width: 76dp;
+    height: 76dp;
+    margin-bottom: 12dp;
+	sound-on-click: true;
 }
 
-.menu-button:hover {
-    background-color: rgba(35, 80, 108, 240);
-    border: 1dp rgba(160, 220, 245, 150);
-    box-shadow: #000d 1dp 2dp 7dp 0dp, inset #ffffff12 0dp 1dp 0dp 0dp;
-}
+    .menu-button:active {
+        transform: scale(0.9);
+        filter: brightness(0.7);
+    }
 
-.menu-button:active {
-    transform: scale(0.90);
-    background-color: rgba(12, 35, 50, 210);
-    box-shadow: #0008 0dp 1dp 3dp 0dp;
-}
-
-/* ============================================================
-   BUTTON DECORATORS
-============================================================ */
 .menuopen-button {
     decorator: image("interface/large/menu_button.rttex" contain);
 }
@@ -75,28 +44,15 @@
     decorator: image("interface/large/shop_button.rttex" contain);
 }
 
-/* Photo button — sits above the main group */
 .photo-button {
+    margin-right: 10dp;
     decorator: image("interface/large/PhotomodeOff.rttex" contain);
-    border: 1dp rgba(200, 160, 240, 100);
-    background-color: rgba(55, 25, 75, 200);
 }
 
-.photo-button:hover {
-    background-color: rgba(80, 38, 105, 240);
-    border: 1dp rgba(210, 170, 250, 160);
-}
+    .hide .photo-button {
+        decorator: image("interface/large/PhotomodeOn.rttex" contain);
+    }
 
-.hide .photo-button {
-    decorator: image("interface/large/PhotomodeOn.rttex" contain);
-    background-color: rgba(120, 55, 160, 220);
-    border: 1dp rgba(220, 180, 255, 180);
-    box-shadow: #8844cc88 0dp 0dp 8dp 0dp;
-}
-
-/* ============================================================
-   VISIBILITY RULES
-============================================================ */
 .petbattle-hide .menuopen-button,
 .petbattle-hide .shop-button,
 .petbattle-hide .photo-button,
@@ -109,27 +65,225 @@
     display: none;
 }
 
-/* ============================================================
-   NOTIFICATION BADGE on Chat Button
-============================================================ */
+#right_panel {
+    display: block;
+    position: absolute;
+    top: 12dp;
+    right: 8dp;
+    transition: margin-right 0.2s linear-in;
+    margin-right: 0dp;
+}
+
+.hide #right_panel {
+    margin-right: -84dp;
+}
+
+.full-hide #right_panel {
+    margin-right: -160dp;
+}
+
 .notification_circle {
     position: absolute;
-    width: 46dp;
-    height: 46dp;
+    width: 64dp;
+    height: 64dp;
     decorator: image(notification_icon_circle);
-    margin-left: -12dp;
-    margin-top: -12dp;
+    margin-left: -18dp;
+    margin-top: -18dp;
 }
 
 .notification_text {
     position: absolute;
-    width: 46dp;
-    height: 46dp;
+    width: 64dp;
+    height: 64dp;
     text-align: center;
-    line-height: 46dp;
+    line-height: 64dp;
     vertical-align: middle;
     font-size: 0.65rem;
+}
+
+/* Firefly: New Dawn compact world controls -------------------------------------*/
+
+@keyframes menu-button-float {
+    from {
+        transform: translateY(0dp);
+    }
+
+    to {
+        transform: translateY(-3dp);
+    }
+}
+
+#right_panel {
+    top: 12dp;
+    right: 0dp;
+    left: 0dp;
+    width: 100%;
+}
+
+#right_menu_panel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#photo_panel {
+    position: absolute;
+    top: 0dp;
+    right: 78dp;
+}
+
+#main_buttons {
+    position: absolute;
+    top: 0dp;
+    right: 12dp;
+    width: 56dp;
+    padding: 0dp;
+    border: 0dp;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.menu-button {
+    width: 56dp;
+    height: 56dp;
+    margin-bottom: 8dp;
+    filter: brightness(0.88) saturate(0.9);
+    border-radius: 12dp;
+    background-color: rgba(5, 38, 43, 148);
+    border: 1dp rgba(145, 255, 214, 75);
+    box-shadow: rgba(0, 0, 0, 100) 2dp 3dp 8dp 0dp;
+    animation: none;
+}
+
+.menu-button:active {
+    transform: scale(0.94);
+    filter: brightness(0.72) saturate(1.2);
+}
+
+.photo-button {
+    width: 52dp;
+    height: 52dp;
+    margin-right: 6dp;
+    filter: brightness(0.86) saturate(0.9);
+}
+
+.notification_circle {
+    width: 38dp;
+    height: 38dp;
+    margin-left: -8dp;
+    margin-top: -8dp;
+    image-color: rgba(103, 255, 189, 240);
+}
+
+.notification_text {
+    width: 38dp;
+    height: 38dp;
+    line-height: 38dp;
+    font-size: 15dp;
     font-weight: bold;
-    color: rgb(255, 255, 255);
-    font-effect: shadow(1dp 1dp black);
+    font-effect: shadow(1dp 1dp #000);
+}
+
+#right_hud_panel {
+    position: absolute;
+    top: 2dp;
+    right: auto;
+    left: 0dp;
+    width: 100%;
+    height: 250dp;
+    color: #ffffff;
+    text-align: left;
+    pointer-events: none;
+}
+
+#right_profile_panel {
+    display: block;
+    position: relative;
+    left: 14dp;
+    width: 168dp;
+    height: 48dp;
+    padding: 4dp 8dp 4dp 4dp;
+    border-radius: 10dp;
+    border: 1dp rgba(145, 255, 214, 70);
+    background-color: rgba(5, 38, 43, 176);
+    box-shadow: rgba(0, 0, 0, 100) 2dp 3dp 8dp 0dp;
+    sound-on-click: true;
+    pointer-events: auto;
+}
+
+#right_profile_panel:active,
+#right_gems_panel:active {
+    transform: scale(0.96);
+    filter: brightness(0.82);
+}
+
+#right_avatar_box {
+    display: inline-block;
+    width: 44dp;
+    height: 44dp;
+    margin-right: 6dp;
+    border-radius: 7dp;
+    background-color: rgba(3, 24, 30, 190);
+    border: 1dp rgba(145, 255, 214, 88);
+    vertical-align: middle;
+}
+
+.right_avatar {
+    display: block;
+    width: 35dp;
+    height: 35dp;
+    margin-left: 5dp;
+    margin-top: 5dp;
+}
+
+#right_player_name {
+    display: inline-block;
+    width: 108dp;
+    height: 44dp;
+    line-height: 44dp;
+    color: #ffffff;
+    font-size: 18dp;
+    font-weight: bold;
+    font-effect: shadow(1dp 1dp #000);
+    vertical-align: middle;
+    text-align: left;
+}
+
+#right_gems_panel {
+    display: block;
+    position: absolute;
+    top: 192dp;
+    right: 12dp;
+    width: 148dp;
+    height: 38dp;
+    margin-top: 0dp;
+    margin-left: 0dp;
+    sound-on-click: true;
+    background-color: rgba(5, 38, 43, 155);
+    border-radius: 8dp;
+    border: 1dp rgba(111, 233, 202, 62);
+    pointer-events: auto;
+}
+
+#right_gems_count {
+    display: inline-block;
+    width: 105dp;
+    height: 38dp;
+    line-height: 38dp;
+    color: rgba(218, 255, 240, 255);
+    font-size: 24dp;
+    font-weight: bold;
+    font-effect: shadow(1dp 1dp #000);
+    text-align: right;
+    vertical-align: middle;
+}
+
+#right_gem_icon {
+    display: inline-block;
+    width: 34dp;
+    height: 34dp;
+    margin-left: 4dp;
+    margin-top: 2dp;
+    decorator: image(interface/cash_icon_overlay.rttex);
+    vertical-align: middle;
 }

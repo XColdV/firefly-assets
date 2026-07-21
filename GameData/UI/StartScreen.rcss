@@ -2,382 +2,590 @@ body.start-screen {
     width: 100%;
     height: 100%;
     clip: always;
+    margin: 0dp;
+    padding: 0dp;
+    color: #ffffff;
+    background-color: #0a0a0a;
+    font-family: Century Gothic;
 }
 
-.start-screen #buttons-panel {
+#background-clip {
     position: absolute;
-    top: 50vh;
+    top: 0dp;
+    left: 0dp;
     width: 100%;
-    justify-content: center;
+    height: 100%;
+    overflow: hidden;
+    background-color: #0a0a0a;
+}
+
+@keyframes bg-video-motion {
+    0% {
+        transform: scale(1);
+        opacity: 0.58;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 0.72;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.58;
+    }
+}
+
+#bg-video {
+    position: absolute;
+    top: -4%;
+    left: -4%;
+    width: 108%;
+    height: 108%;
+    decorator: image("game/summer_firefly.rttex" cover);
+    transform-origin-x: center;
+    transform-origin-y: center;
+    animation: 12s linear-in-out infinite bg-video-motion;
+}
+
+#video-overlay {
+    position: absolute;
+    top: 0dp;
+    left: 0dp;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 154);
+}
+
+#navbar {
+    position: absolute;
+    top: 0dp;
+    left: 0dp;
+    width: 100%;
+    height: 120dp;
+    padding: 0dp;
+    opacity: 0;
+    transform: translateY(-90dp);
+    transition: transform 0.82s linear-in-out, opacity 0.82s linear-in-out;
+}
+
+#navbar.display {
+    opacity: 1;
+    transform: translateY(0dp);
+}
+
+.nav-left,
+.nav-center,
+.nav-right {
+    position: absolute;
+    top: 0dp;
+    height: 120dp;
+}
+
+.nav-center {
+    left: 0dp;
+    width: 100%;
     text-align: center;
 }
 
-    .start-screen #buttons-panel .button {
-        transform-origin-x: center;
-        transform: translateX(-50%);
-        display: block;
-        width: 220dp;
-        margin-bottom: 10dp;
-        padding: 4dp 0dp 4dp 0dp;
-        position: relative;
-        left: -20%;
+.nav-right {
+    right: 0dp;
+    width: 33%;
+    text-align: right;
+}
+
+@keyframes logo-float {
+    from {
+        transform: translateY(8dp) scale(1);
     }
 
+    to {
+        transform: translateY(16dp) scale(1.018);
+    }
+}
+
+.logo-stage {
+    position: absolute;
+    top: 0dp;
+    left: 50%;
+    width: 540dp;
+    height: 140dp;
+    margin-left: -270dp;
+    animation: 1.8s linear-in-out infinite alternate logo-float;
+    z-index: 2;
+}
+
+.firefly-logo {
+    position: absolute;
+    top: 0dp;
+    left: 0dp;
+    width: 540dp;
+    height: 140dp;
+    decorator: image("game/firefly_logo.rttex" contain);
+}
+
+.firefly-logo-base {
+    image-color: rgba(255, 255, 255, 255);
+}
+
+#hero-content {
+    position: absolute;
+    left: 10vw;
+    top: 29vh;
+    width: 700dp;
+    opacity: 0;
+    transform: translateX(-50dp);
+    transition: transform 0.82s 0.24s linear-in-out, opacity 0.82s 0.24s linear-in-out;
+}
+
+#hero-content.display {
+    opacity: 1;
+    transform: translateX(0dp);
+}
+
+.hero-emblem {
+    width: 122dp;
+    height: 122dp;
+    margin-bottom: 18dp;
+    decorator: image("game/firefly_circle_logo.rttex" contain);
+    image-color: rgba(210, 255, 237, 255);
+}
+
+.title {
+    color: #ffffff;
+    font-size: 70dp;
+    font-weight: bold;
+    line-height: 76dp;
+    font-effect: shadow(0dp 2dp rgba(0, 0, 0, 210));
+}
+
+.hero-subtitle {
+    margin-top: 10dp;
+    color: rgba(190, 255, 226, 235);
+    font-size: 20dp;
+    font-weight: bold;
+    font-effect: shadow(0dp 2dp rgba(0, 0, 0, 204));
+}
+
+#platform-buttons {
+    position: relative;
+    left: 0dp;
+    top: auto;
+    width: auto;
+    margin-top: 24dp;
+    padding: 12dp 14dp;
+    border-radius: 14dp;
+    border: 1dp rgba(170, 255, 218, 70);
+    background-color: rgba(4, 34, 39, 174);
+    box-shadow: rgba(0, 0, 0, 125) 3dp 5dp 14dp 0dp;
+    display: flex;
+    flex-direction: row;
+    gap: 10dp;
+    align-items: center;
+}
+
+#platform-buttons .shine-btn {
+    opacity: 0;
+    transform: translateX(80dp) scale(0.9);
+}
+
+#platform-buttons .shine-btn.display {
+    opacity: 1;
+    transform: translateX(0dp) scale(1);
+}
+
+.shine-btn {
+    position: relative;
+    display: block;
+    width: 156dp;
+    height: 52dp;
+    margin-bottom: 0dp;
+    margin-left: 0dp;
+    padding: 0dp;
+    border-radius: 6dp;
+    border: 0dp;
+    background-color: rgb(37, 173, 137);
+    decorator: radial-gradient(80% 80%, rgb(47, 201, 158), rgb(8, 78, 78));
+    box-shadow: #000f 2dp 2dp 2dp 0px;
+    overflow: hidden;
+    text-align: center;
+    sound-on-click: true;
+    transition: all 0.1s;
+}
+
+.shine-btn .label {
+    display: block;
+    width: 100%;
+    height: 52dp;
+    margin-top: 0dp;
+    margin-bottom: 0dp;
+    z-index: 2;
+    color: #ffffff;
+    font-size: 24dp;
+    font-weight: bold;
+    line-height: 52dp;
+    text-align: center;
+    font-effect: shadow(1dp 1dp #000);
+    transform: translateY(-4dp);
+}
+
+.shine-btn.display:active,
+.shine-btn:active {
+    transform: scale(0.95);
+    filter: brightness(0.85);
+}
+
+#start_button {
+    width: 190dp;
+    height: 62dp;
+    padding: 0dp;
+    margin-left: 0dp;
+}
+
+#start_button .label {
+    font-size: 30dp;
+    height: 62dp;
+    line-height: 62dp;
+    transform: translateY(-5dp);
+}
+
+#start_button.display:active,
+#start_button:active {
+    background-color: rgb(74, 226, 171);
+    filter: brightness(1.2);
+    transform: scale(0.95);
+}
+
+#quit_button {
+    width: 156dp;
+    height: 53dp;
+    margin-left: 0dp;
+}
+
+#quit_button .label {
+    height: 53dp;
+    line-height: 53dp;
+    font-size: 24dp;
+    transform: translateY(-3dp);
+}
+
+#account-strip {
+    position: absolute;
+    left: 40dp;
+    bottom: 34dp;
+    width: 130dp;
+    height: 24dp;
+    color: #ffffff;
+    text-align: left;
+    font-family: Century Gothic;
+    opacity: 0;
+    transform: translateY(44dp);
+    transition: transform 0.76s 0.5s linear-in-out, opacity 0.76s 0.5s linear-in-out;
+}
+
+#account-strip.display {
+    opacity: 1;
+    transform: translateY(0dp);
+}
+
+#account-strip .account-icon {
+    display: inline-block;
+    width: 23dp;
+    height: 23dp;
+    margin-right: 7dp;
+    vertical-align: middle;
+}
+
+#account-strip .account-name {
+    display: inline-block;
+    width: 96dp;
+    color: #ffffff;
+    font-size: 16dp;
+    font-weight: bold;
+    line-height: 24dp;
+    vertical-align: middle;
+    font-effect: shadow(1dp 1dp rgba(0, 0, 0, 150));
+}
+
+#logout_button {
+    position: absolute;
+    left: 40dp;
+    bottom: 62dp;
+    width: 84dp;
+    height: 24dp;
+    padding-top: 0dp;
+    border: 0dp;
+    background-color: rgba(0, 0, 0, 0);
+    text-align: center;
+    sound-on-click: true;
+    opacity: 0;
+    transform: translateY(44dp);
+    transition: transform 0.76s 0.55s linear-in-out, opacity 0.76s 0.55s linear-in-out;
+}
+
+#logout_button.display {
+    opacity: 1;
+    transform: translateY(0dp);
+}
+
+#logout_button .label {
+    display: block;
+    width: 100%;
+    height: 24dp;
+    line-height: 24dp;
+    color: rgba(255, 255, 255, 110);
+    font-size: 13dp;
+    font-weight: bold;
+    font-effect: shadow(1dp 1dp rgba(0, 0, 0, 150));
+}
+
+#logout_button:active {
+    transform: scale(0.95) translateY(1dp);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#logout_button:active .label {
+    color: rgba(255, 255, 255, 190);
+    font-effect: shadow(1dp 1dp rgba(0, 0, 0, 180));
+}
+
 @media (theme: platform-ios) {
-    #buttons-panel #quit_button {
+    #platform-buttons #quit_button {
         display: none;
     }
 }
 
 @media (theme: platform-android) {
-    #buttons-panel #quit_button {
+    #platform-buttons #quit_button {
         display: none;
     }
 }
 
-#buttons-panel .button.start-button {
-    width: 360dp;
-    padding: 4dp 0dp 4dp 0dp;
-    margin-bottom: 16dp;
-}
-
-@keyframes scale-anim {
-    from {
-        transform: translateX(-180dp) scale(0.99);
-    }
-
-    to {
-        transform: translateX(-180dp) scale(1.05);
-    }
-}
-.scale-anim {
-    animation: 3s linear-in-out infinite alternate scale-anim;
-}
-
-    .scale-anim:active {
-        animation: none;
-    }
-
-
-.start-screen #buttons-panel .button:active {
-    /*    background-color: #FDCC04FF;*/
-    filter: brightness(0.85);
-    transform: translateX(-50%) scale(0.95);
-}
-
-
-.start-screen #buttons-panel .button.start-button:active {
-    background-color: rgb(29, 195, 57);
-    filter: brightness(1.2);
-    transform: translateX(-50%) scale(0.95);
-}
-
-.start-screen #buttons-panel .button.display {
-    left: 50%;
-}
-
-.start-screen .button .label {
-    font-effect: shadow(1dp 1dp #000);
-    font-size: 46dp;
-}
-
-.start-screen .button.start-button .label {
-    font-effect: shadow(1dp 1dp #000);
-    font-size: 56dp;
-}
-
-@keyframes logo-floating {
-    from {
-        transform: translateY(-1.5vh);
-    }
-
-    to {
-        transform: translateY(1.5vh);
-    }
-}
-
-#logo {
-    position: absolute;
-    top: 0;
-    height: 50vh;
-    width: 100%;
-    transform: translateY(-100%);
-    transition: transform 0.3s 0.7s linear-in;
-}
-
-#logo .logo-img {
-    decorator: image("interface/large/game_title.rttex" contain);
-    margin: 4vh auto 0 auto;
-    width: auto;
-    height: 40vh;
-    animation: 1.5s linear-in-out infinite alternate logo-floating;
-}
-
-#logo.display {
-    transform: translateY(0);
-}
-
-.account-icon-growtopia {
-    decorator: image("interface/large/btn_logo_gt.rttex" contain);
-}
-
-.account-icon-apple {
-    decorator: image("interface/large/btn_logo_ios.rttex" contain);
-}
-
+.account-icon-firefly,
+.account-icon-growtopia,
+.account-icon-apple,
 .account-icon-google {
-    decorator: image("interface/large/btn_logo_ggp.rttex" contain);
+    width: 23dp;
+    height: 23dp;
+    decorator: image("game/firefly_circle_logo.rttex" contain);
 }
 
 .account-icon-ubiconnect {
     display: none;
 }
 
-#login-panel {
+#version-text {
     position: absolute;
-    left: 0;
-    bottom: 0;
-    padding: 12dp 12dp 24dp 24dp;
-    transform: translateX(-100%);
-    transition: transform 0.2s 1.0s linear-in;
-    padding-left: inset-left;
+    right: 40dp;
+    bottom: 34dp;
+    padding-right: inset-right;
+    opacity: 0;
+    transform: translateY(50dp);
+    transition: transform 0.7s 0.45s linear-in-out, opacity 0.7s 0.45s linear-in-out;
+    color: rgba(255, 255, 255, 78);
+    font-size: 16dp;
+    font-effect: shadow(1dp 1dp rgba(0, 0, 0, 120));
 }
 
-    #login-panel > div {
-        padding-left: 24dp;
+#version-text.display {
+    opacity: 1;
+    transform: translateY(0dp);
+}
+
+#footer-text {
+    position: absolute;
+    left: 0dp;
+    bottom: 14dp;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 72);
+    font-size: 14dp;
+    font-effect: shadow(1dp 1dp rgba(0, 0, 0, 120));
+    opacity: 0;
+    transform: translateY(24dp);
+    transition: transform 0.7s 0.55s linear-in-out, opacity 0.7s 0.55s linear-in-out;
+}
+
+#footer-text.display {
+    opacity: 1;
+    transform: translateY(0dp);
+}
+
+@keyframes launch-fade {
+    from {
+        opacity: 0;
+        transform: scale(1.05);
     }
 
-    #login-panel.display {
-        transform: translateX(0);
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#launch-overlay {
+    position: absolute;
+    top: 0dp;
+    left: 0dp;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 230);
+}
+
+#launch-overlay.active {
+    display: block;
+    animation: 0.35s linear-in forwards launch-fade;
+}
+
+#launch-bg {
+    position: absolute;
+    top: 0dp;
+    left: 0dp;
+    width: 100%;
+    height: 100%;
+    decorator: image("game/summer_firefly.rttex" cover);
+    opacity: 0.32;
+}
+
+#launch-title {
+    position: absolute;
+    top: 42vh;
+    left: 0dp;
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
+    font-size: 80dp;
+    font-weight: bold;
+    font-effect: shadow(0dp 2dp rgba(0, 0, 0, 220));
+}
+
+@media (max-width: 768dp) {
+    #navbar {
+        height: 70dp;
+        padding: 0dp 20dp 0dp 20dp;
     }
 
-    #login-panel .player-name {
+    .firefly-logo {
+        width: 430dp;
+        height: 112dp;
+    }
+
+    .logo-stage {
+        width: 430dp;
+        height: 112dp;
+        margin-left: -215dp;
+    }
+
+    #hero-content {
+        top: 22vh;
+        left: 30dp;
+        width: 430dp;
+    }
+
+    #platform-buttons {
+        left: 0dp;
+        top: auto;
+        margin-top: 18dp;
+    }
+
+    .shine-btn {
+        width: 125dp;
+    }
+
+    #start_button {
+        width: 160dp;
+    }
+
+    #quit_button {
+        width: 125dp;
+    }
+
+    .title {
+        font-size: 48dp;
+        line-height: 52dp;
+    }
+
+    .hero-subtitle {
+        font-size: 18dp;
+        width: 400dp;
+        line-height: 28dp;
+    }
+
+    .hero-emblem {
+        width: 88dp;
+        height: 88dp;
+        margin-bottom: 10dp;
+    }
+}
+
+@media (max-width: 520dp) {
+    #hero-content {
+        top: 18vh;
+        left: 20dp;
+        right: 20dp;
+        width: auto;
+    }
+
+    .title {
+        font-size: 34dp;
+        line-height: 40dp;
+    }
+
+    .hero-subtitle {
+        width: 100%;
+        font-size: 14dp;
+        line-height: 21dp;
+    }
+
+    #platform-buttons {
+        right: auto;
+        left: 0dp;
+        top: auto;
+        bottom: auto;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 14dp;
+        padding: 10dp;
         display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-grow: 1;
-        margin-top: 8dp;
+        flex-direction: column;
+        gap: 0dp;
+    }
+
+    .shine-btn,
+    #start_button,
+    #quit_button {
+        width: 100%;
+        height: 42dp;
         margin-bottom: 8dp;
     }
 
-        #login-panel .player-name .icon-img {
-            display: inline-flex;
-            margin-right: 6dp;
-            height: 32dp;
-            width: 32dp;
-            flex-shrink: 0;
-        }
-
-    #login-panel .button {
-        margin-bottom: 10dp;
-        padding-top: 4dp;
-        padding-bottom: 6dp;
-        width: 140dp;
+    .shine-btn .label,
+    #quit_button .label {
+        height: 42dp;
+        line-height: 42dp;
+        font-size: 19dp;
     }
 
-    #login-panel .button:active {
-        transform: scale(0.95);
-        filter: brightness(0.85);
+    #start_button .label {
+        height: 42dp;
+        line-height: 42dp;
+        font-size: 23dp;
     }
 
-
-        #login-panel .button .label {
-            font-effect: shadow(1dp 1dp #000);
-            font-size: 38dp;
-        }
-
-#version-text {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding: 12dp 24dp 24dp 12dp;
-    padding-right: inset-right;
-    transform: translateX(100%);
-    transition: transform 0.2s 1.0s linear-in;
-}
-
-    #version-text > span {
-        padding-right: 24dp;
+    #account-strip {
+        left: 20dp;
+        bottom: 18dp;
     }
 
-    #version-text.display {
-        transform: translateX(0);
+    #version-text {
+        right: 20dp;
+        bottom: 18dp;
+        font-size: 12dp;
     }
 
-
-.start-screen-shadow-text {
-    font-effect: shadow(1dp 1dp #000);
-}
-
-/*--------------    Event Themes     --------------*/
-
-#backGround {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    display: none;
-}
-
-#backGround .background-img {
-    height: 100%;
-    decorator: image("interface/large/main_menu_bg_themed.rttex" cover);
-    display: none;
-}
-
-#backGround.display {
-    display: none;
-}
-
-.button-themed-colour {
-	background-color: rgba(165,227,251,255);
-}
-
-@media (theme: cinco-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    .button-themed-colour {
-	    background-color: rgba(37, 171, 67, 255);
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
-    }
-}
-
-@media (theme: spp-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    .button-themed-colour {
-	    background-color: rgba(37, 171, 67, 255);
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
-    }
-}
-
-@media (theme: beach-party-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    .button-themed-colour {
-	    background-color: rgba(144, 192, 255, 255);
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
-    }
-}
-
-@media (theme: summerfest-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    .button-themed-colour {
-	    background-color: rgba(77, 106, 240, 255);
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
-    }
-}
-
-@media (theme: winterfest-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    .button-themed-colour {
-	    background-color: rgba(0, 170, 40, 255);
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
-    }
-}
-
-@media (theme: patricks-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    .button-themed-colour {
-	    background-color: rgba(165, 227, 251, 255);
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
-    }
-}
-
-@media (theme: valentines-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
-    }
-}
-@media (theme: g4g-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
-    }
-}
-
-@media (theme: easter-theme) {
-    #backGround {
-        display: block;
-    }
-
-    #backGround .background-img {
-        display: block;
-    }
-
-    #logo .logo-img {
-        decorator: image("interface/large/game_title_themed.rttex" contain);
+    #footer-text {
+        display: none;
     }
 }

@@ -29,6 +29,7 @@
     flex-direction: column;
     justify-content: flex-start;
     box-sizing: border-box;
+    transition: height 0.18s ease-out, transform 0.20s ease-out, opacity 0.16s ease-out, top 0.20s ease-out, left 0.20s ease-out, right 0.20s ease-out, width 0.20s ease-out;
 }
 
 #filter {
@@ -378,6 +379,7 @@
 }
 
 
+/* Style toggle bridge only. Static console rules above are copied from 1406Console. */
 #console_style_startup_loader,
 #console_style_bridge_loader,
 #console_static_final_position_loader {
@@ -408,6 +410,7 @@
     position: relative;
 }
 
+/* Floaty console rules below are scoped copies from Consoleagainfromdeove with class names isolated. */
 #chat_window_floaty.console_floaty_panel,
 #chat_window.console_floaty_panel {
     position: absolute;
@@ -428,6 +431,7 @@
     min-height: 120dp;
     max-height: 80vh;
 
+    transition: transform 0.20s ease-out, opacity 0.16s ease-out, top 0.20s ease-out, left 0.20s ease-out, right 0.20s ease-out, width 0.20s ease-out, height 0.20s ease-out;
 }
 .console_floaty_panel .top-panel {
 
@@ -740,6 +744,7 @@
         background-color: rgba(0, 0, 0, 16);
     }
 
+/* Static handle fallback: keeps the original pull-down visible even if startup ID renaming has not completed yet. */
 #pull_down_button_static {
     position: absolute;
     bottom: -37dp;
@@ -790,6 +795,9 @@
 }
 
 
+/* Final toggle/hidden overrides must stay last so scoped floaty rules cannot re-show hidden panels.
+   Console style switching is intentionally animated: the inactive console stays absolute, faded out,
+   and untouchable instead of using display:none. */
 #chat_window.console_static_panel,
 #chat_window_static.console_static_panel,
 #chat_window_floaty.console_floaty_panel,
@@ -806,6 +814,8 @@
     pointer-events: none;
 }
 
+/* Static fades/moves toward the floaty area while floaty fades/moves in.
+   Floaty fades/moves back toward the static area when switching back. */
 #chat_window.console_static_panel.console_style_hidden,
 #chat_window_static.console_static_panel.console_style_hidden {
     transform: translate(32vw, 80dp) scale(0.48);
@@ -828,6 +838,7 @@
 }
 
 
+/* Hide actual log-line variants too, so standard text and Crazy Jim/NPC layouts do not show at the same time. */
 #text-line.hidden,
 #text-line_floaty.hidden,
 .crazy_jim_panel.hidden,
@@ -839,6 +850,7 @@
 }
 
 
+/* General fallback for any data-class-hidden element. */
 .hidden {
     display: none;
 }
@@ -862,7 +874,90 @@
     position: relative;
 }
 
+/* Short lightweight toggle animation.
+   No blur: blur is expensive and could leave the inactive tab icons looking smeared.
+   This keeps the two isolated consoles, but makes the swap feel like one fast base transform. */
+#chat_window.console_static_panel,
+#chat_window_static.console_static_panel,
+#chat_window_floaty.console_floaty_panel,
+#chat_window.console_floaty_panel {
+    transition: opacity transform 0.45s sine-in-out;
+}
 
+@keyframes console_static_out_to_floaty {
+    0% {
+        opacity: 1;
+        transform: translate(0dp, 0dp) scale(1.0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(10dp, 10dp) scale(0.985);
+    }
+}
+
+@keyframes console_floaty_in_from_static {
+    0% {
+        opacity: 0;
+        transform: translate(-6dp, -6dp) scale(1.015);
+    }
+    35% {
+        opacity: 0;
+        transform: translate(-6dp, -6dp) scale(1.015);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0dp, 0dp) scale(1.0);
+    }
+}
+
+@keyframes console_floaty_out_to_static {
+    0% {
+        opacity: 1;
+        transform: translate(0dp, 0dp) scale(1.0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-6dp, -6dp) scale(1.015);
+    }
+}
+
+@keyframes console_static_in_from_floaty {
+    0% {
+        opacity: 0;
+        transform: translate(10dp, 10dp) scale(0.985);
+    }
+    35% {
+        opacity: 0;
+        transform: translate(10dp, 10dp) scale(0.985);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0dp, 0dp) scale(1.0);
+    }
+}
+
+.console_anim_static_out_to_floaty {
+    animation: 0.45s sine-in-out console_static_out_to_floaty;
+}
+
+.console_anim_floaty_in_from_static {
+    animation: 0.45s sine-in-out console_floaty_in_from_static;
+}
+
+.console_anim_floaty_out_to_static {
+    animation: 0.45s sine-in-out console_floaty_out_to_static;
+}
+
+.console_anim_static_in_from_floaty {
+    animation: 0.45s sine-in-out console_static_in_from_floaty;
+}
+
+
+
+
+/* Patch: when the floaty console is hidden, force its detached/absolute tab chrome off too.
+   Some RCSS builds don't hide absolute-positioned children from the parent's opacity/transform, so
+   the floaty tab icons could remain after switching back to static. */
 .console_floaty_panel.console_style_hidden #filter_floaty,
 .console_floaty_panel.console_style_hidden .floaty_filter_btn,
 .console_floaty_panel.console_style_hidden .floaty_chat_settings,
@@ -879,6 +974,8 @@
 }
 
 
+/* Patch: when switching to floaty, hide the static pull-down handle/chrome completely.
+   Some RCSS builds keep absolute children visible even when the parent is faded out. */
 .console_static_panel.console_style_hidden #pull_down_button,
 .console_static_panel.console_style_hidden #pull_down_button_static,
 #chat_window_static.console_style_hidden #pull_down_button_static,
@@ -890,10 +987,13 @@
     pointer-events: none;
 }
 
+/* Static root must not clip the pull-down handle; log clipping uses the original 1406 rules above. */
 .console_static_panel {
     overflow: visible;
 }
 
+/* Static resize safety: keep the 1406 scroll layout, but make the chrome sit above the log
+   so fast pull-handle swipes cannot visually draw message borders over tabs/input. */
 .console_static_panel #filter,
 .console_static_panel #filter_static,
 .console_static_panel .input-panel,
@@ -915,96 +1015,4 @@
 .console_static_panel #pull_down_button,
 .console_static_panel #pull_down_button_static {
     z-index: 70;
-}
-
-/* Firefly: New Dawn console skin. These final rules intentionally cover both
-   static and floaty variants because Console.rml swaps IDs at runtime. */
-.chat_region,
-.console_static_panel,
-.console_floaty_panel {
-    background-color: rgba(5, 38, 43, 224);
-    border: 1dp rgba(145, 255, 214, 100);
-    box-shadow: rgba(0, 0, 0, 125) 3dp 5dp 14dp 0dp;
-}
-
-.filter_all_clr,
-.console_floaty_panel .floaty_filter_all_clr {
-    background-color: rgba(58, 180, 155, 150);
-}
-
-.filter_world_clr,
-.console_floaty_panel .floaty_filter_world_clr {
-    background-color: rgba(92, 194, 137, 150);
-}
-
-.filter_private_clr,
-.console_floaty_panel .floaty_filter_private_clr {
-    background-color: rgba(58, 198, 208, 150);
-}
-
-.filter_system_clr,
-.console_floaty_panel .floaty_filter_system_clr {
-    background-color: rgba(111, 153, 157, 150);
-}
-
-.filter_custom_clr,
-.console_floaty_panel .floaty_filter_custom_clr {
-    background-color: rgba(103, 209, 169, 150);
-}
-
-.chat_settings,
-.console_floaty_panel .floaty_chat_settings,
-.console_style_toggle {
-    background-color: rgba(32, 139, 119, 190);
-    border-color: rgba(145, 255, 214, 110);
-}
-
-.preview-panel,
-.console_floaty_panel .floaty_preview-panel,
-.popup,
-.console_floaty_panel .floaty_popup {
-    background-color: rgba(5, 54, 57, 238);
-    border-color: rgba(145, 255, 214, 112);
-}
-
-.input-panel,
-.console_floaty_panel .floaty_input-panel,
-.log-panel,
-.console_floaty_panel .floaty_log-panel {
-    border-color: rgba(145, 255, 214, 92);
-    image-color: rgba(57, 177, 157, 170);
-}
-
-#input-content,
-#input-content_floaty,
-#log-content,
-#log-content_floaty {
-    background-color: rgba(3, 28, 34, 198);
-}
-
-#input-text,
-#input-text_floaty,
-#preview-text,
-#preview-text_floaty,
-#text-line,
-#text-line_floaty {
-    color: rgba(235, 255, 247, 255);
-}
-
-#chat_window.console_static_panel,
-#chat_window_static.console_static_panel {
-    top: 8dp;
-}
-
-#chat_window_floaty.console_floaty_panel,
-#chat_window.console_floaty_panel {
-    right: 96dp;
-    top: 72dp;
-    width: 28vw;
-    height: 164dp;
-}
-
-#pull_down_button,
-#pull_down_button_static {
-    image-color: rgba(145, 255, 214, 220);
 }

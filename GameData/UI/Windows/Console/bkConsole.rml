@@ -5,6 +5,7 @@
 		<link type="text/template" href="../Base/BasePopup.rml" />
 		<link type="text/rcss" href="Console.rcss" />
 		<script lang="text/lua">
+			-- Default each freshly loaded console document to the original static console.
 			gConsoleFloaty = false
 			gConsoleStyleStartupDone = false
 			gConsoleActiveOwner = 'static'
@@ -12,6 +13,9 @@
 
 			function ConsoleScrollToBottom(document, element)
 				if not document then return '' end
+				-- This belongs to the original static console only.
+				-- When floaty mode is active, the static list/anchor can still update while hidden,
+				-- so do not let it scroll the floaty log.
 				if gConsoleFloaty == true then return '' end
 				local lc = document:GetElementById('log-content')
 				if lc and lc.scroll_height and lc.client_height then
@@ -100,6 +104,11 @@
 				if event then event:StopPropagation() end
 				return ''
 			end
+
+
+			-- Console style toggle bridge only: static and floaty stay isolated.
+			-- The active console owns the original ids (chat_window/input-text/etc.) so the client focus/send logic keeps working.
+			-- The inactive console gets suffixed ids and is display:none.
 			function ConsoleSetId(element, new_id)
 				if not element then return '' end
 				pcall(function() element:SetAttribute('id', new_id) end)
@@ -162,6 +171,8 @@
 			end
 
 			function ConsoleDeactivateStaticIds(document)
+				-- While floaty is active, move the static root away from the engine's live chat_window id.
+				-- Static is reset to its real top/center position every time it becomes active again.
 				if gConsoleActiveOwner ~= 'static' then return '' end
 				local root = ConsoleGetStaticRoot(document)
 				if not root then return '' end
@@ -329,6 +340,7 @@
 
 			function ConsoleStartupStatic(document)
 				if not document then return '' end
+				-- Run once for this document/template load: first world enter should always be static.
 				if gConsoleStyleStartupDone == true then return '' end
 				local staticChat = ConsoleGetStaticRoot(document)
 				if not staticChat then return '' end
@@ -384,6 +396,9 @@
 			end
 
 			function ConsoleSetStaticMessagesHidden(document, height_value)
+				-- Keep the function as a no-op compatibility hook, but do not hide static
+				-- messages during resize. The original 1406 static console handles shrinking
+				-- cleanly with its log-spacer + column-reverse layout.
 				if not document then return '' end
 				local chat = ConsoleGetStaticRoot(document)
 				if chat then chat:SetClass('console_static_messages_hidden', false) end
@@ -419,8 +434,11 @@
 				if gConsoleFloaty == true then return '' end
 				local chat = ConsoleGetStaticRoot(document)
 				if not chat then return '' end
+				-- Keep the static pull-down resize anchored to the real static frame.
+				-- Some customhandle drags can temporarily write top/left from the pointer;
+				-- immediately put the frame back at the top-center while preserving height.
 				chat.style.position = 'absolute'
-				chat.style.top = '8dp'
+				chat.style.top = '0dp'
 				chat.style.left = '12%'
 				chat.style.right = 'auto'
 				chat.style.bottom = 'auto'
@@ -441,25 +459,16 @@
 					chat.style.height = '124dp'
 					finalHeight = 124
 				end
+				-- Only while the pull handle is being dragged: keep the newest static lines
+				-- attached to the bottom of the resized panel, without changing normal user scrolling.
 				ConsoleScrollToBottom(document, chat)
 				return ''
 			end
 
 			function ConsoleStaticHandleRefresh(document)
+				-- Same clamp pass, used by resize/mouse fallback events. Message layout itself
+				-- is restored to the original 1406 static console behavior.
 				return ConsoleStaticHandleLiveClamp(document)
-			end
-
-			function ConsoleStaticHandleDrag(document)
-				if not document or gConsoleFloaty == true then return '' end
-				local chat = ConsoleGetStaticRoot(document)
-				if not chat then return '' end
-				local currentHeight = chat.offset_height or 250
-				if currentHeight > 500 then
-					chat.style.height = '500dp'
-				elseif currentHeight < 124 then
-					chat.style.height = '124dp'
-				end
-				return ''
 			end
 
 			function ConsoleSetStaticFrame(document, reset_height)
@@ -467,7 +476,7 @@
 				local chat = ConsoleGetStaticRoot(document)
 				if not chat then return '' end
 				chat.style.position = 'absolute'
-				chat.style.top = '8dp'
+				chat.style.top = '0dp'
 				chat.style.left = '12%'
 				chat.style.right = 'auto'
 				chat.style.bottom = 'auto'
@@ -499,11 +508,11 @@
 				if not document then return '' end
 				local chat = ConsoleGetFloatyRoot(document)
 				if not chat then return '' end
-				chat.style.top = '72dp'
-				chat.style.right = '96dp'
+				chat.style.top = '80dp'
+				chat.style.right = '110dp'
 				chat.style.left = 'auto'
-				chat.style.width = '28vw'
-				chat.style.height = '164dp'
+				chat.style.width = '30vw'
+				chat.style.height = '180dp'
 				return ''
 			end
 
@@ -513,6 +522,38 @@
 				if staticButton then staticButton:SetClass('console_toggle_active_floaty', gConsoleFloaty == true) end
 				local floatyButton = document:GetElementById('style_toggle_floaty')
 				if floatyButton then floatyButton:SetClass('console_toggle_active_floaty', gConsoleFloaty == true) end
+				return ''
+			end
+
+			function ConsoleClearStyleAnimationClasses(document)
+				if not document then return '' end
+				local staticChat = ConsoleGetStaticRoot(document)
+				local floatyChat = ConsoleGetFloatyRoot(document)
+				local classes = {
+					'console_anim_static_out_to_floaty',
+					'console_anim_static_in_from_floaty',
+					'console_anim_floaty_in_from_static',
+					'console_anim_floaty_out_to_static'
+				}
+				for i, className in ipairs(classes) do
+					if staticChat then staticChat:SetClass(className, false) end
+					if floatyChat then floatyChat:SetClass(className, false) end
+				end
+				return ''
+			end
+
+			function ConsoleBeginStyleAnimation(document, target_floaty)
+				if not document then return '' end
+				ConsoleClearStyleAnimationClasses(document)
+				local staticChat = ConsoleGetStaticRoot(document)
+				local floatyChat = ConsoleGetFloatyRoot(document)
+				if target_floaty == true then
+					if staticChat then staticChat:SetClass('console_anim_static_out_to_floaty', true) end
+					if floatyChat then floatyChat:SetClass('console_anim_floaty_in_from_static', true) end
+				else
+					if staticChat then staticChat:SetClass('console_anim_static_in_from_floaty', true) end
+					if floatyChat then floatyChat:SetClass('console_anim_floaty_out_to_static', true) end
+				end
 				return ''
 			end
 
@@ -535,6 +576,7 @@
 			function ConsoleToggleConsoleStyle(event, document)
 				ConsoleEnsureStyleState(document)
 				local targetFloaty = not gConsoleFloaty
+				ConsoleBeginStyleAnimation(document, targetFloaty)
 				gConsoleFloaty = targetFloaty
 				if gConsoleFloaty then
 					ConsoleResetFloatyPosition(document)
@@ -549,7 +591,7 @@
 		</script>
 	</head>
 	<body>
-             <div id="console_style_startup_loader" data-rml="ConsoleStartupAndApply(document)"/>
+		<div id="console_style_startup_loader" data-rml="ConsoleStartupAndApply(document)"/>
 		<div id="chat_window" class="chat_region console_static_panel" data-model="ConsoleModel" data-class-hidden="!ConsoleModel.IsShown" onshow="ConsoleStaticOnShow(document, element)">
 
 			<form id="filter" name="duration" data-value="ConsoleModel.Filter" onclick="OnEvent(event, 'Console.OnFilter') ConsoleScrollToBottom(document, element)">
@@ -660,20 +702,28 @@
 				<div id="message-hint-text">Enter message...</div>
 			</div>
 			
-			<customhandle id="pull_down_button" size_target="chat_window" edge_margin="10dp 20dp 10dp 10dp" onmousedown="ConsoleHandlePress(document)" onmousedrag="ConsoleStaticHandleDrag(document)" onmouseup="ConsoleStaticHandleLiveClamp(document) ConsoleCenterStaticFrame(document)" onclick="ConsoleToggleChatHeight(event, document)">
+			<customhandle id="pull_down_button" size_target="chat_window" edge_margin="10dp 20dp 10dp 10dp" onmousedown="ConsoleHandlePress(document)" onmousemove="ConsoleStaticHandleLiveClamp(document)" onmousedrag="ConsoleStaticHandleLiveClamp(document)" ondrag="ConsoleStaticHandleLiveClamp(document)" onmouseup="ConsoleStaticHandleLiveClamp(document) ConsoleCenterStaticFrame(document)" onclick="ConsoleToggleChatHeight(event, document)">
 				<div id="pull_down_icon"></div>
 			</customhandle>
 
 		</div>
+
+		<!-- Floaty console: copied from Consoleagainfromdeove and kept isolated; visibility is controlled only by the style toggle. -->
 <div id="chat_window_floaty" class="console_floaty_panel console_style_hidden" data-model="ConsoleModel" data-class-hidden="!ConsoleModel.IsShown">
+
+			<!-- Special Characters Preview -->
 			<div class="floaty_preview-panel" data-class-hidden="!ConsoleModel.InputSpecialChars">
 				<div id="preview-content_floaty">
 					<div id="preview-text_floaty" data-rml="ToRMLText(ConsoleModel.PreviewText)"/>
 				</div>
 			</div>
+			
+			<!-- Empty input hint -->
 			<div class="floaty_message-hint-panel" data-class-hidden="len(ConsoleModel.InputText) > 0">
 				<div id="message-hint-text_floaty">Enter Message Here</div>
 			</div>
+
+			<!-- Filter Buttons -->
 			<form id="filter_floaty" name="duration" data-value="ConsoleModel.Filter" onclick="OnEvent(event, 'Console.OnFilter')">
 				<input type="radio" id="filter_all_floaty" value="0" data-checked="ConsoleModel.Filter" data-disabled="ConsoleModel.AccountAgeType == 3"/>
 				<label id="filter_label_all_floaty" for="filter_all_floaty" class="floaty_filter_btn floaty_filter_all_clr">
@@ -713,6 +763,8 @@
 					<div class="console_style_icon"/>
 				</div>
 			</form>
+
+			<!-- Custom Settings Popup -->
 			<div id="custom-settings-popup_floaty" class="floaty_popup hidden">
 				<div style="padding: 8dp;">Select the content to be shown on the Custom tab</div>
 				<form id="custom-settings_floaty" class="floaty_checkbox-group" onchange="OnEvent(event, 'Console.OnCustomSettingsChange')">
@@ -742,6 +794,8 @@
 					</label>
 				</form>
 			</div>
+
+			<!-- Input Panel -->
 			<div class="floaty_input-panel">
 				<div id="input-content_floaty"  style="width:100%;">
 					<input id="input-text_floaty" type="text" maxlength="120" data-value="ConsoleModel.InputText"
@@ -752,6 +806,8 @@
 				</div>
 				<handle id="move_handle_floaty" move_target="chat_window_floaty" edge_margin="10dp 20dp 10dp 10dp"/>
 			</div>
+
+			<!-- Log Panel -->
 			<div class="floaty_log-panel" id="log-top_floaty">
 				<div class="show-scrollbar wondow-content-full wondow-content-horizontal" id="log-content_floaty">
 					<div data-for="Line : ConsoleModel.ShowLogLines">
@@ -765,6 +821,8 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Resize Handle -->
 				<customhandle id="resize_bl_floaty" class="floaty_resize_handle floaty_handle_bl" size_target="chat_window_floaty" edge_margin="10dp 20dp 10dp 10dp"/>
 			
 		</div>

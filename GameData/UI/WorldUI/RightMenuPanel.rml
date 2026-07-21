@@ -4,7 +4,7 @@
 		<link type="text/rcss" href="../rml.rcss" />
 		<link type="text/rcss" href="../BaseStyles.rcss" />
 		<link type="text/rcss" href="RightMenuPanel.rcss" />
-		<script lang="lua">
+		        <script lang="lua">
 function onPhotoModeClick(element, event, document)
 	if (document:IsClassSet("hide")) then
 		document:SetClass("hide", false);
@@ -12,18 +12,13 @@ function onPhotoModeClick(element, event, document)
 		document:SetClass("hide", true);
 	end
 end
-		</script>
+        </script>
 	</head>
 	<body>
 		<div id="right_menu_panel">
-
-			<!-- Photo Mode button — above main group -->
-			<div>
-				<div id="photoButton" class="menu-button photo-button enabled"
-					onclick="onPhotoModeClick(element, event, document); OnEvent(event, 'on-screenshot');" />
+			<div id="photo_panel">
+				<div id="photoButton" class="menu-button photo-button enabled" onclick="onPhotoModeClick(element, event, document); OnEvent(event, 'on-screenshot'); closeActiveAuctionPanel(document);" />
 			</div>
-
-			<!-- Main action buttons -->
 			<div id="main_buttons">
 				<div id="MENU" class="menu-button menuopen-button" onclick="OnEvent(event, 'on-menu')"/>
 				<div id="CHAT" class="menu-button chat-button" onclick="OnEvent(event, 'on-chat')" data-model="ConsoleModel">
@@ -34,11 +29,21 @@ end
 				<FeatureEnableFlag flag-id="EnableCommunityButton">
 					<div class="menu-button friend-button" onclick="OnEvent(event, 'on-friend')"/>
 				</FeatureEnableFlag>
-				<FeatureEnableFlag flag-id="EnableStore">
-					<div id="STORE" class="menu-button shop-button" onclick="OnEvent(event, 'on-shop')"/>
-				</FeatureEnableFlag>
 			</div>
-
+			<FeatureEnableFlag flag-id="EnableProfileHUD">
+				<div id="right_hud_panel" data-model="PlayerInfoModel">
+					<div id="right_profile_panel" onclick="OnEvent(event, 'world_ui.avatar_click')">
+						<div id="right_avatar_box">
+							<PlayerPortret id="right_player_avatar" class="right_avatar" data-attr-netId="PlayerInfo.netId" />
+						</div>
+						<TruncatingString id="right_player_name" lines="1" break-word="true" data-attr-source="ToRMLText(PlayerInfo.name)"/>
+					</div>
+					<div id="right_gems_panel" onclick="OnEvent(event, 'world_ui.gems_panel_click')" data-attrif-disabled="1">
+						<div id="right_gems_count">{{PlayerInfo.gemsCount}}</div>
+						<div id="right_gem_icon"></div>
+					</div>
+				</div>
+			</FeatureEnableFlag>
 		</div>
 	</body>
 </template>

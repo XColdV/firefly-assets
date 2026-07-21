@@ -265,7 +265,7 @@ button.common_btn:hover
 	color: rgb(255, 202, 111);
 }
 
-/* Old Format: `7 */
+/* Old Format: `7, Changed to Light Red - cBd */
 .color_light_gray {
 	color: rgb(230, 230, 230);
 }
