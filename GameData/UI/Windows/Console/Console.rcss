@@ -274,39 +274,41 @@
 
 #pull_down_button {
     position: absolute;
-    bottom: -37dp;
+    bottom: -12dp;
     left: 50%;
     margin-left: -44dp;
     width: 89dp;
-    height: 44dp;
+    height: 18dp;
     background-color: transparent;
-    image-color: rgba(255, 255, 255, 255);
+    image-color: transparent;
     cursor: ns-resize;
     z-index: 40;
     sound-on-click: true;
 }
 
 #pull_down_icon {
-    width: 89dp;
-    height: 44dp;
-    decorator: image(interface/large/handle.rttex);
-    image-color: rgba(255, 255, 255, 255);
-    transform: scaleY(-1);
+    position: absolute;
+    top: 7dp;
+    left: 25dp;
+    width: 38dp;
+    height: 5dp;
+    background-color: rgb(86, 191, 158);
+    border-radius: 3dp;
     pointer-events: none;
 }
 
 #pull_down_button:hover {
-    image-color: rgba(255, 255, 255, 255);
+    image-color: transparent;
 }
 
 #pull_down_button:active {
     background-color: transparent;
-    image-color: rgba(255, 255, 255, 255);
+    image-color: transparent;
 }
 
 #pull_down_button:focus {
     background-color: transparent;
-    image-color: rgba(255, 255, 255, 255);
+    image-color: transparent;
 }
 
 .popup {
@@ -733,24 +735,26 @@
 
 #pull_down_button_static {
     position: absolute;
-    bottom: -37dp;
+    bottom: -12dp;
     left: 50%;
     margin-left: -44dp;
     width: 89dp;
-    height: 44dp;
+    height: 18dp;
     background-color: transparent;
-    image-color: rgba(255, 255, 255, 255);
+    image-color: transparent;
     cursor: ns-resize;
     z-index: 40;
     sound-on-click: true;
 }
 
 #pull_down_icon_static {
-    width: 89dp;
-    height: 44dp;
-    decorator: image(interface/large/handle.rttex);
-    image-color: rgba(255, 255, 255, 255);
-    transform: scaleY(-1);
+    position: absolute;
+    top: 7dp;
+    left: 25dp;
+    width: 38dp;
+    height: 5dp;
+    background-color: rgb(86, 191, 158);
+    border-radius: 3dp;
     pointer-events: none;
 }
 
@@ -758,7 +762,7 @@
 #pull_down_button_static:active,
 #pull_down_button_static:focus {
     background-color: transparent;
-    image-color: rgba(255, 255, 255, 255);
+    image-color: transparent;
 }
 
 .console_static_panel,
@@ -994,19 +998,16 @@
 }
 
 #pull_down_button,
-#pull_down_button_static,
-#pull_down_icon,
-#pull_down_icon_static,
-.console_floaty_panel .floaty_resize_handle {
-    image-color: rgb(86, 191, 158);
+#pull_down_button_static {
+    background-color: transparent;
+    image-color: transparent;
 }
 
-#pull_down_button:hover,
-#pull_down_button:active,
-#pull_down_button:focus,
-#pull_down_button_static:hover,
-#pull_down_button_static:active,
-#pull_down_button_static:focus {
-    background-color: transparent;
-    image-color: rgb(111, 222, 184);
+#pull_down_button:hover #pull_down_icon,
+#pull_down_button:active #pull_down_icon,
+#pull_down_button:focus #pull_down_icon,
+#pull_down_button_static:hover #pull_down_icon_static,
+#pull_down_button_static:active #pull_down_icon_static,
+#pull_down_button_static:focus #pull_down_icon_static {
+    background-color: rgb(111, 222, 184);
 }
