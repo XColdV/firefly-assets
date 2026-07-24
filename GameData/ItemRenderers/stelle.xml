@@ -2,7 +2,7 @@
 <ItemRenderer>
 	<Data>
 		<Sprite name="stelle" fileName="game/stelle.rttex" textureSize="242,200"/>
-		<Sprite name="p_effect" fileName="game/stelleeff" textureSize="64,32" frame="0,0"/>
+		<Sprite name="p_effect" fileName="game/stelleeff.rttex" textureSize="64,32" frame="0,0"/>
 
 		<StateMachines>
 			<StateMachine name="Motion">
