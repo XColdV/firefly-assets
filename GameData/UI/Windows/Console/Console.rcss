@@ -22,8 +22,6 @@
     max-height: 500dp;
     
     border-radius: 8dp;
-    decorator: tiled-box( window_border_sprite_tl, window_border_sprite_t, window_border_sprite_tr, window_border_sprite_cl, window_border_sprite_c, window_border_sprite_cr, window_border_sprite_bl, window_border_sprite_b, window_border_sprite_br );
-    image-color: rgba(179, 226, 247, 255);
     padding: 8dp 0dp 3dp 8dp;
     display: flex;
     flex-direction: column;
@@ -50,7 +48,6 @@
     padding: 4dp;
     top: -2dp;
     font-size: 0.75rem;
-	font-effect: shadow(1dp 1dp #000);
 }
 
 .filter_all_clr { background-color: rgba(135, 184, 204, 128) }
@@ -192,7 +189,6 @@
     font-size: 0.68rem;
     line-height: 30dp;
 	color: rgba(255,255,255,235);
-    font-effect: shadow(1dp 1dp #000);
 	pointer-events: none;
 }
 
@@ -469,7 +465,6 @@
     padding: 4dp;
     top: -2dp;
     font-size: 0.833rem;
-	font-effect: shadow(1dp 1dp #000);
 }
 .console_floaty_panel .floaty_filter_all_clr {
 	background-color: rgba(135, 184, 204, 128)
@@ -551,8 +546,6 @@
 .console_floaty_panel #text {
     }
 .console_floaty_panel .floaty_input-panel {
-    decorator: tiled-box( window_border_sprite_tl, window_border_sprite_t, window_border_sprite_tr, window_border_sprite_cl, window_border_sprite_c, window_border_sprite_cr, window_border_sprite_bl, window_border_sprite_b, window_border_sprite_br );
-    image-color: rgba(135, 184, 204, 170);
     width: 100%;
     padding: 0dp 10dp 0dp 5dp;
     display: flex;
@@ -646,8 +639,6 @@
         padding: 3dp;
     }
 .console_floaty_panel .floaty_log-panel {
-     decorator: tiled-box( window_border_sprite_tl, window_border_sprite_t, window_border_sprite_tr, window_border_sprite_cl, window_border_sprite_c, window_border_sprite_cr, window_border_sprite_bl, window_border_sprite_b, window_border_sprite_br );
-     image-color: rgba(135, 184, 204, 170);
      height: 100%;
      width: 100%;
      padding: 56dp 10dp 10dp 5dp;
@@ -802,6 +793,7 @@
 #chat_window_static.console_style_hidden,
 #chat_window_floaty.console_style_hidden,
 .console_style_hidden {
+    display: none;
     opacity: 0;
     pointer-events: none;
 }
@@ -917,69 +909,66 @@
     z-index: 70;
 }
 
-/* Firefly: New Dawn console skin. These final rules intentionally cover both
-   static and floaty variants because Console.rml swaps IDs at runtime. */
+/* Lightweight flat skin. Final rules cover IDs swapped by Console.rml. */
 .chat_region,
 .console_static_panel,
 .console_floaty_panel {
-    background-color: rgba(5, 38, 43, 224);
-    border: 1dp rgba(145, 255, 214, 100);
-    box-shadow: rgba(0, 0, 0, 125) 3dp 5dp 14dp 0dp;
+    background-color: rgb(7, 42, 46);
+    border: 1dp rgb(65, 148, 127);
 }
 
 .filter_all_clr,
 .console_floaty_panel .floaty_filter_all_clr {
-    background-color: rgba(58, 180, 155, 150);
+    background-color: rgb(35, 113, 99);
 }
 
 .filter_world_clr,
 .console_floaty_panel .floaty_filter_world_clr {
-    background-color: rgba(92, 194, 137, 150);
+    background-color: rgb(48, 125, 83);
 }
 
 .filter_private_clr,
 .console_floaty_panel .floaty_filter_private_clr {
-    background-color: rgba(58, 198, 208, 150);
+    background-color: rgb(28, 119, 126);
 }
 
 .filter_system_clr,
 .console_floaty_panel .floaty_filter_system_clr {
-    background-color: rgba(111, 153, 157, 150);
+    background-color: rgb(63, 94, 97);
 }
 
 .filter_custom_clr,
 .console_floaty_panel .floaty_filter_custom_clr {
-    background-color: rgba(103, 209, 169, 150);
+    background-color: rgb(48, 127, 97);
 }
 
 .chat_settings,
 .console_floaty_panel .floaty_chat_settings,
 .console_style_toggle {
-    background-color: rgba(32, 139, 119, 190);
-    border-color: rgba(145, 255, 214, 110);
+    background-color: rgb(25, 105, 91);
+    border-color: rgb(65, 148, 127);
 }
 
 .preview-panel,
 .console_floaty_panel .floaty_preview-panel,
 .popup,
 .console_floaty_panel .floaty_popup {
-    background-color: rgba(5, 54, 57, 238);
-    border-color: rgba(145, 255, 214, 112);
+    background-color: rgb(7, 49, 52);
+    border-color: rgb(65, 148, 127);
 }
 
 .input-panel,
 .console_floaty_panel .floaty_input-panel,
 .log-panel,
 .console_floaty_panel .floaty_log-panel {
-    border-color: rgba(145, 255, 214, 92);
-    image-color: rgba(57, 177, 157, 170);
+    border-color: rgb(54, 124, 108);
 }
 
 #input-content,
 #input-content_floaty,
 #log-content,
 #log-content_floaty {
-    background-color: rgba(3, 28, 34, 198);
+    background-color: rgb(4, 31, 35);
 }
 
 #input-text,
@@ -1005,6 +994,19 @@
 }
 
 #pull_down_button,
-#pull_down_button_static {
-    image-color: rgba(145, 255, 214, 220);
+#pull_down_button_static,
+#pull_down_icon,
+#pull_down_icon_static,
+.console_floaty_panel .floaty_resize_handle {
+    image-color: rgb(86, 191, 158);
+}
+
+#pull_down_button:hover,
+#pull_down_button:active,
+#pull_down_button:focus,
+#pull_down_button_static:hover,
+#pull_down_button_static:active,
+#pull_down_button_static:focus {
+    background-color: transparent;
+    image-color: rgb(111, 222, 184);
 }
