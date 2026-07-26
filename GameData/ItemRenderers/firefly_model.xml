@@ -50,7 +50,7 @@
 					<State name="Fall" />
 				</States>
 				<Transitions>
-					<Transition to="Idle" from="Fall|Move">
+					<Transition to="Idle" from="Jump|Fall|Idle|Move">
 						<Condition type="and">
 							<IsVariableBool name="onGround">true</IsVariableBool>
 							<IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
@@ -62,7 +62,7 @@
 							<IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
 						</Condition>
 					</Transition>
-					<Transition to="Jump" from="Idle|Move|fall">
+					<Transition to="Jump" from="Idle|Move|Fall">
 						<Condition type="and">
 							<IsVariableBool name="onGround">false</IsVariableBool>
 							<IsVariableFloat name="speed.y" operator="Less">-0.1</IsVariableFloat>
@@ -167,7 +167,7 @@
 				<IsAction>PUNCH</IsAction>
 			</StopIf>
 			
-			<SpriteRender name="firefly" offset="0,0" alignment="DOWN_CENTER"/>
+			<SpriteRender name="firefly" offset="0,0" alignment="DOWN_CENTER" onState="Motion.Idle|Motion.Move|Motion.Jump|Motion.Fall"/>
 		</RenderInFront>
 		<OnRespawned>
 			<ParticleSystemUpdate name="effect_sp"/>
