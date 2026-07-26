@@ -181,6 +181,12 @@
 			<ParticleSystemUpdate name="puncheffect"/>
 		</OnPunchStart>
 
+		<OnDrawCustomOutline>
+    			<AvatarTransform class="Scale">
+     				<Set name="targetScale">0.42,0.42</Set>
+    			</AvatarTransform>
+  		</OnDrawCustomOutline>
+
 		<OnPunchUpdate>
 			<AvatarTransform class="Face">
 				<Set name="face">MAD</Set>
