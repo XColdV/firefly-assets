@@ -138,7 +138,7 @@
 
 		<OnDrawCustomOutline>
     			<AvatarTransform class="Scale">
-     				<Set name="targetScale">0.38,0.38</Set>
+     				<Set name="targetScale">0.42,0.42</Set>
     			</AvatarTransform>
   		</OnDrawCustomOutline>
 
