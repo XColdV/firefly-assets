@@ -54,13 +54,21 @@
 		</StateMachines>
 
 		<Animations>
-			<SpriteAnimation name="Caine_idle" playOnState="Motion.Idle" sprite="Caine" animTime="1200" isLoop="true">
+			<SpriteAnimation name="Caine_idle" playOnState="Motion.Idle" sprite="Caine" animTime="6500" isLoop="true">
 				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+				<Frame>0,0</Frame>
+
 				<Frame>1,0</Frame>
 				<Frame>2,0</Frame>
 				<Frame>3,0</Frame>
 				<Frame>4,0</Frame>
 				<Frame>5,0</Frame>
+				<Frame>5,0</Frame>
+				<Frame>5,0</Frame>
+				<Frame>5,0</Frame>
+
+				<Frame>0,0</Frame>
 			</SpriteAnimation>
 			<SpriteAnimation name="Caine_walk" playOnState="Motion.Move" sprite="Caine" animTime="600" isLoop="true">
 				<Frame>0,1</Frame>
@@ -127,6 +135,12 @@
 		<OnPunchStart>
 			<ParticleSystemUpdate name="puncheffect"/>
 		</OnPunchStart>
+
+		<OnDrawCustomOutline>
+    			<AvatarTransform class="Scale">
+     				<Set name="targetScale">0.33,0.33</Set>
+    			</AvatarTransform>
+  		</OnDrawCustomOutline>
 
 		<OnPunchUpdate>
 			<AvatarTransform class="Face">
