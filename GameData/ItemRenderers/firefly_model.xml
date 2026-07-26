@@ -23,7 +23,7 @@
 				<Frame>1,3</Frame>
 				<Frame>2,3</Frame>
 			</SpriteAnimation>
-			<SpriteAnimation name="firefly_fall" sprite="firefly" playOnState="Motion.Fall" animTime="400">
+			<SpriteAnimation name="firefly_fall" isLoop="false" sprite="firefly" playOnState="Motion.Fall" animTime="400">
 				<Frame>3,3</Frame>
 				<Frame>4,3</Frame>
 				<Frame>5,3</Frame>
