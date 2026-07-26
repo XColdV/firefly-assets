@@ -26,7 +26,6 @@
 			<SpriteAnimation name="firefly_fall" isLoop="false" sprite="firefly" playOnState="Motion.Fall" animTime="400">
 				<Frame>3,3</Frame>
 				<Frame>4,3</Frame>
-				<Frame>5,3</Frame>
 			</SpriteAnimation>
 			<SpriteAnimation name="firefly_punch" autoPlay="true" isLoop="true" playOnState="Action1.Punch" sprite="punch_firefly" animTime="600">
 				<Frame>1,4</Frame>
@@ -63,7 +62,7 @@
 							<IsVariableFloat name="speed.length" operator="Greater" abs="true">0.1</IsVariableFloat>
 						</Condition>
 					</Transition>
-					<Transition to="Jump" from="Idle|Move">
+					<Transition to="Jump" from="Idle|Move|fall">
 						<Condition type="and">
 							<IsVariableBool name="onGround">false</IsVariableBool>
 							<IsVariableFloat name="speed.y" operator="Less">-0.1</IsVariableFloat>
