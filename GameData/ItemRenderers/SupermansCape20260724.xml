@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+  <Data>
+    <StateMachines>
+      <StateMachine name="playerState">
+        <States>
+          <State name="Idle"/>
+          <State name="Move"/>
+          <State name="Fall"/>
+          <State name="Jump"/>
+          <State name="DoubleJump"/>
+        </States>
+        <Transitions>
+          <Transition from="Jump|Fall|Move|DoubleJump" to="Idle">
+            <Condition><IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat></Condition>
+          </Transition>
+          <Transition from="Jump|Fall|Idle|DoubleJump" to="Move">
+            <Condition><IsAction>WALK</IsAction></Condition>
+          </Transition>
+          <Transition from="Fall|Move|Idle" to="Jump">
+            <Condition><IsAction>JUMP</IsAction></Condition>
+          </Transition>
+          <Transition from="Jump|Fall" to="DoubleJump">
+            <Condition><IsAction>JUMPDOUBLE</IsAction></Condition>
+          </Transition>
+          <Transition from="DoubleJump|Jump|Idle|Move" to="Fall">
+            <Condition type="and">
+              <IsVariableFloat name="speed.y" operator="Greater" abs="false">0.01</IsVariableFloat>
+              <IsAction>FALL</IsAction>
+            </Condition>
+          </Transition>
+        </Transitions>
+      </StateMachine>
+    </StateMachines>
+    <Sprite name="cape_sprite" fileName="game/supermans_cape_wear_20260724.rttex" textureSize="64,64" frame="0,0"/>
+    <Animations>
+      <SpriteAnimation name="cape_idle" playOnState="playerState.Idle|playerState.Move" sprite="cape_sprite" isLoop="true" animTime="600">
+        <Frame>0,0</Frame><Frame>1,0</Frame><Frame>2,0</Frame>
+      </SpriteAnimation>
+      <SpriteAnimation name="cape_double_jump" playOnState="playerState.DoubleJump" sprite="cape_sprite" isLoop="false" animTime="500">
+        <Frame>2,0</Frame>
+      </SpriteAnimation>
+      <SpriteAnimation name="cape_fall" playOnState="playerState.Fall" sprite="cape_sprite" isLoop="true" animTime="100">
+        <Frame>3,0</Frame>
+      </SpriteAnimation>
+      <SpriteAnimation name="cape_jump" playOnState="playerState.Jump" sprite="cape_sprite" isLoop="true" animTime="200">
+        <Frame>2,0</Frame>
+      </SpriteAnimation>
+    </Animations>
+    <RenderOptions>
+      <Default>
+        <Set name="UserNameOffset">3</Set>
+        <Set name="ShouldHover">true</Set>
+      </Default>
+    </RenderOptions>
+  </Data>
+  <RenderRules>
+    <Update>
+      <StopIf><IsZombified>true</IsZombified></StopIf>
+      <AvatarTransform class="FootPosition">
+        <Set name="foot1dy">0</Set><Set name="foot2dy">0</Set>
+        <Set name="foot1y">0</Set><Set name="foot2y">0</Set>
+      </AvatarTransform>
+    </Update>
+    <RenderBackpack>
+      <SpriteRender name="cape_sprite" offset="-5,-14" alignment="CENTER" blend="PREMULTIPLIED_ALPHA" drawShadow="true"/>
+    </RenderBackpack>
+    <OnPunchUpdate>
+      <AvatarTransform class="Face"><Set name="face">MAD</Set></AvatarTransform>
+    </OnPunchUpdate>
+  </RenderRules>
+</ItemRenderer>

@@ -1,107 +1,31 @@
-@spritesheet checkbox_sprites {
-    src: interface/checkbox.rttex;
-    resolution: 1x;
-    checkbox_off_icon: 0px 0px 32px 32px;
-    checkbox_on_icon: 32px 0px 32px 32px;
-}
-
 .chat_region {
     position: absolute;
-    top: 0dp; 
-    left: 12%;     
-    right: auto;       
-    width: 76%;
-    min-width: 76%;
-    max-width: 76%;
-    margin-right: 0dp; 
-    background-color: rgba(39, 124, 159, 179);
-    z-index: 1; 
-    
-    height: 250dp;
-    min-height: 124dp;
-    max-height: 500dp;
-    
-    border-radius: 8dp;
-    padding: 8dp 0dp 3dp 8dp;
+    /* Sized in % of WorldUI's notch-adjusted body (not vw). vw ignored the notch and let the
+       box cover the menu buttons on notched phones; on desktop %==vw, so it looks the same. */
+    left: 10%;
+    top: 8dp;
+    padding: 0dp;
+    z-index: 10;
+
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    box-sizing: border-box;
+    gap: 0dp;
+
+    width: 80%;
+    height: 170dp;
+
+    min-width: 80%;
+    max-width: 80%;
+    min-height: 110dp;
+    max-height: 260dp;
 }
 
-#filter {
-    display: flex;
-    flex-direction: row;
-    gap: 4dp;
-    position: relative; 
+.hide #chat_window {
+    display: none;
 }
 
-.hide #chat_window { display: none; }
-.full-hide #chat_window { display: none; }
-
-#filter input[type="radio"] {
-    display: none; 
-}
-
-.filter_name {
-    position: relative;
-    padding: 4dp;
-    top: -2dp;
-    font-size: 0.75rem;
-}
-
-.filter_all_clr { background-color: rgba(135, 184, 204, 128) }
-.filter_world_clr { background-color: rgba(254, 186, 70, 128) }
-.filter_private_clr { background-color: rgba(75,255,255, 128) }
-.filter_system_clr { background-color: rgba(166,166,166, 128) }
-.filter_custom_clr { background-color: rgba(210, 154, 212, 128) }
-
-.filter_all     { decorator: image(interface/large/gui_chat_all.rttex); }
-.filter_world   { decorator: image(interface/large/gui_chat_world.rttex); }
-.filter_private { decorator: image(interface/large/gui_chat_private.rttex); }
-.filter_system  { decorator: image(interface/large/gui_chat_system.rttex); }
-.filter_custom  { decorator: image(interface/large/gui_chat_custom.rttex); }
-
-#filter label.filter_btn {
-    display: block;
-    opacity: 0.85;
-    sound-on-click: true;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4dp;
-    border-radius: 4dp;
-    border: 1dp rgb(136,184,203);
-}
-
-#filter .icon {
-    width: 32dp;   
-    height: 32dp;
-    display: block;
-}
-
-#filter input[type="radio"]:checked + label {
-    opacity: 1.0;
-}
-
-.chat_settings {
-    background-color: rgba(210, 154, 212, 128);
-    padding: 4dp;
-    border-radius: 4dp;
-    border: 1dp rgb(136,184,203);
-}
-
-.chat_settings:active {
-	filter: brightness(0.85);
-    transform: scale(0.95);
-}
-
-#chat_image {
-    width: 32dp;
-    height: 32dp;
-    decorator: image(interface/large/chat_settings.rttex);
-    align-self: center;
-    position: relative;
+.full-hide #chat_window {
+    display: none;
 }
 
 .crazy_jim_panel {
@@ -122,19 +46,23 @@
     #text {
     }
 
+
 .input-panel {
+    background-color: rgba(39,125,159,225);
+    box-sizing: border-box;                /* border drawn inside so the bar keeps its size */
+    border: 2dp rgba(135, 184, 204, 245);  /* light-blue outline */
+    border-radius: 6dp;                    /* rounded box */
     width: auto;
-    margin-right: 8dp;
+    left: 7dp;                             /* pulled in so the blue stops eating the left border */
+    right: -4dp;                           /* and reaches the right border to match */
+    height: 39dp;                          /* with bottom:8 the top sits at 47, flush with the log */
+    padding: 0dp;
     display: flex;
     flex-direction: row;
-    gap: 4dp;
-	position: relative; 
-    box-sizing: border-box;
-    padding-right: 5dp;
-    margin-bottom: 6dp;
-    border-top: 1dp rgb(136, 184, 203);
-    margin-top: 8dp;
-    padding-top: 4dp;
+    position: absolute;
+    bottom: 8dp;
+    z-index: 50;
+    overflow: hidden;
 }
 
     #input-content {
@@ -142,40 +70,46 @@
         display: flex;
         flex-direction: row;
         position: relative;
-        background-color: transparent; 
-        border-radius: 4dp;
-        flex-grow: 1;
-        flex-shrink: 1;
-        width: auto;
+        background-color: rgba(0,0,0,0);
+        margin: 0dp;
+        height: 100%;
     }
 
     #input-text {
-	    display: block;
-	    vertical-align: middle;
-        border-radius: 7dp;
+        display: block;
+        vertical-align: middle;
+        align-self: center;                /* center the field in the bar */
+        decorator: none;
+        background-color: rgba(0,0,0,0);
+        border: 0dp;
+        border-radius: 0dp;
         font-weight: bold;
-        line-height: 30dp;
-        width: 100%;
-	    color: #fff;
-        padding: 3dp 10dp 6dp 10dp;
-        font-size: 0.85rem;
+        line-height: 30dp;                 /* drives the caret height (shorter "|") */
+        flex: 1 1 0dp;
+        width: 0dp;
+        min-width: 0dp;
+        height: 30dp;                      /* match line-height */
+        color: #fff;
+        padding: 2dp 10dp 2dp 10dp;
+        font-size: 0.74rem;
+        font-effect: shadow(1dp 1dp #000);
     }
 
     #input-info {
         display: block;
         box-sizing: border-box;
-        align-self: center;
+        align-self: center;                         /* float the pill centered in the bar */
         text-align: center;
-        line-height: 22dp;
-        background-color: rgba(200, 232, 246, 72);
-        border: 1dp rgba(232, 248, 255, 95);
+        line-height: 24dp;                          /* center "0/120" in the pill */
+        background-color: rgba(200, 232, 246, 72);  /* light, translucent layer behind 0/120 */
+        border: 1dp rgba(232, 248, 255, 95);        /* faint edge */
         border-radius: 7dp;
-        flex: 0 0 54dp;
-        width: 54dp;
-        min-width: 54dp;
-        height: 24dp;
-        margin-right: 6dp;
-        font-size: 0.62rem;
+        flex: 0 0 60dp;
+        width: 60dp;
+        min-width: 60dp;
+        height: 26dp;                               /* shorter than the bar -> floats as a pill */
+        margin-right: 7dp;                          /* inset from the right edge */
+        font-size: 0.66rem;
     }
 
 .message-hint-panel {
@@ -183,13 +117,13 @@
     padding: 0dp;
     display: block;
     position: absolute;
-    bottom: 15dp;
-    left: 24dp;
-    z-index: 65;
+    bottom: 18dp;
+    left: 16dp;
+    z-index: 65;                /* above the input bar so the hint isn't buried */
     font-size: 0.68rem;
-    line-height: 30dp;
-	color: rgba(255,255,255,235);
-	pointer-events: none;
+    color: rgba(255,255,255,235);
+    font-effect: shadow(1dp 1dp #000);
+    pointer-events: none;
 }
 
 .preview-panel {
@@ -201,10 +135,12 @@
     flex-direction: row;
     background-color: rgba(39,125,159,224);
     margin-bottom: 2dp;
+    margin-top: -4dp;
+
     position: absolute;
     bottom: 50dp;
     left: 3dp;
-    z-index: 20;
+    z-index: 40;
 }
 
     #preview-content {
@@ -213,115 +149,228 @@
     }
 
     #preview-text {
-	    display: block;
-	    vertical-align: middle;
+        display: block;
+        vertical-align: middle;
         border-radius: 7dp;
         font-weight: bold;
         line-height: 30dp;
         width: 100%;
-	    color: #fff;
+        color: #fff;
         font-size: 0.75rem;
         padding: 3dp;
     }
 
 .log-panel {
-     flex-grow: 1;
+     decorator: tiled-box( window_border_sprite_tl, window_border_sprite_t, window_border_sprite_tr, window_border_sprite_cl, window_border_sprite_c, window_border_sprite_cr, window_border_sprite_bl, window_border_sprite_b, window_border_sprite_br );
+     image-color: rgba(85, 174, 200, 235);
+     position: relative;
+     height: 100%;
      width: 100%;
-     overflow: hidden;
-     margin-top: 8dp;
-     box-sizing: border-box;
-     padding-right: 7dp;
+     padding: 8dp 8dp 44dp 6dp;
+     z-index: 10;
 }
 
-#log-content {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    padding-right: 6dp;
-}
+    #log-content {
+        background-color: rgba(39,125,159,225);
+        border-radius: 6dp 6dp 0dp 0dp;    /* round only the top (bottom meets the input bar) */
 
-#log-spacer {
-    flex-grow: 1;
-    flex-shrink: 1;
-    min-height: 0dp;
-}
+        position: absolute;
+        left: 7dp;
+        right: 10dp;
+        top: 8dp;
+        bottom: 47dp;                      /* meet the input bar's top so the two blue layers stay flush */
+        width: auto;
+        height: auto;
 
-#log-lines {
-    width: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-    flex-shrink: 0;
-    box-sizing: border-box;
-    overflow-x: hidden;
-}
+        overflow-y: auto;
+        color: rgb(255, 252, 197);
+        font-size: 0.68rem;
+        line-height: 1.06em;
+        font-effect: shadow(1dp 1dp black);
+        padding-left: 2dp;
+    }
 
-#scroll-anchor {
-    display: none;
-}
+    #log-content scrollbarvertical {
+        display: none;
+        width: 0dp;
+        margin-left: 0dp;
+        margin-right: 0dp;
+    }
+
+    #log-content slidertrack {
+        display: none;
+    }
+
+    #log-content sliderbar {
+        display: none;
+    }
+
+    #log-lines {
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+    }
 
     #text-line {
-        padding: 2dp;
-        width: 100%;
-        box-sizing: border-box;
-        overflow-x: hidden;
-        white-space: normal;
-        word-wrap: break-word;
+        padding: 1dp 6dp 1dp 6dp;
     }
 
 #pull_down_button {
     position: absolute;
-    bottom: -12dp;
     left: 50%;
-    margin-left: -44dp;
-    width: 89dp;
-    height: 18dp;
-    background-color: transparent;
-    image-color: transparent;
-    cursor: ns-resize;
+    bottom: -22dp;
+    margin-left: -22dp;
+    width: 44dp;
+    height: 24dp;
+    padding: 0dp;
     z-index: 40;
+    background-color: rgba(135,184,204,230);
+    border-radius: 0dp 0dp 6dp 6dp;
+    border: 2dp rgb(43,83,100);
+    cursor: ns-resize;
     sound-on-click: true;
 }
 
-#pull_down_icon {
-    position: absolute;
-    top: 7dp;
-    left: 25dp;
-    width: 38dp;
-    height: 5dp;
-    background-color: rgb(86, 191, 158);
-    border-radius: 3dp;
-    pointer-events: none;
-}
-
-#pull_down_button:hover {
-    image-color: transparent;
-}
-
 #pull_down_button:active {
-    background-color: transparent;
-    image-color: transparent;
+    filter: brightness(0.85);
 }
 
-#pull_down_button:focus {
-    background-color: transparent;
-    image-color: transparent;
+    #pull_down_icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2dp;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .pull_line {
+        width: 24dp;
+        height: 3dp;
+        border-radius: 3dp;
+        background-color: rgb(230,249,255);
+        pointer-events: none;
+    }
+
+.chat_padding {
+    padding: 1dp;
+    background-color: rgba(255,255,255, 0);
+}
+
+    .chat_padding.alternate {
+        display: block;
+        padding-top: 1dp;
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+/* Filter tabs: an always-shown strip hanging just below the input bar (no size-gating, no
+   Lua -- pure CSS). Colours + sizes are the stock console's; only the placement differs.
+   All dp, so phone and desktop match; the settings popup is capped to the chat box. */
+
+#filter {
+    display: flex;
+    flex-direction: row;
+    gap: 4dp;
+    position: absolute;
+    left: 6dp;
+    bottom: -40dp;              /* hang just below the input bar */
+    z-index: 70;                /* in front of the log */
+    opacity: 1.0;
+}
+
+#filter input[type="radio"] {
+    display: none;              /* hide the native radio circle */
+}
+
+.filter_name {
+    position: relative;
+    padding: 4dp;
+    top: -2dp;
+    font-size: 0.75rem;
+    font-effect: shadow(1dp 1dp #000);
+}
+
+/* Per-tab tints (stock colours, full opacity) */
+.filter_all_clr     { background-color: rgba(135, 184, 204, 255); }
+.filter_world_clr   { background-color: rgba(254, 186, 70, 255); }
+.filter_private_clr { background-color: rgba(75, 255, 255, 255); }
+.filter_system_clr  { background-color: rgba(166, 166, 166, 255); }
+.filter_custom_clr  { background-color: rgba(210, 154, 212, 255); }
+
+/* Tab icons (stock textures) */
+.filter_all     { decorator: image(interface/large/gui_chat_all.rttex); }
+.filter_world   { decorator: image(interface/large/gui_chat_world.rttex); }
+.filter_private { decorator: image(interface/large/gui_chat_private.rttex); }
+.filter_system  { decorator: image(interface/large/gui_chat_system.rttex); }
+.filter_custom  { decorator: image(interface/large/gui_chat_custom.rttex); }
+
+#filter label.filter_btn {
+    display: flex;
+    opacity: 1.0;
+    sound-on-click: true;
+    align-items: center;
+    justify-content: center;
+    padding: 4dp;
+    border-radius: 0dp 0dp 6dp 6dp;    /* rounded bottom -- the strip hangs below the input */
+    border: 1dp rgb(136, 184, 203);
+}
+
+#filter .icon {
+    width: 32dp;
+    height: 32dp;
+    display: block;
+}
+
+/* Selected tab shows at full opacity */
+#filter input[type="radio"]:checked + label {
+    opacity: 1.0;
+}
+
+/* Custom-tab settings gear */
+.chat_settings {
+    background-color: rgba(210, 154, 212, 255);
+    padding: 4dp;
+    border-radius: 0dp 0dp 6dp 6dp;    /* match the tabs */
+    border: 1dp rgb(136, 184, 203);
+}
+
+.chat_settings:active {
+    filter: brightness(0.85);
+    transform: scale(0.95);
+}
+
+#chat_image {
+    width: 32dp;
+    height: 32dp;
+    decorator: image(interface/large/chat_settings.rttex);
+    align-self: center;
+    position: relative;
+}
+
+/* Custom-tab settings popup */
+@spritesheet checkbox_sprites {
+    src: interface/checkbox.rttex;
+    resolution: 1x;
+    checkbox_off_icon: 0px 0px 32px 32px;
+    checkbox_on_icon: 32px 0px 32px 32px;
 }
 
 .popup {
-  position: absolute;
-  top: 0dp;
-  left: 68dp;
-  width: 280dp;
-  background-color: rgba(60,137,166, 204);
-  border-radius: 4pt;
-  border: 2dp rgb(136,184,203);
-  padding: 0dp;
-  z-index: 100;
-  font-size: 0.75rem;
+    position: absolute;
+    bottom: 52dp;               /* opens upward over the log, above the input bar */
+    left: 6dp;
+    width: 280dp;
+    max-width: 96%;             /* never spills past the chat box */
+    background-color: rgba(60, 137, 166, 204);
+    border-radius: 4pt;
+    border: 2dp rgb(136, 184, 203);
+    padding: 0dp;
+    z-index: 100;
+    font-size: 0.75rem;
 }
 
 .checkbox-group {
@@ -340,10 +389,10 @@
 }
 
 .checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 8dp;
-  sound-on-click: true;
+    display: flex;
+    align-items: center;
+    gap: 8dp;
+    sound-on-click: true;
 }
 
 .checkbox {
@@ -361,653 +410,4 @@
 
     .checkbox:checked {
         decorator: image(checkbox_on_icon);
-}
-
-.chat_padding {
-    padding: 2dp !important;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-x: hidden;
-    background-color: transparent !important; 
-}
-
-.chat_padding.alternate {
-    background-color: transparent !important;
-}
-
-
-#console_style_startup_loader,
-#console_style_bridge_loader,
-#console_static_final_position_loader {
-    display: none;
-    width: 0dp;
-    height: 0dp;
-    min-width: 0dp;
-    min-height: 0dp;
-    max-width: 0dp;
-    max-height: 0dp;
-    padding: 0dp;
-    margin: 0dp;
-    position: absolute;
-    top: 0dp;
-    left: 0dp;
-}
-
-.console_style_toggle {
-    background-color: rgba(60, 137, 166, 128);
-    sound-on-click: true;
-}
-
-.console_style_icon {
-    width: 32dp;
-    height: 32dp;
-    decorator: image(interface/large/chat_settings.rttex);
-    align-self: center;
-    position: relative;
-}
-
-#chat_window_floaty.console_floaty_panel,
-#chat_window.console_floaty_panel {
-    position: absolute;
-    right: 110dp;
-    top: 80dp;
-    padding: 0dp;
-    z-index: 10;
-  
-    display: flex;
-    flex-direction: column;
-    gap: 0dp;
-
-    width: 30vw;
-    height: 180dp;
-
-    min-width: 350dp;
-    max-width: 80vw;
-    min-height: 120dp;
-    max-height: 80vh;
-
-}
-.console_floaty_panel .top-panel {
-
-}
-.console_floaty_panel #filter_floaty,
-.console_floaty_panel #filter {
-        display: flex;
-        flex-direction: row;
-        gap: 4dp;
-        position: absolute;
-        left: 4dp;
-        top: -41dp;
     }
-.console_floaty_panel #move_handle_floaty,
-.console_floaty_panel #move_handle {
-        min-width: 44dp;
-        min-height: 42dp;
-        max-width: 44dp;
-        max-height: 42dp;
-        align-self: center;
-        position: relative;
-        background-color: rgba(39,125,159,170);
-        top:-3dp;
-        left: 0dp;
-        decorator: image(interface/large/gui_chat_move_handle.rttex);
-    }
-.hide #chat_window_floaty {
-    display: none;
-}
-.full-hide #chat_window_floaty {
-    display: none;
-}
-.console_floaty_panel #filter_floaty input[type="radio"],
-.console_floaty_panel #filter input[type="radio"] {
-    display: none; 
-}
-.console_floaty_panel .floaty_filter_name {
-    position: relative;
-    padding: 4dp;
-    top: -2dp;
-    font-size: 0.833rem;
-}
-.console_floaty_panel .floaty_filter_all_clr {
-	background-color: rgba(135, 184, 204, 128)
-}
-.console_floaty_panel .floaty_filter_world_clr {
-	background-color: rgba(254, 186, 70, 128)
-}
-.console_floaty_panel .floaty_filter_private_clr {
-	background-color: rgba(75,255,255, 128)
-}
-.console_floaty_panel .floaty_filter_system_clr {
-	background-color: rgba(166,166,166, 128)
-}
-.console_floaty_panel .floaty_filter_custom_clr {
-	background-color: rgba(210, 154, 212, 128)
-}
-.console_floaty_panel .floaty_filter_all { decorator: image(interface/large/gui_chat_all.rttex); }
-.console_floaty_panel .floaty_filter_world { decorator: image(interface/large/gui_chat_world.rttex); }
-.console_floaty_panel .floaty_filter_private { decorator: image(interface/large/gui_chat_private.rttex); }
-.console_floaty_panel .floaty_filter_system { decorator: image(interface/large/gui_chat_system.rttex); }
-.console_floaty_panel .floaty_filter_custom { decorator: image(interface/large/gui_chat_custom.rttex); }
-.console_floaty_panel #filter_floaty label.floaty_filter_btn,
-.console_floaty_panel #filter label.floaty_filter_btn {
-    display: block;
-    opacity: 0.85;
-    sound-on-click: true;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4dp;
-
-    border-radius: 6dp 6dp 0dp 0dp;
-    border: 1dp rgb(136,184,203);
-}
-.console_floaty_panel #filter_floaty .floaty_icon,
-.console_floaty_panel #filter .floaty_icon {
-    width: 32dp;   
-    height: 32dp;
-    display: block;
-}
-.console_floaty_panel #filter_floaty input[type="radio"]:checked + label,
-.console_floaty_panel #filter input[type="radio"]:checked + label {
-    opacity: 1.0;
-}
-.console_floaty_panel .floaty_debug_bg {
-    background-color: rgba(255, 0, 0, 64);
-}
-.console_floaty_panel .floaty_chat_settings {
-    background-color: rgba(210, 154, 212, 128);
-    padding: 4dp;
-    border-radius: 6dp 6dp 0dp 0dp;
-    border: 1dp rgb(136,184,203);
-}
-.console_floaty_panel .floaty_chat_settings:active {
-		filter: brightness(0.85);
-		transform: scale(0.95);
-	}
-.console_floaty_panel #chat_image_floaty,
-.console_floaty_panel #chat_image {
-        width: 32dp;
-        height: 32dp;
-        decorator: image(interface/large/chat_settings.rttex);
-        align-self: center;
-        position: relative;
-    }
-.console_floaty_panel .floaty_crazy_jim_panel {
-    display: flex;
-    flex-direction: row;
-    gap: 4dp;
-    align-items: flex-start;
-    width: 100%;
-}
-.console_floaty_panel #image {
-        min-width: 48dp;
-        width: 48dp;
-        height: 48dp;
-        decorator: image(interface/tutorial/tut_npc.rttex);
-    }
-.console_floaty_panel #text {
-    }
-.console_floaty_panel .floaty_input-panel {
-    width: 100%;
-    padding: 0dp 10dp 0dp 5dp;
-    display: flex;
-    flex-direction: row;
-	position: absolute;
-	top:2dp;
-}
-.console_floaty_panel #input-content_floaty,
-.console_floaty_panel #input-content {
-        padding: 0dp;
-        display: flex;
-        flex-direction: row;
-        position: relative;
-        background-color: rgba(39,125,159,170);
-        margin: 5dp 0dp 10dp 0dp;
-    }
-.console_floaty_panel #input-text_floaty,
-.console_floaty_panel #input-text {
-	    display: block;
-	    vertical-align: middle;
-        border-radius: 7dp;
-        font-size: 24dp;
-        font-weight: bold;
-        line-height: 30dp;
-	    width: 100%;
-	    color: #fff;
-        padding: 6dp 10dp 3dp 10dp;
-        font-size: 0.85rem;
-    }
-.console_floaty_panel #input-info_floaty,
-.console_floaty_panel #input-info {
-        display: block;
-	    vertical-align: middle;
-        text-align: center;
-        line-height: 38dp;
-        background-color: transparent;
-        border: 0dp transparent;
-        min-width: 80dp;
-        margin-top: 1dp;
-        margin-bottom: 3dp;
-        margin-right: 4dp;
-        font-size: 0.833rem;
-        border-radius: 0dp;
-        top: -6dp;
-        position: relative;
-    }
-.console_floaty_panel .floaty_message-hint-panel {
-    width: 100%;
-    padding: 0dp;
-    display: block;
-    position: absolute;
-    top: 18dp;
-    left: 14dp;
-    z-index: 20;
-	font-size: 0.833rem;
-	color: rgba(255,255,255,170);
-	pointer-events: none; 
-}
-.console_floaty_panel .floaty_preview-panel {
-    border-radius: 4pt;
-    border: 2dp rgba(135, 184, 204, 104);
-    width: 100%;
-    padding: 0dp;
-    display: flex;
-    flex-direction: row;
-    background-color: rgba(39,125,159,224);
-    margin-bottom: 2dp;
-    margin-top: -4dp;
-
-    position: absolute;
-    top: 60dp;
-    left: 3dp;
-    z-index: 20;
-}
-.console_floaty_panel #preview-content_floaty,
-.console_floaty_panel #preview-content {
-        padding: 0dp;
-        position: relative;
-    }
-.console_floaty_panel #preview-text_floaty,
-.console_floaty_panel #preview-text {
-	    display: block;
-	    vertical-align: middle;
-        border-radius: 7dp;
-        font-size: 24dp;
-        font-weight: bold;
-        line-height: 30dp;
-	    width: 100%;
-	    color: #fff;
-        font-size: 0.833rem;
-        padding: 3dp;
-    }
-.console_floaty_panel .floaty_log-panel {
-     height: 100%;
-     width: 100%;
-     padding: 56dp 10dp 10dp 5dp;
-}
-.console_floaty_panel #log-content_floaty,
-.console_floaty_panel #log-content {
-        background-color: rgba(39,125,159,170);
-
-        width: 100%;
-        height: 100%;
-        
-        overflow-y: auto;  
-        font-size: 0.833rem;
-        padding-left: 2dp;
-    }
-.console_floaty_panel #text-line_floaty,
-.console_floaty_panel #text-line {
-        padding: 0dp 2dp 2dp 2dp;
-        margin-top: -1dp;
-    }
-.console_floaty_panel .floaty_resize_handle {
-    width: 48dp;
-    height: 48dp;
-    decorator: image(interface/large/gui_resize_handle.rttex);
-    padding: 0dp;
-}
-.console_floaty_panel .floaty_handle_br {
-    cursor: se-resize;
-}
-.console_floaty_panel .floaty_handle_bl {
-    cursor: sw-resize;
-    position: absolute;
-    bottom: 5dp;
-    left: 0dp;
-}
-.console_floaty_panel .floaty_popup {
-  position: absolute;
-  top: 0dp;
-  left: 68dp;
-  width: 280dp;
-  background-color: rgba(60,137,166, 204);
-  border-radius: 4pt;
-  border: 2dp rgb(136,184,203);
-  padding: 0dp;
-  z-index: 100;
-  font-size: 20dp;
-  font-size: 0.833rem;
-}
-.console_floaty_panel .floaty_checkbox-group {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-    gap:5dp;
-    padding: 10dp;
-}
-.console_floaty_panel .floaty_checkbox-group .floaty_label {
-    padding-left: 0dp;
-    vertical-align: middle;
-    text-align: left;
-}
-.console_floaty_panel .floaty_checkbox-row {
-  display: flex;
-  align-items: center;   
-  gap: 8dp;              
-  sound-on-click: true;
-}
-.console_floaty_panel .checkbox {
-    height: 16dp;
-    width: 16dp;
-    display: inline-block;
-    padding: 5dp;
-    text-align: center;
-    vertical-align: middle;
-    align-items: center;
-    justify-content: center;
-    sound-on-click: true;
-    decorator: image(checkbox_off_icon);
-    sound-on-click: true;
-}
-.console_floaty_panel .checkbox:checked {
-        decorator: image(checkbox_on_icon);
-    }
-.console_floaty_panel .floaty_chat_padding {
-    padding: 0dp 1dp;
-    background-color: rgba(255,255,255, 16);
-}
-.console_floaty_panel .floaty_chat_padding.alternate {
-        display: block;
-        background-color: rgba(0, 0, 0, 16);
-    }
-
-#pull_down_button_static {
-    position: absolute;
-    bottom: -12dp;
-    left: 50%;
-    margin-left: -44dp;
-    width: 89dp;
-    height: 18dp;
-    background-color: transparent;
-    image-color: transparent;
-    cursor: ns-resize;
-    z-index: 40;
-    sound-on-click: true;
-}
-
-#pull_down_icon_static {
-    position: absolute;
-    top: 7dp;
-    left: 25dp;
-    width: 38dp;
-    height: 5dp;
-    background-color: rgb(86, 191, 158);
-    border-radius: 3dp;
-    pointer-events: none;
-}
-
-#pull_down_button_static:hover,
-#pull_down_button_static:active,
-#pull_down_button_static:focus {
-    background-color: transparent;
-    image-color: transparent;
-}
-
-.console_static_panel,
-#chat_window.console_static_panel,
-#chat_window_static.console_static_panel {
-    position: absolute;
-    top: 0dp;
-    left: 12%;
-    right: auto;
-    bottom: auto;
-    width: 76%;
-    min-width: 76%;
-    max-width: 76%;
-    height: 250dp;
-    min-height: 124dp;
-    max-height: 500dp;
-    margin-top: 0dp;
-    margin-left: 0dp;
-    margin-right: 0dp;
-}
-
-
-#chat_window.console_static_panel,
-#chat_window_static.console_static_panel,
-#chat_window_floaty.console_floaty_panel,
-#chat_window.console_floaty_panel {
-    opacity: 1;
-    transform: translate(0dp, 0dp) scale(1.0);
-}
-
-#chat_window.console_style_hidden,
-#chat_window_static.console_style_hidden,
-#chat_window_floaty.console_style_hidden,
-.console_style_hidden {
-    display: none;
-    opacity: 0;
-    pointer-events: none;
-}
-
-#chat_window.console_static_panel.console_style_hidden,
-#chat_window_static.console_static_panel.console_style_hidden {
-    transform: translate(32vw, 80dp) scale(0.48);
-}
-
-#chat_window_floaty.console_floaty_panel.console_style_hidden,
-#chat_window.console_floaty_panel.console_style_hidden {
-    transform: translate(-26vw, -80dp) scale(1.25);
-}
-
-.preview-panel.hidden,
-.message-hint-panel.hidden,
-#custom-settings-popup.hidden,
-#custom-settings-popup_floaty.hidden,
-.console_floaty_panel .floaty_preview-panel.hidden,
-.console_floaty_panel .floaty_message-hint-panel.hidden,
-.console_floaty_panel #custom-settings-popup_floaty.hidden,
-.console_floaty_panel #custom-settings-popup.hidden {
-    display: none;
-}
-
-
-#text-line.hidden,
-#text-line_floaty.hidden,
-.crazy_jim_panel.hidden,
-.floaty_crazy_jim_panel.hidden,
-#log-content .hidden,
-#log-content_floaty .hidden,
-#log-content .hidden {
-    display: none;
-}
-
-
-.hidden {
-    display: none;
-}
-
-#style_toggle_static.console_style_toggle,
-#style_toggle_floaty.console_style_toggle {
-    background-color: rgba(60, 137, 166, 128);
-}
-
-#style_toggle_static.console_style_toggle.console_toggle_active_floaty,
-#style_toggle_floaty.console_style_toggle.console_toggle_active_floaty {
-    background-color: rgba(60, 137, 166, 128);
-}
-
-.console_floaty_panel #chat_image_floaty,
-.console_floaty_panel #chat_image {
-    width: 32dp;
-    height: 32dp;
-    decorator: image(interface/large/chat_settings.rttex);
-    align-self: center;
-    position: relative;
-}
-
-
-.console_floaty_panel.console_style_hidden #filter_floaty,
-.console_floaty_panel.console_style_hidden .floaty_filter_btn,
-.console_floaty_panel.console_style_hidden .floaty_chat_settings,
-.console_floaty_panel.console_style_hidden .floaty_icon,
-.console_floaty_panel.console_style_hidden .floaty_filter_name,
-.console_floaty_panel.console_style_hidden #move_handle_floaty,
-.console_floaty_panel.console_style_hidden .floaty_input-panel,
-.console_floaty_panel.console_style_hidden .floaty_log-panel,
-.console_floaty_panel.console_style_hidden #resize_bl_floaty,
-.console_floaty_panel.console_style_hidden .floaty_resize_handle {
-    display: none;
-    opacity: 0;
-    pointer-events: none;
-}
-
-
-.console_static_panel.console_style_hidden #pull_down_button,
-.console_static_panel.console_style_hidden #pull_down_button_static,
-#chat_window_static.console_style_hidden #pull_down_button_static,
-#chat_window_static.console_style_hidden #pull_down_button,
-#chat_window.console_static_panel.console_style_hidden #pull_down_button,
-#chat_window.console_static_panel.console_style_hidden #pull_down_button_static {
-    display: none;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.console_static_panel {
-    overflow: visible;
-}
-
-.console_static_panel #filter,
-.console_static_panel #filter_static,
-.console_static_panel .input-panel,
-#chat_window.console_static_panel .input-panel,
-#chat_window_static.console_static_panel .input-panel {
-    position: relative;
-    z-index: 30;
-}
-
-.console_static_panel .log-panel,
-#chat_window.console_static_panel #log-top,
-#chat_window_static.console_static_panel #log-top_static,
-#chat_window_static.console_static_panel #log-top {
-    position: relative;
-    z-index: 5;
-    overflow: hidden;
-}
-
-.console_static_panel #pull_down_button,
-.console_static_panel #pull_down_button_static {
-    z-index: 70;
-}
-
-/* Lightweight flat skin. Final rules cover IDs swapped by Console.rml. */
-.chat_region,
-.console_static_panel,
-.console_floaty_panel {
-    background-color: rgb(7, 42, 46);
-    border: 1dp rgb(65, 148, 127);
-}
-
-.filter_all_clr,
-.console_floaty_panel .floaty_filter_all_clr {
-    background-color: rgb(35, 113, 99);
-}
-
-.filter_world_clr,
-.console_floaty_panel .floaty_filter_world_clr {
-    background-color: rgb(48, 125, 83);
-}
-
-.filter_private_clr,
-.console_floaty_panel .floaty_filter_private_clr {
-    background-color: rgb(28, 119, 126);
-}
-
-.filter_system_clr,
-.console_floaty_panel .floaty_filter_system_clr {
-    background-color: rgb(63, 94, 97);
-}
-
-.filter_custom_clr,
-.console_floaty_panel .floaty_filter_custom_clr {
-    background-color: rgb(48, 127, 97);
-}
-
-.chat_settings,
-.console_floaty_panel .floaty_chat_settings,
-.console_style_toggle {
-    background-color: rgb(25, 105, 91);
-    border-color: rgb(65, 148, 127);
-}
-
-.preview-panel,
-.console_floaty_panel .floaty_preview-panel,
-.popup,
-.console_floaty_panel .floaty_popup {
-    background-color: rgb(7, 49, 52);
-    border-color: rgb(65, 148, 127);
-}
-
-.input-panel,
-.console_floaty_panel .floaty_input-panel,
-.log-panel,
-.console_floaty_panel .floaty_log-panel {
-    border-color: rgb(54, 124, 108);
-}
-
-#input-content,
-#input-content_floaty,
-#log-content,
-#log-content_floaty {
-    background-color: rgb(4, 31, 35);
-}
-
-#input-text,
-#input-text_floaty,
-#preview-text,
-#preview-text_floaty,
-#text-line,
-#text-line_floaty {
-    color: rgba(235, 255, 247, 255);
-}
-
-#chat_window.console_static_panel,
-#chat_window_static.console_static_panel {
-    top: 8dp;
-}
-
-#chat_window_floaty.console_floaty_panel,
-#chat_window.console_floaty_panel {
-    right: 96dp;
-    top: 72dp;
-    width: 28vw;
-    height: 164dp;
-}
-
-#pull_down_button,
-#pull_down_button_static {
-    background-color: transparent;
-    image-color: transparent;
-}
-
-#pull_down_button:hover #pull_down_icon,
-#pull_down_button:active #pull_down_icon,
-#pull_down_button:focus #pull_down_icon,
-#pull_down_button_static:hover #pull_down_icon_static,
-#pull_down_button_static:active #pull_down_icon_static,
-#pull_down_button_static:focus #pull_down_icon_static {
-    background-color: rgb(111, 222, 184);
-}

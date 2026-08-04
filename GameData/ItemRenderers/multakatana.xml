@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer item="ITEM_ID_MULTA_KATANA">
+    <Data>
+        <StateMachines>
+            <StateMachine name="playerState">
+                <States>
+                    <State name="Idle"/>
+                </States>
+            </StateMachine>
+        </StateMachines>
+
+        <Sprite name="multakatana_sprite" fileName="game/multakatana.rttex" textureSize="256" frame="0,0"/>
+
+        <Animations>
+            <SpriteAnimation name="multakatana_idle" playOnState="playerState.Idle" sprite="multakatana_sprite" isLoop="true" animTime="100">
+                <Frame>0,0</Frame>
+            </SpriteAnimation>
+        </Animations>
+
+        <RenderOptions>
+            <Default>
+                <Set name="PlayDefaultPunchAudio">true</Set>
+            </Default>
+        </RenderOptions>
+    </Data>
+
+    <RenderRules>
+        <RenderBackpack>
+            <SpriteRender name="multakatana_sprite" offset="-10,-16" scale="0.26,0.26"/>
+            <StopIf>
+                <IsRenderMod>RENDER_MOD_MINI_YOU</IsRenderMod>
+            </StopIf>
+        </RenderBackpack>
+    </RenderRules>
+</ItemRenderer>

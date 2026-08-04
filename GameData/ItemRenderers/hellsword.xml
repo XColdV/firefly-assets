@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ItemRenderer>
+  <Data>
+    <Sprite name="s_hell_sword" fileName="game/hell_sword.rttex" textureSize="128,180" frame="8,0"/>
+    <RenderOptions>
+      <Default>
+        <Set name="DefaultRenderMannequinHandItem">false</Set>
+        <Set name="RenderBackArmBuild">false</Set>
+        <Set name="RenderFrontArmInfected">true</Set>
+        <Set name="RenderBackArmInfected">true</Set>
+        <Set name="DefaultPunchSound">audio/slash.wav</Set>
+      </Default>
+    </RenderOptions>
+  </Data>
+  <RenderRules>
+    <RenderHandItem>
+      <SpriteRender name="s_hell_sword" offset="8,-12" rotationPoint="0,1" alignment="CENTER" rotateOffset="true" blend="PREMULTIPLIED_ALPHA" drawShadow="true" scale="0.4,0.4"/>
+    </RenderHandItem>
+  </RenderRules>
+</ItemRenderer>

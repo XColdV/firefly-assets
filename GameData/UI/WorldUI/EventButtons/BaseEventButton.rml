@@ -59,7 +59,7 @@
 
                     <div class="label" data-rml="ToRMLText(buttonData.buttonText)" />
                     <div class="lifeAndProgress">
-                        <progress class="progressBar" data-attr-value="ToRMLText(buttonData.counter)" data-attr-max="ToRMLText(buttonData.counterMax)" />
+                        <progress class="progressBar" data-attr-value="buttonData.counter" data-attr-max="buttonData.counterMax" />
                     </div>
 
 

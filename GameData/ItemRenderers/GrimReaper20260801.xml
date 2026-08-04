@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+  <Data>
+    <Sprite name="s_grim_reaper" fileName="game/grim_reaper_wear_20260801.rttex" textureSize="32,32" frame="0,0"/>
+    <RenderOptions>
+      <Default>
+        <Set name="DefaultRenderMannequinHandItem">false</Set>
+        <Set name="RenderBackArmBuild">false</Set>
+        <Set name="RenderFrontArmInfected">true</Set>
+        <Set name="RenderBackArmInfected">true</Set>
+        <Set name="DefaultPunchSound">audio/slash.wav</Set>
+      </Default>
+    </RenderOptions>
+  </Data>
+  <RenderRules>
+    <RenderHandItem>
+      <SpriteRender name="s_grim_reaper" rotateOffset="true" alignment="UPPER_CENTER" blend="PREMULTIPLIED_ALPHA" stretchToTarget="false" drawShadow="true"/>
+    </RenderHandItem>
+  </RenderRules>
+</ItemRenderer>

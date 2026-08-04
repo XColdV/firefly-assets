@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+  <Data>
+    <Sprite name="blade" fileName="game/black_market_switchblade_v5.rttex" textureSize="64,32" frame="0,0"/>
+    <Animations>
+      <SpriteAnimation name="blade_cycle" sprite="blade" animTime="1000" isLoop="true" autoPlay="true"><Frame>0,0</Frame><Frame>1,0</Frame><Frame>2,0</Frame><Frame>3,0</Frame></SpriteAnimation>
+    </Animations>
+    <RenderOptions>
+      <Default>
+        <Set name="PunchSoundOverride">HAND</Set>
+        <Set name="PlayDefaultPunchAudio">false</Set>
+        <Set name="DefaultRenderMannequinHandItem">false</Set>
+        <Set name="RenderBackArmBuild">false</Set>
+        <Set name="RenderBackArmInfected">true</Set>
+        <Set name="RenderFrontArmInfected">true</Set>
+        <Set name="IgnoreDefaultDamagedTileEffect">true</Set>
+      </Default>
+    </RenderOptions>
+    <StateMachines>
+      <StateMachine name="Punch">
+        <States><State name="False"/><State name="True"/></States>
+        <Transitions>
+          <Transition from="False" to="True"><Condition><IsAction>PUNCH</IsAction></Condition></Transition>
+          <Transition from="True" to="False"><Condition><IsAction operatorType="NotEqual">PUNCH</IsAction></Condition></Transition>
+        </Transitions>
+      </StateMachine>
+    </StateMachines>
+  </Data>
+  <RenderRules>
+    <Update>
+      <StopIf><IsZombified>true</IsZombified></StopIf>
+      <AvatarTransform class="ArmAngle" onState="Punch.False"><Set name="armName">arm1Angle</Set><Set name="armAngle">215</Set></AvatarTransform>
+    </Update>
+    <RenderBackHandItem>
+      <StopIf type="and"><IsZombified>true</IsZombified><IsAction>PUNCH</IsAction></StopIf>
+      <SpriteRender name="blade" offset="13,2" rotationPoint="0,1" alignment="CENTER" rotateOffset="true" blend="PREMULTIPLIED_ALPHA"/>
+    </RenderBackHandItem>
+    <OnPunchUpdate>
+      <StopIf><IsZombified>true</IsZombified></StopIf>
+      <AvatarTransform class="Emotion"><Set name="emotion">ANGRY</Set></AvatarTransform>
+      <AvatarTransform class="ArmAngle">
+        <Set name="armName">arm1Angle</Set><Set name="animTime">400</Set>
+        <Set name="Curve"><KeyFrame>0.0,215</KeyFrame><KeyFrame>0.3,360</KeyFrame><KeyFrame>0.8,360</KeyFrame><KeyFrame>0.81,215</KeyFrame><KeyFrame>1,215</KeyFrame></Set>
+      </AvatarTransform>
+      <AvatarTransform class="ArmAngle"><Set name="armName">arm2Angle</Set><Set name="armAngle">45</Set></AvatarTransform>
+    </OnPunchUpdate>
+  </RenderRules>
+</ItemRenderer>

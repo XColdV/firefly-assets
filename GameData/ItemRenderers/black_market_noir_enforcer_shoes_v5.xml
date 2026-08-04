@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+  <Data>
+    <Sprite name="left_foot" fileName="game/black_market_outfit_v5.rttex" textureSize="32,32" frame="0,2"/>
+    <Sprite name="right_foot" fileName="game/black_market_outfit_v5.rttex" textureSize="32,32" frame="0,3"/>
+    <VariableMap><Set name="leftFootYPos">0,0,0</Set><Set name="rightFootYPos">0,0,0</Set></VariableMap>
+    <Animations>
+      <SpriteAnimation name="left_cycle" sprite="left_foot" animTime="1200" isLoop="true" autoPlay="true"><Frame>0,2</Frame><Frame>1,2</Frame><Frame>2,2</Frame><Frame>3,2</Frame></SpriteAnimation>
+      <SpriteAnimation name="right_cycle" sprite="right_foot" animTime="1200" isLoop="true" autoPlay="true"><Frame>0,3</Frame><Frame>1,3</Frame><Frame>2,3</Frame><Frame>3,3</Frame></SpriteAnimation>
+    </Animations>
+    <RenderOptions><Default><Set name="HideParticlesOnTransform">true</Set><Set name="RenderShoesWithMermaidTail">false</Set></Default></RenderOptions>
+  </Data>
+  <RenderRules>
+    <RenderShoes>
+      <StopIf type="or"><IsRenderObjectFlag>RENDER_OBJECT_FLAG_NO_FEET</IsRenderObjectFlag><IsVariableBool name="isInvisible">true</IsVariableBool></StopIf>
+      <Group><Translate>leftFootYPos</Translate><SpriteRender name="left_foot" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA"/></Group>
+      <Group><Translate>rightFootYPos</Translate><SpriteRender name="right_foot" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA"/></Group>
+    </RenderShoes>
+  </RenderRules>
+</ItemRenderer>

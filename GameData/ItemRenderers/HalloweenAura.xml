@@ -2,13 +2,13 @@
 <ItemRenderer>
 	<Data>
 		<Sprite name="s_BeachCircle" fileName="game/halloween_aura.rttex" textureSize="64" frame="0,0" />
-		<Sprite name="s_Cloud1" fileName="game/c_items5.rttex" textureSize="32" frame="11,39" />
-		<Sprite name="s_Cloud2" fileName="game/c_items5.rttex" textureSize="32" frame="11,39" />
-		<Sprite name="s_Cloud3" fileName="game/c_items5.rttex" textureSize="32" frame="11,39" />
-		<Sprite name="s_Sandtopian1" fileName="game/c_items5.rttex" textureSize="32" frame="10,43" />
-		<Sprite name="s_Sandtopian2" fileName="game/c_items5.rttex" textureSize="32" frame="11,43" />
-		<Sprite name="s_Sandtopian3" fileName="game/c_items5.rttex" textureSize="32" frame="12,43" />
-		<Sprite name="s_Sun" fileName="game/c_items5.rttex" textureSize="32" frame="12,39" />
+		<Sprite name="s_Cloud1" fileName="game/h_aura.rttex" textureSize="32" frame="0,2" />
+		<Sprite name="s_Cloud2" fileName="game/h_aura.rttex" textureSize="32" frame="0,2" />
+		<Sprite name="s_Cloud3" fileName="game/h_aura.rttex" textureSize="32" frame="0,2" />
+		<Sprite name="s_Sandtopian1" fileName="game/h_aura.rttex" textureSize="32" frame="0,3" />
+		<Sprite name="s_Sandtopian2" fileName="game/h_aura.rttex" textureSize="32" frame="1,3" />
+		<Sprite name="s_Sandtopian3" fileName="game/h_aura.rttex" textureSize="32" frame="2,3" />
+		<Sprite name="s_Sun" fileName="game/h_aura.rttex" textureSize="32" frame="1,2" />
 		<Animations>
 			<SpriteSinPulseAnimation name="a_Cloud1" sprite="s_Cloud1" autoPlay="true">
 				<Parameter name="pos.y">

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+  <Data>
+    <Sprite name="s_bloody_scythe" fileName="game/bloody_scythe_wear_20260724.rttex" textureSize="64,32" frame="0,0"/>
+    <RenderOptions>
+      <Default>
+        <Set name="DefaultRenderMannequinHandItem">false</Set>
+        <Set name="RenderBackArmBuild">false</Set>
+        <Set name="RenderFrontArmInfected">true</Set>
+        <Set name="RenderBackArmInfected">true</Set>
+        <Set name="DefaultPunchSound">audio/slash.wav</Set>
+      </Default>
+    </RenderOptions>
+  </Data>
+  <RenderRules>
+    <RenderHandItem>
+      <SpriteRender name="s_bloody_scythe" offset="0,8" rotationPoint="0,1" alignment="CENTER" rotateOffset="true" blend="PREMULTIPLIED_ALPHA" drawShadow="true"/>
+    </RenderHandItem>
+  </RenderRules>
+</ItemRenderer>

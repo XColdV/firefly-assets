@@ -5269,7 +5269,7 @@
 		<CageIcon file="game/pets/p_espawn_r.rttex" frameSize="32,32" frame="0,0"/>
 	</Pet>
 	
-	<Pet itemID="ITEM_ID_MUNIS_CASPIRO">
+		<Pet itemID="ITEM_ID_MUNIS_CASPIRO">
 		<Name>"Muni's Caspiro"</Name>
 		<SubName>"Muni"</SubName>
 		<EndName>"caspiro"</EndName>
@@ -5292,5 +5292,57 @@
 		<CageIcon file="game/pets/p_mcaspiro2.rttex" frameSize="32,32" frame="0,0"/>
 	</Pet>
 
+
+<Pet itemID="ITEM_ID_NOBLE_PHOENIX">
+	<Name>"Noble Phoenix"</Name>
+	<SubName>"Noble"</SubName>
+	<EndName>"phoenix"</EndName>
+	<PowerName>"From the Ashes!"</PowerName>
+	<PowerDesc>"Next attack's damage is boosted by 50% if used in the next 60s and will rise from the ashes with 100% health if defeated within 60s.."</PowerDesc>
+	<Element>"FIRE"</Element>
+	<Damage>0</Damage>
+	<Cooldown>999</Cooldown>
+	<PowerType>"SELF_STATUS"</PowerType>
+	<PowerFlags>0</PowerFlags>
+	<PowerStatusGroup>
+		<PowerStatus type="REANIMATE">
+			<Value>100</Value>
+			<Duration>60</Duration>
+		</PowerStatus>		<PowerStatus type="SUPERCHARGED">
+			<Value>50</Value>
+			<Duration>60</Duration>
+		</PowerStatus>
+
+	</PowerStatusGroup>
+	<AnimType>"HOP_SPLAT"</AnimType>
+	<PowerParticle>43</PowerParticle>
+	<HitParticle>0</HitParticle>
+	<PowerParticleV2>0</PowerParticleV2>
+	<HitParticleV2>0</HitParticleV2>
+	<PowerSound>"audio/flame_go.wav"</PowerSound>
+	<PowerHitSound>""</PowerHitSound>
+	<Rarity>50</Rarity>
+	<EnableOnServer>true</EnableOnServer>
+			<BattleAnimation file="game/particles_large18.rttex" frameSize="64,64">
+			<Animation type="Idle" frameInterval="100">
+				<Frame>0,5</Frame>
+				<Frame>1,5</Frame>
+				<Frame>2,5</Frame>
+				<Frame>3,5</Frame>
+				<Frame>4,5</Frame>
+				<Frame>5,5</Frame>
+				<Frame>6,5</Frame>
+			</Animation>
+			<Animation type="Attack" frameInterval="100">
+				<Frame>7,5</Frame>
+			</Animation>
+			<Animation type="GetHit" frameInterval="100">
+				<Frame>0,5</Frame>
+			</Animation>
+			<Animation type="Dead" frameInterval="100">
+				<Frame>0,5</Frame>
+			</Animation>
+		</BattleAnimation>
+</Pet>
 
 </BattlePets>

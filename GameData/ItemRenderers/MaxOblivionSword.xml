@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ItemRenderer>
+  <Data>
+    <Sprite name="s_sword" fileName="game/max_oblivion_sword_wear.rttex" textureSize="32,32" frame="0,0"/>
+    <RenderOptions>
+      <Default>
+        <Set name="DefaultRenderMannequinHandItem">false</Set>
+        <Set name="RenderBackArmBuild">false</Set>
+        <Set name="RenderFrontArmInfected">true</Set>
+        <Set name="RenderBackArmInfected">true</Set>
+        <Set name="DefaultPunchSound">audio/slash.wav</Set>
+      </Default>
+    </RenderOptions>
+  </Data>
+  <RenderRules>
+    <RenderHandItem>
+      <SpriteRender name="s_sword" offset="16,4" rotationPoint="0,1" alignment="CENTER" rotateOffset="true" blend="PREMULTIPLIED_ALPHA" drawShadow="true"/>
+    </RenderHandItem>
+  </RenderRules>
+</ItemRenderer>

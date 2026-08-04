@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer item="ITEM_ID_MASTER_NONLA">
+    <Data>
+        <Sprite name="nonla_sprite" fileName="game/desctopcorruption.rttex" textureSize="64" frame="0,1"/>
+    </Data>
+
+    <RenderRules>
+        <RenderHat>
+            <SpriteRender name="nonla_sprite" offset="0,-34" alignment="CENTER"/>
+        </RenderHat>
+    </RenderRules>
+</ItemRenderer>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+    <Data>
+        <StateMachines>
+            <StateMachine name="playerState">
+                <States>
+                    <State name="Idle"/>
+                    <State name="Move"/>
+                    <State name="Fall"/>
+                    <State name="Jump"/>
+                    <State name="DoubleJump"/>
+                    <State name="SpiritGuide"/>
+                </States>
+                <Transitions>
+                    <Transition from="SpiritGuide|Jump|Fall|Move|DoubleJump" to="Idle">
+                        <Condition>
+                            <IsVariableFloat name="speed.length" operator="Less" abs="true">0.1</IsVariableFloat>
+                        </Condition>
+                    </Transition>
+                    <Transition from="SpiritGuide|Jump|Fall|Idle|DoubleJump" to="Move">
+                        <Condition type="and">
+                            <IsWearing operatorType="NotEqual" slot="CHESTITEM">ITEM_ID_HAUNTED</IsWearing>
+                            <IsAction>WALK</IsAction>
+                        </Condition>
+                    </Transition>
+                    <Transition from="Move|Jump|Fall|Idle|DoubleJump" to="SpiritGuide">
+                        <Condition type="and">
+                            <IsWearing slot="CHESTITEM">ITEM_ID_HAUNTED</IsWearing>
+                            <IsVariableFloat name="speed.length" operator="Greater" abs="true">0</IsVariableFloat>
+                            <IsAction operatorType="NotEqual">FALL</IsAction>
+                        </Condition>
+                    </Transition>
+                    <Transition from="SpiritGuide|Fall|Move|Idle" to="Jump">
+                        <Condition type="and">
+                            <IsWearing operatorType="NotEqual" slot="CHESTITEM">ITEM_ID_HAUNTED</IsWearing>
+                            <IsAction>JUMP</IsAction>
+                        </Condition>
+                    </Transition>
+                    <Transition from="Jump|Fall" to="DoubleJump">
+                        <Condition>
+                            <IsAction>JUMPDOUBLE</IsAction>
+                        </Condition>
+                    </Transition>
+                    <Transition from="DoubleJump|SpiritGuide|Jump|Idle|Move" to="Fall">
+                        <Condition type="and">
+                            <IsVariableFloat name="speed.y" operator="Greater" abs="false">0.01</IsVariableFloat>
+                            <IsAction>FALL</IsAction>
+                        </Condition>
+                    </Transition>
+                </Transitions>
+            </StateMachine>
+        </StateMachines>
+        <Sprite name="NecklaceSprite" fileName="game/custom_cosmetics1.rttex" textureSize="32" frame="13,9"/>
+        <Sprite name="GlowNecklaceSprite" fileName="game/custom_cosmetics1.rttex" textureSize="32" frame="14,9"/>
+        <Sprite name="AuraFrontSprite" fileName="game/enigma_dvw_1.rttex" textureSize="64" frame="0,2"/>
+        <Sprite name="AuraBackSprite" fileName="game/enigma_dvw_1.rttex" textureSize="64" frame="0,3"/>
+        <Animations>
+            <SpriteCurveAnimation name="Necklace_Glow_A" sprite="GlowNecklaceSprite" animTime="2500" autoPlay="true" isLoop="true">
+                <Curve name="alpha">
+                    <KeyFrame>0, 0.0</KeyFrame>
+                    <KeyFrame>0.5, 1</KeyFrame>
+                    <KeyFrame>1, 0.0</KeyFrame>
+                </Curve>
+            </SpriteCurveAnimation>
+            <SpriteAnimation name="FrontAura_A" autoPlay="true" sprite="AuraFrontSprite" isLoop="true" animTime="1250">
+                <Frame>0,2</Frame>
+                <Frame>1,2</Frame>
+                <Frame>2,2</Frame>
+                <Frame>3,2</Frame>
+                <Frame>4,2</Frame>
+                <Frame>5,2</Frame>
+                <Frame>6,2</Frame>
+                <Frame>7,2</Frame>
+                <Frame>8,2</Frame>
+                <Frame>9,2</Frame>
+                <Frame>10,2</Frame>
+                <Frame>11,2</Frame>
+                <Frame>12,2</Frame>
+                <Frame>13,2</Frame>
+            </SpriteAnimation>
+            <SpriteAnimation name="BackAura_A" autoPlay="true" sprite="AuraBackSprite" isLoop="true" animTime="1250">
+                <Frame>0,3</Frame>
+                <Frame>1,3</Frame>
+                <Frame>2,3</Frame>
+                <Frame>3,3</Frame>
+                <Frame>4,3</Frame>
+                <Frame>5,3</Frame>
+                <Frame>6,3</Frame>
+                <Frame>7,3</Frame>
+                <Frame>8,3</Frame>
+                <Frame>9,3</Frame>
+                <Frame>10,3</Frame>
+                <Frame>11,3</Frame>
+                <Frame>12,3</Frame>
+                <Frame>13,3</Frame>
+            </SpriteAnimation>
+        </Animations>
+    </Data>
+    <RenderRules>
+        <RenderBehind>
+            <SpriteRender name="AuraBackSprite" offset="0,-8" drawShadow="true" alignment="CENTER" blend="PREMULTIPLIED_ALPHA"/>
+        </RenderBehind>
+        <RenderInFront>
+            <SpriteRender name="AuraFrontSprite" offset="0,-32" drawShadow="true" alignment="CENTER" blend="PREMULTIPLIED_ALPHA"/>
+        </RenderInFront>
+        <RenderChestItem>
+            <SpriteRender name="NecklaceSprite" offset="1,-15" blend="PREMULTIPLIED_ALPHA"/>
+            <SpriteRender name="GlowNecklaceSprite" offset="1,-15" blend="PREMULTIPLIED_ALPHA"/>
+        </RenderChestItem>
+    </RenderRules>
+</ItemRenderer>

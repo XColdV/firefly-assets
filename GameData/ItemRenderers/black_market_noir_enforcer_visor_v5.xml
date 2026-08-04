@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemRenderer>
+  <Data>
+    <Sprite name="part" fileName="game/black_market_outfit_v5.rttex" textureSize="32,32" frame="0,4"/>
+    <Animations>
+      <SpriteAnimation name="part_cycle" sprite="part" animTime="1200" isLoop="true" autoPlay="true"><Frame>0,4</Frame><Frame>1,4</Frame><Frame>2,4</Frame><Frame>3,4</Frame></SpriteAnimation>
+    </Animations>
+  </Data>
+  <RenderRules>
+    <RenderFaceItem>
+      <SpriteRender name="part" offset="0,-16" alignment="DOWN_CENTER" blend="PREMULTIPLIED_ALPHA"/>
+    </RenderFaceItem>
+  </RenderRules>
+</ItemRenderer>

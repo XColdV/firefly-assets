@@ -5,21 +5,34 @@
 		<link type="text/template" href="../Base/BasePopup.rml" />
 		<link type="text/rcss" href="Console.rcss" />
 		<script lang="text/lua">
-			gConsoleFloaty = false
-			gConsoleStyleStartupDone = false
-			gConsoleActiveOwner = 'static'
-			gConsoleStaticFinalized = false
+			-- Keep the log scrolled to the newest line. Runs from the on* handlers below
+			-- (data-rml can't call Lua here). The heights can be nil before layout, so guard them.
+			function ConsoleScrollToBottom(document, element)
+				if not document then return '' end
+				local lc = document:GetElementById('log-content')
+				if lc and lc.scroll_height and lc.client_height then
+					lc.scroll_top = lc.scroll_height + lc.client_height + 1000000
+				end
+				return ''
+			end
 
+			-- (Filter tabs are always shown via CSS now -- see #filter in Console.rcss.)
+
+			-- Enter on an empty box closes the chat (the old pre-5.48 feel). The catch: the
+			-- Enter that OPENED the chat mustn't also close it, so the opening Enter only ARMS
+			-- the flag and the NEXT empty Enter closes. Typing arms it too; it clears on close
+			-- and on blur. It lives in keyup because onshow/onfocus aren't reliable here.
 			function MaybeCloseChatOnEnter(event, document)
 				if not document then return '' end
 				local params = event and event.parameters
 				if not params then return '' end
 
-				if params['key_identifier'] ~= 72 then
+				if params['key_identifier'] ~= 72 then   -- 72 = Enter; anything else means typing
 					gEnterArmed = true
 					return ''
 				end
 
+				-- Empty box only -- if there's text, Enter is a send (handled by HandleInput).
 				local hp = document:GetElementById('msg-hint-panel')
 				local isEmpty = hp and not hp:IsClassSet('hidden')
 				if not isEmpty then
@@ -28,10 +41,10 @@
 				end
 
 				if gEnterArmed then
-					OnEvent(event, 'on-chat')
+					OnEvent(event, 'on-chat')   -- empty Enter on an open chat -> close it
 					gEnterArmed = false
 				else
-					gEnterArmed = true
+					gEnterArmed = true          -- this Enter just opened the chat -> keep it open
 				end
 
 				return ''
@@ -41,526 +54,50 @@
 				gEnterArmed = false
 				return ''
 			end
-
-			function ConsoleHandlePress(document)
-				if not document then return '' end
-				if gConsoleFloaty ~= true then ConsoleCenterStaticFrame(document) end
-				local chat = document:GetElementById('chat_window')
-				if not chat then return '' end
-				chat.style.max_height = '500dp'
-				gPullStartHeight = chat.offset_height or 250
-				return ''
-			end
-
-			function ConsoleStaticOnShow(document, element)
-				if gConsoleFloaty ~= true then
-					ConsoleActivateStaticIds(document)
-					ConsoleResetStaticPosition(document)
-				end
-				return ''
-			end
-
-			function ConsoleToggleChatHeight(event, document)
-				if not document then return '' end
-				local chat = document:GetElementById('chat_window')
-				if not chat then return '' end
-
-				local currentHeight = chat.offset_height or 250
-				if gPullStartHeight and math.abs(currentHeight - gPullStartHeight) > 8 then
-					gPullStartHeight = nil
-					ConsoleCenterStaticFrame(document)
-					return ''
-				end
-
-				if currentHeight >= 530 then
-					chat.style.height = '250dp'
-				else
-					chat.style.height = '500dp'
-				end
-
-				ConsoleCenterStaticFrame(document)
-				gPullStartHeight = nil
-				if event then event:StopPropagation() end
-				return ''
-			end
-			function ConsoleSetId(element, new_id)
-				if not element then return '' end
-				pcall(function() element:SetAttribute('id', new_id) end)
-				pcall(function() element.id = new_id end)
-				return ''
-			end
-
-			function ConsoleSetAttr(element, name, value)
-				if not element then return '' end
-				pcall(function() element:SetAttribute(name, value) end)
-				return ''
-			end
-
-			function ConsoleById(document, id_a, id_b)
-				if not document then return nil end
-				local e = nil
-				if id_a then e = document:GetElementById(id_a) end
-				if e then return e end
-				if id_b then return document:GetElementById(id_b) end
-				return nil
-			end
-
-			function ConsoleIsStaticRoot(element)
-				return element and element.IsClassSet and element:IsClassSet('console_static_panel')
-			end
-
-			function ConsoleIsFloatyRoot(element)
-				return element and element.IsClassSet and element:IsClassSet('console_floaty_panel')
-			end
-
-			function ConsoleGetStaticRoot(document)
-				local e = ConsoleById(document, 'chat_window_static', nil)
-				if e then return e end
-				e = ConsoleById(document, 'chat_window', nil)
-				if ConsoleIsStaticRoot(e) then return e end
-				return nil
-			end
-
-			function ConsoleGetFloatyRoot(document)
-				local e = ConsoleById(document, 'chat_window_floaty', nil)
-				if e then return e end
-				e = ConsoleById(document, 'chat_window', nil)
-				if ConsoleIsFloatyRoot(e) then return e end
-				return nil
-			end
-
-			function ConsoleRename(document, from_id, to_id)
-				local e = ConsoleById(document, from_id, nil)
-				if e then ConsoleSetId(e, to_id) end
-				return ''
-			end
-
-			function ConsoleSetFilterFors(document, suffix)
-				local ids = {'all', 'world', 'private', 'system', 'custom'}
-				for i, name in ipairs(ids) do
-					local label = ConsoleById(document, 'filter_label_' .. name .. suffix, nil)
-					if label then ConsoleSetAttr(label, 'for', 'filter_' .. name .. suffix) end
-				end
-				return ''
-			end
-
-			function ConsoleDeactivateStaticIds(document)
-				if gConsoleActiveOwner ~= 'static' then return '' end
-				local root = ConsoleGetStaticRoot(document)
-				if not root then return '' end
-				ConsoleSetId(root, 'chat_window_static')
-				ConsoleRename(document, 'filter', 'filter_static')
-				ConsoleRename(document, 'filter_all', 'filter_all_static')
-				ConsoleRename(document, 'filter_world', 'filter_world_static')
-				ConsoleRename(document, 'filter_private', 'filter_private_static')
-				ConsoleRename(document, 'filter_system', 'filter_system_static')
-				ConsoleRename(document, 'filter_custom', 'filter_custom_static')
-				ConsoleRename(document, 'filter_label_all', 'filter_label_all_static')
-				ConsoleRename(document, 'filter_label_world', 'filter_label_world_static')
-				ConsoleRename(document, 'filter_label_private', 'filter_label_private_static')
-				ConsoleRename(document, 'filter_label_system', 'filter_label_system_static')
-				ConsoleRename(document, 'filter_label_custom', 'filter_label_custom_static')
-				ConsoleRename(document, 'chat_image', 'chat_image_static')
-				ConsoleRename(document, 'custom-settings-popup', 'custom-settings-popup_static')
-				ConsoleRename(document, 'custom-settings', 'custom-settings_static')
-				ConsoleRename(document, 'preview-content', 'preview-content_static')
-				ConsoleRename(document, 'preview-text', 'preview-text_static')
-				ConsoleRename(document, 'log-top', 'log-top_static')
-				ConsoleRename(document, 'log-content', 'log-content_static')
-				ConsoleRename(document, 'log-spacer', 'log-spacer_static')
-				ConsoleRename(document, 'log-lines', 'log-lines_static')
-				ConsoleRename(document, 'text-line', 'text-line_static')
-				ConsoleRename(document, 'image', 'image_static')
-				ConsoleRename(document, 'text', 'text_static')
-				ConsoleRename(document, 'scroll-anchor', 'scroll-anchor_static')
-				ConsoleRename(document, 'input-content', 'input-content_static')
-				ConsoleRename(document, 'input-text', 'input-text_static')
-				ConsoleRename(document, 'input-info', 'input-info_static')
-				ConsoleRename(document, 'msg-hint-panel', 'msg-hint-panel_static')
-				ConsoleRename(document, 'message-hint-text', 'message-hint-text_static')
-				ConsoleRename(document, 'pull_down_button', 'pull_down_button_static')
-				ConsoleRename(document, 'pull_down_icon', 'pull_down_icon_static')
-				ConsoleSetFilterFors(document, '_static')
-				local pull = ConsoleById(document, 'pull_down_button_static', nil)
-				ConsoleSetAttr(pull, 'size_target', 'chat_window')
-				return ''
-			end
-
-			function ConsoleActivateStaticIds(document)
-				if gConsoleActiveOwner == 'floaty' then ConsoleDeactivateFloatyIds(document) end
-				local root = ConsoleGetStaticRoot(document)
-				if not root then return '' end
-				ConsoleSetId(root, 'chat_window')
-				ConsoleRename(document, 'filter_static', 'filter')
-				ConsoleRename(document, 'filter_all_static', 'filter_all')
-				ConsoleRename(document, 'filter_world_static', 'filter_world')
-				ConsoleRename(document, 'filter_private_static', 'filter_private')
-				ConsoleRename(document, 'filter_system_static', 'filter_system')
-				ConsoleRename(document, 'filter_custom_static', 'filter_custom')
-				ConsoleRename(document, 'filter_label_all_static', 'filter_label_all')
-				ConsoleRename(document, 'filter_label_world_static', 'filter_label_world')
-				ConsoleRename(document, 'filter_label_private_static', 'filter_label_private')
-				ConsoleRename(document, 'filter_label_system_static', 'filter_label_system')
-				ConsoleRename(document, 'filter_label_custom_static', 'filter_label_custom')
-				ConsoleRename(document, 'chat_image_static', 'chat_image')
-				ConsoleRename(document, 'custom-settings-popup_static', 'custom-settings-popup')
-				ConsoleRename(document, 'custom-settings_static', 'custom-settings')
-				ConsoleRename(document, 'preview-content_static', 'preview-content')
-				ConsoleRename(document, 'preview-text_static', 'preview-text')
-				ConsoleRename(document, 'log-top_static', 'log-top')
-				ConsoleRename(document, 'log-content_static', 'log-content')
-				ConsoleRename(document, 'log-spacer_static', 'log-spacer')
-				ConsoleRename(document, 'log-lines_static', 'log-lines')
-				ConsoleRename(document, 'text-line_static', 'text-line')
-				ConsoleRename(document, 'image_static', 'image')
-				ConsoleRename(document, 'text_static', 'text')
-				ConsoleRename(document, 'scroll-anchor_static', 'scroll-anchor')
-				ConsoleRename(document, 'input-content_static', 'input-content')
-				ConsoleRename(document, 'input-text_static', 'input-text')
-				ConsoleRename(document, 'input-info_static', 'input-info')
-				ConsoleRename(document, 'msg-hint-panel_static', 'msg-hint-panel')
-				ConsoleRename(document, 'message-hint-text_static', 'message-hint-text')
-				ConsoleRename(document, 'pull_down_button_static', 'pull_down_button')
-				ConsoleRename(document, 'pull_down_icon_static', 'pull_down_icon')
-				ConsoleSetFilterFors(document, '')
-				local pull = ConsoleById(document, 'pull_down_button', nil)
-				ConsoleSetAttr(pull, 'size_target', 'chat_window')
-				gConsoleActiveOwner = 'static'
-				return ''
-			end
-
-			function ConsoleDeactivateFloatyIds(document)
-				if gConsoleActiveOwner ~= 'floaty' then return '' end
-				local root = ConsoleGetFloatyRoot(document)
-				if not root then return '' end
-				ConsoleSetId(root, 'chat_window_floaty')
-				ConsoleRename(document, 'preview-content', 'preview-content_floaty')
-				ConsoleRename(document, 'preview-text', 'preview-text_floaty')
-				ConsoleRename(document, 'message-hint-text', 'message-hint-text_floaty')
-				ConsoleRename(document, 'filter', 'filter_floaty')
-				ConsoleRename(document, 'filter_all', 'filter_all_floaty')
-				ConsoleRename(document, 'filter_world', 'filter_world_floaty')
-				ConsoleRename(document, 'filter_private', 'filter_private_floaty')
-				ConsoleRename(document, 'filter_system', 'filter_system_floaty')
-				ConsoleRename(document, 'filter_custom', 'filter_custom_floaty')
-				ConsoleRename(document, 'filter_label_all', 'filter_label_all_floaty')
-				ConsoleRename(document, 'filter_label_world', 'filter_label_world_floaty')
-				ConsoleRename(document, 'filter_label_private', 'filter_label_private_floaty')
-				ConsoleRename(document, 'filter_label_system', 'filter_label_system_floaty')
-				ConsoleRename(document, 'filter_label_custom', 'filter_label_custom_floaty')
-				ConsoleRename(document, 'chat_image', 'chat_image_floaty')
-				ConsoleRename(document, 'custom-settings-popup', 'custom-settings-popup_floaty')
-				ConsoleRename(document, 'custom-settings', 'custom-settings_floaty')
-				ConsoleRename(document, 'input-content', 'input-content_floaty')
-				ConsoleRename(document, 'input-text', 'input-text_floaty')
-				ConsoleRename(document, 'input-info', 'input-info_floaty')
-				ConsoleRename(document, 'move_handle', 'move_handle_floaty')
-				ConsoleRename(document, 'log-top', 'log-top_floaty')
-				ConsoleRename(document, 'log-content', 'log-content_floaty')
-				ConsoleRename(document, 'text-line', 'text-line_floaty')
-				ConsoleRename(document, 'image', 'image_floaty')
-				ConsoleRename(document, 'text', 'text_floaty')
-				ConsoleRename(document, 'resize_bl', 'resize_bl_floaty')
-				ConsoleSetFilterFors(document, '_floaty')
-				local move = ConsoleById(document, 'move_handle_floaty', nil)
-				ConsoleSetAttr(move, 'move_target', 'chat_window_floaty')
-				local resize = ConsoleById(document, 'resize_bl_floaty', nil)
-				ConsoleSetAttr(resize, 'size_target', 'chat_window_floaty')
-				return ''
-			end
-
-			function ConsoleActivateFloatyIds(document)
-				if gConsoleActiveOwner == 'static' then ConsoleDeactivateStaticIds(document) end
-				local root = ConsoleGetFloatyRoot(document)
-				if not root then return '' end
-				ConsoleSetId(root, 'chat_window')
-				ConsoleRename(document, 'preview-content_floaty', 'preview-content')
-				ConsoleRename(document, 'preview-text_floaty', 'preview-text')
-				ConsoleRename(document, 'message-hint-text_floaty', 'message-hint-text')
-				ConsoleRename(document, 'filter_floaty', 'filter')
-				ConsoleRename(document, 'filter_all_floaty', 'filter_all')
-				ConsoleRename(document, 'filter_world_floaty', 'filter_world')
-				ConsoleRename(document, 'filter_private_floaty', 'filter_private')
-				ConsoleRename(document, 'filter_system_floaty', 'filter_system')
-				ConsoleRename(document, 'filter_custom_floaty', 'filter_custom')
-				ConsoleRename(document, 'filter_label_all_floaty', 'filter_label_all')
-				ConsoleRename(document, 'filter_label_world_floaty', 'filter_label_world')
-				ConsoleRename(document, 'filter_label_private_floaty', 'filter_label_private')
-				ConsoleRename(document, 'filter_label_system_floaty', 'filter_label_system')
-				ConsoleRename(document, 'filter_label_custom_floaty', 'filter_label_custom')
-				ConsoleRename(document, 'chat_image_floaty', 'chat_image')
-				ConsoleRename(document, 'custom-settings-popup_floaty', 'custom-settings-popup')
-				ConsoleRename(document, 'custom-settings_floaty', 'custom-settings')
-				ConsoleRename(document, 'input-content_floaty', 'input-content')
-				ConsoleRename(document, 'input-text_floaty', 'input-text')
-				ConsoleRename(document, 'input-info_floaty', 'input-info')
-				ConsoleRename(document, 'move_handle_floaty', 'move_handle')
-				ConsoleRename(document, 'log-top_floaty', 'log-top')
-				ConsoleRename(document, 'log-content_floaty', 'log-content')
-				ConsoleRename(document, 'text-line_floaty', 'text-line')
-				ConsoleRename(document, 'image_floaty', 'image')
-				ConsoleRename(document, 'text_floaty', 'text')
-				ConsoleRename(document, 'resize_bl_floaty', 'resize_bl')
-				ConsoleSetFilterFors(document, '')
-				local move = ConsoleById(document, 'move_handle', nil)
-				ConsoleSetAttr(move, 'move_target', 'chat_window')
-				local resize = ConsoleById(document, 'resize_bl', nil)
-				ConsoleSetAttr(resize, 'size_target', 'chat_window')
-				gConsoleActiveOwner = 'floaty'
-				return ''
-			end
-
-			function ConsoleStartupStatic(document)
-				if not document then return '' end
-				if gConsoleStyleStartupDone == true then return '' end
-				local staticChat = ConsoleGetStaticRoot(document)
-				if not staticChat then return '' end
-				local floatyChat = ConsoleGetFloatyRoot(document)
-				gConsoleStyleStartupDone = true
-				gConsoleStaticFinalized = false
-				gConsoleFloaty = false
-				gConsoleActiveOwner = 'static'
-				ConsoleActivateStaticIds(document)
-				ConsoleResetStaticPosition(document)
-				staticChat = ConsoleGetStaticRoot(document)
-				floatyChat = ConsoleGetFloatyRoot(document)
-				if staticChat then
-					ConsoleSetId(staticChat, 'chat_window')
-					staticChat:SetClass('console_style_initialized', true)
-					staticChat:SetClass('console_style_hidden', false)
-				end
-				if floatyChat then
-					ConsoleSetId(floatyChat, 'chat_window_floaty')
-					floatyChat:SetClass('console_style_hidden', true)
-				end
-				ConsoleSetToggleButtons(document)
-				return ''
-			end
-
-			function ConsoleStartupAndApply(document)
-				ConsoleStartupStatic(document)
-				ConsoleApplyStyleBridge(document)
-				return ''
-			end
-
-			function ConsoleStartupFinalizeStatic(document)
-				if not document then return '' end
-				if gConsoleFloaty == true then return '' end
-				if gConsoleStaticFinalized == true then return '' end
-				gConsoleStaticFinalized = true
-				ConsoleActivateStaticIds(document)
-				ConsoleResetStaticPosition(document)
-				return ''
-			end
-
-			function ConsoleEnsureStyleState(document)
-				if not document then return '' end
-				local staticChat = ConsoleGetStaticRoot(document)
-				if staticChat and not staticChat:IsClassSet('console_style_initialized') then
-					staticChat:SetClass('console_style_initialized', true)
-					if gConsoleFloaty ~= true then
-						ConsoleActivateStaticIds(document)
-						ConsoleResetStaticPosition(document)
-					end
-				end
-				return ''
-			end
-
-			function ConsoleSetStaticMessagesHidden(document, height_value)
-				if not document then return '' end
-				local chat = ConsoleGetStaticRoot(document)
-				if chat then chat:SetClass('console_static_messages_hidden', false) end
-				return ''
-			end
-
-			function ConsoleUpdateStaticMessageVisibility(document)
-				return ConsoleSetStaticMessagesHidden(document, nil)
-			end
-
-			function ConsoleClampStaticHeight(document)
-				if not document then return '' end
-				local chat = ConsoleGetStaticRoot(document)
-				if not chat then return '' end
-				chat.style.min_height = '124dp'
-				chat.style.max_height = '500dp'
-				local currentHeight = chat.offset_height or 250
-				local finalHeight = currentHeight
-				if currentHeight > 500 then
-					chat.style.height = '500dp'
-					finalHeight = 500
-				elseif currentHeight < 124 then
-					chat.style.height = '124dp'
-					finalHeight = 124
-				end
-				return ''
-			end
-
-
-
-			function ConsoleStaticHandleLiveClamp(document)
-				if not document then return '' end
-				if gConsoleFloaty == true then return '' end
-				local chat = ConsoleGetStaticRoot(document)
-				if not chat then return '' end
-				chat.style.position = 'absolute'
-				chat.style.top = '8dp'
-				chat.style.left = '12%'
-				chat.style.right = 'auto'
-				chat.style.bottom = 'auto'
-				chat.style.margin_top = '0dp'
-				chat.style.margin_left = '0dp'
-				chat.style.margin_right = '0dp'
-				chat.style.width = '76%'
-				chat.style.min_width = '76%'
-				chat.style.max_width = '76%'
-				chat.style.min_height = '124dp'
-				chat.style.max_height = '500dp'
-				local currentHeight = chat.offset_height or 250
-				local finalHeight = currentHeight
-				if currentHeight > 500 then
-					chat.style.height = '500dp'
-					finalHeight = 500
-				elseif currentHeight < 124 then
-					chat.style.height = '124dp'
-					finalHeight = 124
-				end
-				return ''
-			end
-
-			function ConsoleStaticHandleRefresh(document)
-				return ConsoleStaticHandleLiveClamp(document)
-			end
-
-			function ConsoleStaticHandleDrag(document)
-				if not document or gConsoleFloaty == true then return '' end
-				local chat = ConsoleGetStaticRoot(document)
-				if not chat then return '' end
-				local currentHeight = chat.offset_height or 250
-				if currentHeight > 500 then
-					chat.style.height = '500dp'
-				elseif currentHeight < 124 then
-					chat.style.height = '124dp'
-				end
-				return ''
-			end
-
-			function ConsoleSetStaticFrame(document, reset_height)
-				if not document then return '' end
-				local chat = ConsoleGetStaticRoot(document)
-				if not chat then return '' end
-				chat.style.position = 'absolute'
-				chat.style.top = '8dp'
-				chat.style.left = '12%'
-				chat.style.right = 'auto'
-				chat.style.bottom = 'auto'
-				chat.style.margin_top = '0dp'
-				chat.style.margin_left = '0dp'
-				chat.style.margin_right = '0dp'
-				chat.style.width = '76%'
-				chat.style.min_width = '76%'
-				chat.style.max_width = '76%'
-				chat.style.min_height = '124dp'
-				chat.style.max_height = '500dp'
-				if reset_height == true then
-					chat.style.height = '250dp'
-				else
-					ConsoleClampStaticHeight(document)
-				end
-				return ''
-			end
-
-			function ConsoleCenterStaticFrame(document)
-				return ConsoleSetStaticFrame(document, false)
-			end
-
-			function ConsoleResetStaticPosition(document)
-				return ConsoleSetStaticFrame(document, true)
-			end
-
-			function ConsoleResetFloatyPosition(document)
-				if not document then return '' end
-				local chat = ConsoleGetFloatyRoot(document)
-				if not chat then return '' end
-				chat.style.top = '72dp'
-				chat.style.right = '96dp'
-				chat.style.left = 'auto'
-				chat.style.width = '28vw'
-				chat.style.height = '164dp'
-				return ''
-			end
-
-			function ConsoleSetToggleButtons(document)
-				if not document then return '' end
-				local staticButton = document:GetElementById('style_toggle_static')
-				if staticButton then staticButton:SetClass('console_toggle_active_floaty', gConsoleFloaty == true) end
-				local floatyButton = document:GetElementById('style_toggle_floaty')
-				if floatyButton then floatyButton:SetClass('console_toggle_active_floaty', gConsoleFloaty == true) end
-				return ''
-			end
-
-			function ConsoleApplyStyleBridge(document)
-				ConsoleEnsureStyleState(document)
-				if not document then return '' end
-				if gConsoleFloaty == true then
-					ConsoleActivateFloatyIds(document)
-				else
-					ConsoleActivateStaticIds(document)
-				end
-				local staticChat = ConsoleGetStaticRoot(document)
-				local floatyChat = ConsoleGetFloatyRoot(document)
-				if staticChat then staticChat:SetClass('console_style_hidden', gConsoleFloaty == true) end
-				if floatyChat then floatyChat:SetClass('console_style_hidden', gConsoleFloaty ~= true) end
-				ConsoleSetToggleButtons(document)
-				return ''
-			end
-
-			function ConsoleToggleConsoleStyle(event, document)
-				ConsoleEnsureStyleState(document)
-				local targetFloaty = not gConsoleFloaty
-				gConsoleFloaty = targetFloaty
-				if gConsoleFloaty then
-					ConsoleResetFloatyPosition(document)
-				else
-					ConsoleResetStaticPosition(document)
-				end
-				ConsoleApplyStyleBridge(document)
-				if event then event:StopPropagation() end
-				return ''
-			end
-
 		</script>
 	</head>
+	<!-- Keep the body element free of an onshow: this template is injected into WorldUI's
+	     body, and a body onshow clashes with WorldUI's own onShowUI (the notch fix), shoving
+	     the whole UI right on notched phones. The on* handlers below already cover auto-scroll. -->
 	<body>
-             <div id="console_style_startup_loader" data-rml="ConsoleStartupAndApply(document)"/>
-		<div id="chat_window" class="chat_region console_static_panel" data-model="ConsoleModel" data-class-hidden="!ConsoleModel.IsShown" onshow="ConsoleStaticOnShow(document, element)">
+		<div id="chat_window" class="chat_region" data-model="ConsoleModel" data-class-hidden="!ConsoleModel.IsShown" onshow="ConsoleScrollToBottom(document, element)">
 
-			<form id="filter" name="duration" data-value="ConsoleModel.Filter" onclick="OnEvent(event, 'Console.OnFilter')">
+			<!-- Special-characters preview -->
+			<div class="preview-panel" data-class-hidden="!ConsoleModel.InputSpecialChars">
+				<div id="preview-content">
+					<div id="preview-text" data-rml="ToRMLText(ConsoleModel.PreviewText)"/>
+				</div>
+			</div>
+
+			<!-- Filter tabs: an always-shown strip below the input (placed by the .rcss).
+			     Markup is verbatim from the stock console so the original filtering works. -->
+			<form id="filter" name="duration" data-value="ConsoleModel.Filter" onclick="OnEvent(event, 'Console.OnFilter') ConsoleScrollToBottom(document, element)">
 				<input type="radio" id="filter_all" value="0" data-checked="ConsoleModel.Filter" data-disabled="ConsoleModel.AccountAgeType == 3"/>
-				<label id="filter_label_all" for="filter_all" class="filter_btn filter_all_clr">
+				<label for="filter_all" class="filter_btn filter_all_clr">
 					<span class="icon filter_all"></span>
 					<div class="filter_name" data-class-hidden="ConsoleModel.Filter != 0">All</div>
 				</label>
 
-				<input type="radio" id="filter_world" value="1" data-checked="ConsoleModel.Filter"  data-disabled="ConsoleModel.AccountAgeType == 3"/>
-				<label id="filter_label_world" for="filter_world" class="filter_btn filter_world_clr">
+				<input type="radio" id="filter_world" value="1" data-checked="ConsoleModel.Filter" data-disabled="ConsoleModel.AccountAgeType == 3"/>
+				<label for="filter_world" class="filter_btn filter_world_clr">
 					<span class="icon filter_world"></span>
 					<div class="filter_name" data-class-hidden="ConsoleModel.Filter != 1">World</div>
 				</label>
 
 				<input type="radio" id="filter_private" value="2" data-checked="ConsoleModel.Filter" />
-				<label id="filter_label_private" for="filter_private" class="filter_btn filter_private_clr">
+				<label for="filter_private" class="filter_btn filter_private_clr">
 					<span class="icon filter_private"></span>
 					<div class="filter_name" data-class-hidden="ConsoleModel.Filter != 2">Private</div>
 				</label>
 
 				<input type="radio" id="filter_system" value="3" data-checked="ConsoleModel.Filter" />
-				<label id="filter_label_system" for="filter_system" class="filter_btn filter_system_clr">
+				<label for="filter_system" class="filter_btn filter_system_clr">
 					<span class="icon filter_system"></span>
 					<div class="filter_name" data-class-hidden="ConsoleModel.Filter != 3">System</div>
 				</label>
 
-				<input type="radio" id="filter_custom" value="4" data-checked="ConsoleModel.Filter"  data-disabled="ConsoleModel.AccountAgeType == 3"/>
-				<label id="filter_label_custom" for="filter_custom" class="filter_btn filter_custom_clr">
+				<input type="radio" id="filter_custom" value="4" data-checked="ConsoleModel.Filter" data-disabled="ConsoleModel.AccountAgeType == 3"/>
+				<label for="filter_custom" class="filter_btn filter_custom_clr">
 					<span class="icon filter_custom"></span>
 					<div class="filter_name" data-class-hidden="ConsoleModel.Filter != 4">Custom</div>
 				</label>
@@ -568,9 +105,9 @@
 				<div class="chat_settings" data-class-hidden="ConsoleModel.Filter != 4" onclick="OnEvent(element, 'Console.OnClickCustomSettings')">
 					<div id="chat_image"/>
 				</div>
-
 			</form>
 
+			<!-- Custom-tab settings popup -->
 			<div id="custom-settings-popup" class="popup hidden">
 				<div style="padding: 8dp;">Select the content to be shown on the Custom tab</div>
 				<form id="custom-settings" class="checkbox-group" onchange="OnEvent(event, 'Console.OnCustomSettingsChange')">
@@ -601,20 +138,14 @@
 				</form>
 			</div>
 
-			<div class="preview-panel" data-class-hidden="!ConsoleModel.InputSpecialChars">
-				<div id="preview-content">
-					<div id="preview-text" data-rml="ToRMLText(ConsoleModel.PreviewText)"/>
-				</div>
-			</div>
-
+			<!-- Log panel -->
 			<div class="log-panel" id="log-top">
-				<div class="show-scrollbar wondow-content-full" id="log-content">
-					<div id="log-spacer"></div>
+				<div class="show-scrollbar wondow-content-full wondow-content-horizontal" id="log-content" onshow="ConsoleScrollToBottom(document, element)">
 					<div id="log-lines">
-						<div data-for="Line : ConsoleModel.ShowLogLines">
-							<div class="chat_padding">
-								<div id="text-line" data-if="ConsoleLogDisplayType(Line) == 0" data-rml="ToRMLText(ConsoleLogText(Line))"/>
-								<div class="crazy_jim_panel" data-if="ConsoleLogDisplayType(Line) == 1">
+						<div data-for="Line : ConsoleModel.ShowLogLines" onlistupdated="ConsoleScrollToBottom(document, element)">
+							<div class="chat_padding" data-class-alternate="IsOdd(Line)">
+								<div id="text-line" data-rml="ToRMLText(ConsoleLogText(Line))" data-class-hidden="ConsoleLogDisplayType(Line) != 0"/>
+								<div class="crazy_jim_panel" data-class-hidden="ConsoleLogDisplayType(Line) != 1">
 									<div id="image" />
 									<div id="text" data-rml="ToRMLText(ConsoleLogText(Line))" />
 								</div>
@@ -624,28 +155,31 @@
 				</div>
 			</div>
 
+			<!-- Input bar -->
 			<div class="input-panel">
-				<div id="input-content">
+				<div id="input-content" style="width:100%;">
 					<input id="input-text" type="text" maxlength="120" data-value="ConsoleModel.InputText"
 							onkeyup="MaybeCloseChatOnEnter(event, document) OnEvent(event, 'Console.HandleInput')"
 							onblur="ResetConsoleEnterArm() OnEvent(event, 'Console.HandleInputFocusEnd')"
-							onfocus="OnEvent(event, 'Console.HandleInputFocusBegin')"/>
+							onfocus="ConsoleScrollToBottom(document, element) OnEvent(event, 'Console.HandleInputFocusBegin')"/>
 					<div id="input-info" data-rml="len(ConsoleModel.InputText)+'/120'"/>
 				</div>
 			</div>
 
+			<!-- Empty-box hint -->
 			<div id="msg-hint-panel" class="message-hint-panel" data-class-hidden="len(ConsoleModel.InputText) > 0">
-				<div id="message-hint-text">Enter message...</div>
+				<div id="message-hint-text">Enter Message Here</div>
 			</div>
-			
-			<customhandle id="pull_down_button" size_target="chat_window" edge_margin="10dp 20dp 10dp 10dp" onmousedown="ConsoleHandlePress(document)" onmouseup="ConsoleStaticHandleLiveClamp(document)" onclick="ConsoleToggleChatHeight(event, document)">
-				<div id="pull_down_icon"></div>
+
+			<!-- Drag-to-resize handle -->
+			<customhandle id="pull_down_button" size_target="chat_window" edge_margin="10dp 20dp 10dp 10dp">
+				<div id="pull_down_icon">
+					<div class="pull_line"/>
+					<div class="pull_line"/>
+					<div class="pull_line"/>
+				</div>
 			</customhandle>
 
 		</div>
-
-		<div id="console_style_bridge_loader" data-rml="ConsoleStartupAndApply(document)"/>
-
-		<div id="console_static_final_position_loader" data-rml="ConsoleStartupFinalizeStatic(document)"/>
 	</body>
 </template>

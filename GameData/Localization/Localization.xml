@@ -191,6 +191,9 @@
 	<String id="[notify_biweekquest_desc]">Come complete your quest before they expire!</String>
 	<String id="[notify_biweekquest_body]">Bi-Weekly Quest is ending soon, come complete your quest before they expire!</String>
 
+	<String id="[mail_crmspp26_title]">Super Pineapple Party Gift!</String>
+	<String id="[mail_crmspp26_desc]">Claim your FREE Gift and join the fun in Growtopia's Super Pineapple Party.</String>
+	<String id="[mail_crmspp26_body]">Hi Growtopians,&#10;&#10;Missing the tropical vibes? Grab your slice of the sweetest action of the year!&#10;&#10;Claim you free gift and join the fun.&#10;&#10;The Growtopia Team</String>
 
-
+	<!-- GTPS language-filter vocabulary is maintained in file.db and is intentionally disabled. -->
 </Resources>

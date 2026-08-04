@@ -96,7 +96,7 @@
 		<Set name="maxLevel">10</Set>
 		<Set name="name">"`oCommon True Strike``"</Set>
 		<Set name="icon">"ITEM_ID_DUNGEON_ABILITY_CRITICAL_DAMAGE_UP_COMMON"</Set>
-		<Set name="buffsPopupDescription">"Increases your Damage by x{} when dealing a Critical Hit."</Set>
+		<Set name="buffsPopupDescription">"Increases your Damage by {}% when dealing a Critical Hit."</Set>
 		<Set name="description">"`2+10% Crit. Damage``"</Set>
 		<Set name="successors">"ITEM_ID_DUNGEON_ABILITY_CRITICAL_DAMAGE_UP_RARE"</Set>
 	</Buff>	

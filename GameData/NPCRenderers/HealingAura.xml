@@ -58,6 +58,7 @@
 				<Set name="AttachmentName">"HealingAura"</Set>
 			</PlayerXMLAttachmentCmp>
 			<DebugDraw/>
+			<ParentInfo/>
 		</Components>
 	</Data>
 	<RenderRules>

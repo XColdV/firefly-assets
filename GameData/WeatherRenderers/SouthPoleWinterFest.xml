@@ -8,16 +8,23 @@
     <ParticleSystems>
       <ParticleSystem name="ps_clouds" updateStage="RenderBackground">
         <Emitter>
-          <Random name="emissionInterval" min="120" max="240"/>
+	      <Random name="emissionInterval" min="120" max="240"/>
           <Set name="infParticles">true</Set>
           <Set name="infLifeTime">true</Set>
           <Set name="particlesPerEmission">1</Set>
+	      <Set name="maxParticleInstanceAtOnce">5</Set>
         </Emitter>
         <Particle moveConstraint="Horizontal" autoLifeTimeToTarget="true">
           <Set name="inScreenSpace">true</Set>
           <Set name="renderAlignment">LEFT_CENTER</Set>
           <Set name="inSpecificOrder">true</Set>
           <Set name="sprite">s_cloud</Set>
+	      <Curve name="initialAlpha">
+		      <KeyFrame>0, 0</KeyFrame>
+		      <KeyFrame>0.001, 1</KeyFrame>
+		      <KeyFrame>9.999, 1</KeyFrame>
+		      <KeyFrame>1, 0</KeyFrame>
+	      </Curve>
           <Random name="offset" min="1.5, 0.05" max="1.5, 0.5"/>
           <Set name="targetPos">-1.5, 0</Set>
           <Random name="initialVelocity" min="-0.001, 0" max="-0.01, 0"/>
@@ -26,16 +33,23 @@
       </ParticleSystem>
       <ParticleSystem name="ps_cloudsFG" updateStage="RenderBackground">
         <Emitter>
-          <Random name="emissionInterval" min="120" max="240"/>
+	      <Random name="emissionInterval" min="120" max="240"/>
           <Set name="infParticles">true</Set>
           <Set name="infLifeTime">true</Set>
           <Set name="particlesPerEmission">1</Set>
+	      <Set name="maxParticleInstanceAtOnce">5</Set>
         </Emitter>
         <Particle moveConstraint="Horizontal" autoLifeTimeToTarget="true">
           <Set name="inScreenSpace">true</Set>
           <Set name="renderAlignment">LEFT_CENTER</Set>
           <Set name="inSpecificOrder">true</Set>
           <Set name="sprite">s_cloud</Set>
+	      <Curve name="initialAlpha">
+		      <KeyFrame>0, 0</KeyFrame>
+		      <KeyFrame>0.001, 1</KeyFrame>
+		      <KeyFrame>9.999, 1</KeyFrame>
+		      <KeyFrame>1, 0</KeyFrame>
+	      </Curve>
           <Random name="offset" min="1.5, 0.05" max="1.5, 0.5"/>
           <Set name="targetPos">-1.5, 0</Set>
           <Random name="initialVelocity" min="-0.001, 0" max="-0.01, 0"/>
